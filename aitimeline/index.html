@@ -83,9 +83,9 @@
     /* -------- constants ---------- */
     const CARD_W=140, CARD_H=26;
     const GAP_V=14, GAP_H=14;
-    const LEFT_PAD=90, TOP_PAD=60;       // desktop
-    const LEFT_PAD_M=110;               // mobile
-    const YEAR_PX=160;                  // px per year
+    const LEFT_PAD=90, TOP_PAD=60;
+    const LEFT_PAD_M=110;
+    const YEAR_PX=160;
     const MOBILE_BREAK=650;
     const ROWS_PER_COL_M=4;
     let jobs = [], isMob = false;
@@ -94,7 +94,6 @@
     fetch('jobs.json')
       .then(r => r.json())
       .then(j => {
-        // flatten if object-of-arrays, else assume array
         jobs = Array.isArray(j) ? j : Object.values(j).flat();
         init();
       })
@@ -111,40 +110,64 @@
 
     /* -------- helpers ------------ */
     function trunc(s, l){ return s.length > l ? s.slice(0, l-1) + '…' : s; }
-    function find(code){ return jobs.find(j => j.job_code == code); }  // loose match
+    function find(code){ return jobs.find(j => j.job_code == code); }
+
     function renderSources(src){
-      if(!src || src.length === 0) return '—';
-      const arr = Array.isArray(src) ? src : (typeof src === 'string' ? src.split(/[;|]/) : []);
-      return arr.map(s => {
-        if(typeof s === 'object'){
-          const label = s.label || s.url || '';
-          const url = s.url || '';
-          return url ? `<a href="${url}" target="_blank">${label}</a>` : label;
+      if (!src) return '—';
+      const items = Array.isArray(src)
+        ? src
+        : (typeof src === 'string' ? src.split(/[;|]/) : []);
+      const cleaned = items.map(entry => {
+        if (typeof entry === 'object') {
+          // only use objects with a valid URL
+          if (entry.url && typeof entry.url === 'string') {
+            const label = entry.label || entry.url;
+            return `<a href="${entry.url}" target="_blank">${label}</a>`;
+          }
+          return '';
         }
-        const st = s.trim();
-        return st.startsWith('http') ? `<a href="${st}" target="_blank">Source</a>` : st;
-      }).join(', ');
+        const str = entry.trim();
+        if (/contentReference/.test(str)) {
+          // skip internal references
+          return '';
+        }
+        if (str.startsWith('http')) {
+          return `<a href="${str}" target="_blank">${str}</a>`;
+        }
+        // embed any other URLs found in the string
+        const withLinks = str.replace(
+          /(https?:\/\/[^\s]+)/g,
+          '<a href="$1" target="_blank">$1</a>'
+        );
+        return withLinks;
+      }).filter(Boolean);
+      return cleaned.length > 0 ? cleaned.join(', ') : '—';
     }
 
     /* -------- timeline ----------- */
     function buildTimeline(){
       const svg = d3.select('#timelineSVG');
       svg.selectAll('*').remove();
-      const ys = jobs.map(j => j.ai_plus_full_year ?? j.ai_only_full_year).filter(Boolean);
-      const yMin = Math.min(...ys), yMax = Math.max(...ys);
+      const years = jobs
+        .map(j => j.ai_plus_full_year ?? j.ai_only_full_year)
+        .filter(Boolean);
+      const yMin = Math.min(...years),
+            yMax = Math.max(...years);
       isMob ? vertical(svg, yMin, yMax) : horizontal(svg, yMin, yMax);
       attachCardEvents();
       enableDrag();
     }
 
     function horizontal(svg, yMin, yMax){
-      const x = d3.scaleLinear().domain([yMin, yMax]).range([LEFT_PAD, (yMax-yMin)*YEAR_PX + LEFT_PAD]);
+      const x = d3.scaleLinear()
+        .domain([yMin, yMax])
+        .range([LEFT_PAD, (yMax-yMin)*YEAR_PX + LEFT_PAD]);
       const buckets = {};
       jobs.forEach(j => {
         const yr = j.ai_plus_full_year ?? j.ai_only_full_year;
         (buckets[yr] = buckets[yr]||[]).push(j);
       });
-      const maxStack = Math.max(...Object.values(buckets).map(b => b.length));
+      const maxStack = Math.max(...Object.values(buckets).map(b=>b.length));
       const H = TOP_PAD + maxStack*(CARD_H+GAP_V) + 120;
       const W = x(yMax) + CARD_W + LEFT_PAD;
       svg.attr('width', W).attr('height', H);
@@ -156,7 +179,7 @@
           g.append('text').attr('class','tick-text').attr('y',18).text(d=>d);
         });
 
-      Object.entries(buckets).forEach(([yr, list]) => {
+      Object.entries(buckets).forEach(([yr,list]) => {
         list.forEach((j,i) => {
           const gx = x(+yr) - CARD_W/2;
           const gy = TOP_PAD + i*(CARD_H+GAP_V);
@@ -175,7 +198,9 @@
     }
 
     function vertical(svg, yMin, yMax){
-      const y = d3.scaleLinear().domain([yMin,yMax]).range([TOP_PAD, (yMax-yMin)*YEAR_PX + TOP_PAD]);
+      const y = d3.scaleLinear()
+        .domain([yMin,yMax])
+        .range([TOP_PAD, (yMax-yMin)*YEAR_PX + TOP_PAD]);
       const buckets = {};
       jobs.forEach(j => {
         const yr = j.ai_plus_full_year ?? j.ai_only_full_year;
@@ -184,7 +209,7 @@
       const maxCol = Math.max(...Object.values(buckets).map(b=>Math.ceil(b.length/ROWS_PER_COL_M)));
       const W = LEFT_PAD_M + maxCol*(CARD_W+GAP_H) + 40;
       const H = y(yMax) + ROWS_PER_COL_M*(CARD_H+GAP_V) + 120;
-      svg.attr('width', W).attr('height', H);
+      svg.attr('width',W).attr('height',H);
 
       svg.append('g').selectAll('g').data(d3.range(yMin, yMax+1)).enter()
         .append('g').attr('transform', d=>`translate(0,${y(d)})`)
@@ -193,8 +218,8 @@
           g.append('text').attr('class','tick-text').attr('x',10).attr('dy',5).text(d=>d);
         });
 
-      Object.entries(buckets).forEach(([yr, list])=>{
-        list.forEach((j, idx)=>{
+      Object.entries(buckets).forEach(([yr,list])=>{
+        list.forEach((j,idx)=>{
           const col = Math.floor(idx/ROWS_PER_COL_M);
           const row = idx % ROWS_PER_COL_M;
           const gx = LEFT_PAD_M + col*(CARD_W+GAP_H);
@@ -265,14 +290,14 @@
       const wrap = document.getElementById('timelineWrap');
       let down=false, sx, sy, sl, st;
       wrap.onmousedown = e => { down=true; sx=e.pageX; sy=e.pageY; sl=wrap.scrollLeft; st=wrap.scrollTop; };
-      wrap.onmousemove = e => { if(down){ wrap.scrollLeft=sl-(e.pageX-sx); wrap.scrollTop=st-(e.pageY-sy); } };
-      document.onmouseup = () => down=false;
+      wrap.onmousemove = e => { if(down){ wrap.scrollLeft = sl - (e.pageX - sx); wrap.scrollTop = st - (e.pageY - sy); } };
+      document.onmouseup = () => down = false;
       wrap.addEventListener('wheel', e => {
         if(!e.ctrlKey) return;
         e.preventDefault();
         const svg = wrap.querySelector('svg');
-        const cur = wrap._z||1;
-        const nxt = Math.max(.5, Math.min(3, cur * (e.deltaY<0 ? 1.1 : .9)));
+        const cur = wrap._z || 1;
+        const nxt = Math.max(.5, Math.min(3, cur * (e.deltaY < 0 ? 1.1 : .9)));
         wrap._z = nxt;
         svg.style.transformOrigin = '0 0';
         svg.style.transform = `scale(${nxt})`;
@@ -283,8 +308,8 @@
     function navInit(){
       const t = document.getElementById('btnTime');
       const d = document.getElementById('btnDash');
-      t.onclick = ()=>{ t.classList.add('active'); d.classList.remove('active'); tl().style.display='block'; dw().style.display='none'; };
-      d.onclick = ()=>{ d.classList.add('active'); t.classList.remove('active'); dw().style.display='block'; tl().style.display='none'; };
+      t.onclick = () => { t.classList.add('active'); d.classList.remove('active'); tl().style.display='block'; dw().style.display='none'; };
+      d.onclick = () => { d.classList.add('active'); t.classList.remove('active'); dw().style.display='block'; tl().style.display='none'; };
       document.getElementById('btnAbout').onclick = about;
       function tl(){ return document.getElementById('timelineWrap'); }
       function dw(){ return document.getElementById('dashWrap'); }
@@ -292,7 +317,7 @@
 
     function modalInit(){
       document.getElementById('modalOv').onclick = e => {
-        if(e.target.id==='modalOv') hideModal();
+        if(e.target.id === 'modalOv') hideModal();
       };
     }
 
@@ -317,7 +342,7 @@
       `);
     }
 
-    function debounce(fn,ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
+    function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t = setTimeout(()=>fn(...a), ms); }; }
   </script>
 </body>
 </html>
