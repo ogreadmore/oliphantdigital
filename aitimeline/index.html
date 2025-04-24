@@ -1,146 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>AITimeline Demo</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<title>AI Timeline Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
 <style>
-  :root { --accent:#ff7043; --bg:#f7f7f9; --fg:#222; }
-  *{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--fg);}
-  header{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;background:#1a1a1d;color:#fff}
-  header h1{font-size:1.1rem;margin:0}
-  nav button{border:none;background:#444;color:#fff;padding:0.45rem 0.9rem;margin-left:0.5rem;border-radius:4px;cursor:pointer}
-  nav button.active,nav button:hover{background:var(--accent)}
-  main{height:calc(100vh - 64px);overflow:hidden}
-  section{height:100%;display:none}
-  section.active{display:block}
-  /* timeline pane */
-  #timelinePane{overflow:auto white-space:nowrap;padding:1rem 0 2rem 2rem}
-  .yearCol{display:inline-block;vertical-align:top;padding:0 10px;position:relative}
-  .yearLabel{position:absolute;top:-1.2rem;left:50%;transform:translateX(-50%);font-size:0.8rem;color:#555}
-  .jobNode{background:var(--accent);color:#fff;border-radius:4px;padding:2px 6px;margin-bottom:4px;font-size:0.75rem;cursor:pointer;white-space:unset;max-width:160px}
-  /* tooltip */
-  .tooltip{position:fixed;pointer-events:none;background:#fff;border:1px solid #ccc;border-radius:4px;padding:0.4rem 0.6rem;font-size:0.8rem;box-shadow:0 3px 6px rgba(0,0,0,.15);opacity:0;transition:opacity .15s}
-  /* dashboard table */
-  table{width:100%;border-collapse:collapse;font-size:0.85rem}
-  th,td{padding:0.5rem;border-bottom:1px solid #ddd;text-align:left}
-  th{background:#eee}
+:root{
+  --bg:#18181b;          /* almost-black */
+  --fg:#e4e4e7;          /* light text */
+  --accent:#c026d3;      /* magenta-purple */
+  --accent-light:#d946ef;
+  --card-bg:#27272a;
+  --scrollbar:#3f3f46;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+header{display:flex;justify-content:space-between;align-items:center;padding:0.8rem 1.2rem;background:#000000cc;backdrop-filter:blur(8px)}
+header h1{font-size:1rem;font-weight:700;letter-spacing:.03rem}
+nav{display:flex;gap:.5rem}
+nav button{padding:.45rem .9rem;border:none;border-radius:6px;background:#3f3f46;color:var(--fg);font-size:.85rem;cursor:pointer;transition:.2s}
+nav button.active,nav button:hover{background:var(--accent)}
+main{flex:1;position:relative;overflow:hidden}
+
+/* TIMELINE SECTION ---------------------------------------------------- */
+#timelineWrap{position:absolute;top:0;left:0;right:0;bottom:0;overflow-x:auto;overflow-y:hidden;white-space:nowrap;padding:2rem 2rem 3rem}
+#timelineSVG{height:100%}
+.job {cursor:pointer}
+/* cards */
+.job-rect{rx:6;ry:6;fill:var(--accent);transition:fill .15s}
+.job-text{fill:#fff;font-size:.62rem;font-weight:600;pointer-events:none}
+.tick-line{stroke:var(--scrollbar);stroke-width:1}
+.tick-text{fill:var(--fg);font-size:.72rem;text-anchor:middle}
+/* scrollbar styling */
+#timelineWrap::-webkit-scrollbar{height:12px}
+#timelineWrap::-webkit-scrollbar-track{background:#1f1f23}
+#timelineWrap::-webkit-scrollbar-thumb{background:var(--scrollbar);border-radius:6px}
+#timelineWrap:hover::-webkit-scrollbar-thumb{background:var(--accent)}
+/* DASHBOARD SECTION --------------------------------------------------- */
+#dashboardWrap{position:absolute;inset:0;display:none;overflow:auto;padding:1rem}
+table{width:100%;border-collapse:collapse;min-width:600px}
+thead th{position:sticky;top:0;background:#000000ee;backdrop-filter:blur(6px);padding:.6rem;font-size:.75rem;text-align:left;color:var(--accent-light)}
+tbody td{padding:.55rem .6rem;font-size:.72rem;border-bottom:1px solid #2f2f33}
+tbody tr:hover{background:#222225}
+
+@media(max-width:850px){
+  header h1{font-size:.9rem}
+  nav button{font-size:.75rem;padding:.4rem .75rem}
+  .job-text{font-size:.58rem}
+}
+@media(max-width:600px){
+  header{padding:.6rem .8rem}
+  #timelineWrap{padding:1.2rem}
+  .job-text{font-size:.55rem}
+}
 </style>
 </head>
+
 <body>
 <header>
   <h1>AI Timeline Demo</h1>
   <nav>
-    <button id="btnT" class="active">Timeline</button>
-    <button id="btnD">Current %</button>
+    <button id="btnTimeline" class="active">Timeline</button>
+    <button id="btnDashboard">Current %</button>
   </nav>
 </header>
 
 <main>
-  <section id="timelineSec" class="active">
-    <div id="timelinePane"></div>
-  </section>
-
-  <section id="dashSec">
-    <table id="dashTbl">
-      <thead><tr><th>Job</th><th>AI % Now</th><th>AI+Automation % Now</th><th>Year Fully Automated (AI+)</th><th>Industry</th></tr></thead>
+  <div id="timelineWrap"><svg id="timelineSVG"></svg></div>
+  <div id="dashboardWrap">
+    <table id="dash">
+      <thead>
+        <tr><th>Job</th><th>AI % Now</th><th>AI + Automation % Now</th><th>Industry</th><th>Full-Auto Year</th></tr>
+      </thead>
       <tbody></tbody>
     </table>
-  </section>
+  </div>
 </main>
 
-<div id="tip" class="tooltip"></div>
-
 <script>
-const timelinePane = d3.select('#timelinePane');
-const dashBody     = d3.select('#dashTbl tbody');
-const tip          = d3.select('#tip');
-let data = [];
+/* ---------- CONFIG ---------- */
+const CARD_H = 22, CARD_W = 140, PAD_Y = 8, TOP_PAD = 40;
+const YEAR_MIN = 2028, YEAR_MAX = 2065;    // fallback if dataset missing bounds
 
-function loadData(){
-  return fetch('jobs.json')
-    .then(r=>r.json())
-    .then(json=>{
-      // flatten nested industries -> jobs array
-      data = Object.values(json).flat();
+/* ---------- LOAD DATA ---------- */
+let jobs = [];
+fetch('jobs.json')
+  .then(r => r.json())
+  .then(json => {
+      jobs = Object.values(json).flat();
       buildTimeline();
       buildDashboard();
-    });
-}
+  })
+  .catch(err => { console.error('Failed to load jobs.json',err); });
 
+/* ---------- BUILD TIMELINE ---------- */
 function buildTimeline(){
-  const yearAccessor = d=> d.ai_plus_full_year ?? d.ai_only_full_year;
-  const years = data.map(yearAccessor).filter(Boolean);
-  const minY = d3.min(years), maxY = d3.max(years);
-  const colW = 140; // px per year
+  const svg = d3.select('#timelineSVG');
+  svg.selectAll('*').remove();               // clear
 
-  const byYear = d3.group(data, yearAccessor);
+  const years = jobs.map(j => j.ai_plus_full_year ?? j.ai_only_full_year)
+                    .filter(y => !!y);
+  const minYear = Math.min(...years, YEAR_MIN);
+  const maxYear = Math.max(...years, YEAR_MAX);
 
-  // build columns sorted by year
-  const colSel = timelinePane.selectAll('.yearCol')
-    .data(d3.range(minY, maxY+1))
-    .join('div')
-      .attr('class','yearCol')
-      .style('width', colW+'px');
+  const x = d3.scaleLinear()
+              .domain([minYear, maxYear])
+              .range([0, (maxYear-minYear)*90 + 200]);  // 90px per year
 
-  colSel.append('span')
-        .attr('class','yearLabel')
-        .text(y=>y);
-
-  // add jobs (stacked) to each column
-  colSel.each(function(year){
-    const jobs = byYear.get(year) || [];
-    const col  = d3.select(this);
-    col.selectAll('.jobNode')
-        .data(jobs)
-        .join('div')
-          .attr('class','jobNode')
-          .text(j=>j.job_title)
-          .on('mouseover', (e,j)=>{
-              tip.html(`<strong>${j.job_title}</strong><br>
-                        AI Now: ${j.ai_pct_now}%<br>
-                        AI+ Now: ${j.ai_plus_pct_now}%<br>
-                        Full AI+ Year: ${j.ai_plus_full_year ?? '—'}`)
-                  .style('left', (e.pageX+10)+'px')
-                  .style('top', (e.pageY+10)+'px')
-                  .style('opacity',1);
-          })
-          .on('mouseout', ()=>tip.style('opacity',0));
+  // group jobs per year (stack order)
+  const buckets = {};
+  jobs.forEach(j => {
+    const y = j.ai_plus_full_year ?? j.ai_only_full_year ?? maxYear+5;
+    if(!buckets[y]) buckets[y]=[];
+    buckets[y].push(j);
   });
 
-  // set pane width so horizontal scroll corresponds to year scale
-  timelinePane.style('width', ((maxY - minY + 1) * colW + 40) + 'px');
+  // compute svg width / height
+  const maxStack = Math.max(...Object.values(buckets).map(b => b.length));
+  const svgH = TOP_PAD + maxStack*(CARD_H+PAD_Y) + 40;
+  const svgW = x(maxYear)+250;
+  svg.attr('height', svgH).attr('width', svgW);
+
+  // ticks
+  svg.append('g')
+     .selectAll('g')
+     .data(d3.range(minYear, maxYear+1))
+     .enter()
+     .append('g')
+       .attr('transform', d => `translate(${x(d)},0)`)
+     .call(g => {
+        g.append('line')
+         .attr('y1', 0)
+         .attr('y2', svgH)
+         .attr('class','tick-line');
+        g.append('text')
+         .attr('y', 12)
+         .attr('class','tick-text')
+         .text(d => d);
+     });
+
+  // cards
+  Object.entries(buckets).forEach(([yr, list])=>{
+    list.forEach((j, idx)=>{
+      const gx = x(+yr) - CARD_W/2;                  // center on year tick
+      const gy = TOP_PAD + idx*(CARD_H+PAD_Y);
+
+      const g = svg.append('g')
+                   .attr('class','job')
+                   .attr('transform',`translate(${gx},${gy})`);
+
+      g.append('rect')
+       .attr('class','job-rect')
+       .attr('width', CARD_W)
+       .attr('height', CARD_H);
+
+      g.append('text')
+       .attr('x', CARD_W/2)
+       .attr('y', CARD_H/2+3)
+       .attr('class','job-text')
+       .attr('text-anchor','middle')
+       .text(j.job_title);
+    });
+  });
 }
 
+/* ---------- BUILD DASHBOARD ---------- */
 function buildDashboard(){
-  dashBody.selectAll('tr')
-    .data(data)
-    .join('tr')
-      .html(d=>`
-        <td>${d.job_title}</td>
-        <td>${d.ai_pct_now}%</td>
-        <td>${d.ai_plus_pct_now}%</td>
-        <td>${d.ai_plus_full_year ?? '—'}</td>
-        <td>${d.industry}</td>
-      `);
+  const tbody = d3.select('#dash tbody');
+  jobs.forEach(j=>{
+    const yr = j.ai_plus_full_year ?? j.ai_only_full_year ?? '—';
+    tbody.append('tr').html(`
+      <td>${j.job_title}</td>
+      <td>${j.ai_pct_now ?? '—'}%</td>
+      <td>${j.ai_plus_pct_now ?? '—'}%</td>
+      <td>${j.industry}</td>
+      <td>${yr}</td>
+    `);
+  });
 }
 
-/* navigation */
-document.getElementById('btnT').onclick = ()=>{
-  document.getElementById('btnT').classList.add('active');
-  document.getElementById('btnD').classList.remove('active');
-  document.getElementById('timelineSec').classList.add('active');
-  document.getElementById('dashSec').classList.remove('active');
-};
-document.getElementById('btnD').onclick = ()=>{
-  document.getElementById('btnD').classList.add('active');
-  document.getElementById('btnT').classList.remove('active');
-  document.getElementById('dashSec').classList.add('active');
-  document.getElementById('timelineSec').classList.remove('active');
-};
+/* ---------- TOGGLE SECTIONS ---------- */
+const btnT = document.getElementById('btnTimeline');
+const btnD = document.getElementById('btnDashboard');
+const wrapT = document.getElementById('timelineWrap');
+const wrapD = document.getElementById('dashboardWrap');
 
-loadData();
+btnT.onclick = ()=>{btnT.classList.add('active');btnD.classList.remove('active');wrapT.style.display='block';wrapD.style.display='none';};
+btnD.onclick = ()=>{btnD.classList.add('active');btnT.classList.remove('active');wrapD.style.display='block';wrapT.style.display='none';};
+
+/* ---------- ZOOM (scrollwheel) ---------- */
+const zoom = d3.zoom()
+  .scaleExtent([0.5,3])
+  .on('zoom', (e)=>{
+    d3.select('#timelineSVG').attr('transform', e.transform);
+  });
+d3.select('#timelineSVG').call(zoom);
+
 </script>
 </body>
 </html>
