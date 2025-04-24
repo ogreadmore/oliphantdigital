@@ -10,34 +10,28 @@
     *{box-sizing:border-box;margin:0;padding:0}
     body{height:100vh;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;display:flex;flex-direction:column;overflow:hidden}
     a{color:var(--accent-light);text-decoration:none}
-    /* header */
     header{display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem;background:#000a;backdrop-filter:blur(8px)}
     header h1{font-size:1rem;font-weight:600}
     nav{display:flex;gap:.45rem}
     button{cursor:pointer;border:none;border-radius:7px;padding:.45rem .9rem;font-size:.8rem;background:#3f3f46;color:var(--fg);transition:.2s}
     button.active,button:hover{background:var(--accent)}
-    /* wrappers */
     main{flex:1;position:relative}
     .view{position:absolute;inset:0;overflow:hidden}
     #timelineWrap{overflow:auto;cursor:grab}
     #timelineWrap:active{cursor:grabbing}
     #dashWrap{display:none;overflow:auto;padding:1rem}
-    /* scrollbar */
     #timelineWrap::-webkit-scrollbar{height:13px;width:13px}
     #timelineWrap::-webkit-scrollbar-track{background:#1f1f23}
     #timelineWrap::-webkit-scrollbar-thumb{background:var(--scroll)}
     #timelineWrap:hover::-webkit-scrollbar-thumb{background:var(--accent)}
-    /* svg elements */
     .tick-line{stroke:#2d2d32;stroke-width:1}
     .tick-text{fill:var(--fg);font-size:.75rem;font-weight:400;text-anchor:middle}
     .job-rect{rx:6;ry:6;fill:var(--accent)}
     .job-text{fill:#fff;font-size:.64rem;font-weight:600;pointer-events:none}
-    /* dashboard */
     table{width:100%;border-collapse:collapse;min-width:620px}
     thead th{position:sticky;top:0;background:#000c;padding:.6rem;font-size:.75rem;text-align:left;color:var(--accent-light);backdrop-filter:blur(6px)}
     tbody td{padding:.55rem .65rem;font-size:.72rem;border-bottom:1px solid #2f2f33}
     tbody tr:hover{background:#222225}
-    /* tooltip / modal */
     #tooltip{position:fixed;pointer-events:none;visibility:hidden;background:#000d;padding:.6rem .8rem;border-radius:6px;font-size:.77rem;max-width:280px;line-height:1.4}
     #tooltip h4{margin:0 0 .25rem;font-size:.8rem;color:var(--accent-light)}
     .modal-overlay{position:fixed;inset:0;background:#000c;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:30;opacity:0;visibility:hidden;transition:.2s}
@@ -46,7 +40,6 @@
     .modal h3{margin:0 0 .55rem;font-size:.9rem;color:var(--accent-light)}
     .modal-close{text-align:right;margin-top:.85rem}
     .modal-close button{background:#3f3f46;color:var(--fg);padding:.4rem .8rem;border-radius:6px;font-size:.75rem}
-    /* tweaks */
     @media(max-width:850px){header h1{font-size:.92rem}button{font-size:.76rem;padding:.4rem .8rem}.job-text{font-size:.6rem}}
     @media(max-width:650px){button{font-size:.73rem;padding:.35rem .7rem}.tick-text{font-size:.8rem;text-anchor:start}.job-text{font-size:.55rem}}
   </style>
@@ -80,252 +73,192 @@
   <div id="modalOv" class="modal-overlay"><div id="modalBox" class="modal"></div></div>
 
   <script>
-    /* -------- constants ---------- */
-    const CARD_W=140, CARD_H=26;
-    const GAP_V=14, GAP_H=14;
-    const LEFT_PAD=90, TOP_PAD=60;
-    const LEFT_PAD_M=110;
-    const YEAR_PX=160;
-    const MOBILE_BREAK=650;
-    const ROWS_PER_COL_M=4;
-    let jobs = [], isMob = false;
+    const CARD_W=140, CARD_H=26, GAP_V=14, GAP_H=14;
+    const LEFT_PAD=90, TOP_PAD=60, LEFT_PAD_M=110, YEAR_PX=160;
+    const MOBILE_BREAK=650, ROWS_PER_COL_M=4;
+    let jobs=[], isMob=false;
 
-    /* -------- load data ---------- */
     fetch('jobs.json')
-      .then(r => r.json())
-      .then(j => {
-        jobs = Array.isArray(j) ? j : Object.values(j).flat();
+      .then(r=>r.json())
+      .then(data=>{
+        jobs = Array.isArray(data) ? data : Object.values(data).flat();
         init();
-      })
-      .catch(e => console.error('jobs.json missing', e));
+      });
 
     function init(){
       isMob = window.innerWidth < MOBILE_BREAK;
-      buildTimeline();
-      buildDash();
-      navInit();
-      modalInit();
-      window.addEventListener('resize', debounce(() => location.reload(), 300));
+      buildTimeline(); buildDash(); navInit(); modalInit();
+      window.addEventListener('resize', debounce(()=>location.reload(),300));
     }
 
-    /* -------- helpers ------------ */
-    function trunc(s, l){ return s.length > l ? s.slice(0, l-1) + '…' : s; }
-    function find(code){ return jobs.find(j => j.job_code == code); }
+    function trunc(s,l){ return s.length>l?s.slice(0,l-1)+'…':s; }
+    function find(code){ return jobs.find(j=>j.job_code===code); }
 
     function renderSources(src){
-      if (!src) return '—';
-      const items = Array.isArray(src)
-        ? src
-        : (typeof src === 'string' ? src.split(/[;|]/) : []);
-      const cleaned = items.map(entry => {
-        if (typeof entry === 'object') {
-          // only use objects with a valid URL
-          if (entry.url && typeof entry.url === 'string') {
-            const label = entry.label || entry.url;
-            return `<a href="${entry.url}" target="_blank">${label}</a>`;
-          }
-          return '';
+      if(!src) return '—';
+      const arr = Array.isArray(src) ? src
+                : (typeof src==='string'? src.split(/[;|]/) : []);
+      return arr.map(item=>{
+        const txt = (typeof item==='object'
+                      ? (item.label||item.url||'')
+                      : item
+                    ).trim();
+        if(!txt) return '';
+        if(/^https?:\/\//.test(txt)){
+          return `<a href="${txt}" target="_blank">${txt}</a>`;
         }
-        const str = entry.trim();
-        if (/contentReference/.test(str)) {
-          // skip internal references
-          return '';
-        }
-        if (str.startsWith('http')) {
-          return `<a href="${str}" target="_blank">${str}</a>`;
-        }
-        // embed any other URLs found in the string
-        const withLinks = str.replace(
-          /(https?:\/\/[^\s]+)/g,
-          '<a href="$1" target="_blank">$1</a>'
-        );
-        return withLinks;
-      }).filter(Boolean);
-      return cleaned.length > 0 ? cleaned.join(', ') : '—';
+        return txt;
+      }).filter(x=>x).join(', ');
     }
 
-    /* -------- timeline ----------- */
     function buildTimeline(){
-      const svg = d3.select('#timelineSVG');
-      svg.selectAll('*').remove();
-      const years = jobs
-        .map(j => j.ai_plus_full_year ?? j.ai_only_full_year)
-        .filter(Boolean);
-      const yMin = Math.min(...years),
-            yMax = Math.max(...years);
-      isMob ? vertical(svg, yMin, yMax) : horizontal(svg, yMin, yMax);
-      attachCardEvents();
-      enableDrag();
+      const svg = d3.select('#timelineSVG'); svg.selectAll('*').remove();
+      const years = jobs.map(j=>j.ai_plus_full_year||j.ai_only_full_year).filter(Boolean);
+      const yMin=Math.min(...years), yMax=Math.max(...years);
+      isMob ? vertical(svg,yMin,yMax) : horizontal(svg,yMin,yMax);
+      attachCardEvents(); enableDrag();
     }
 
-    function horizontal(svg, yMin, yMax){
-      const x = d3.scaleLinear()
-        .domain([yMin, yMax])
-        .range([LEFT_PAD, (yMax-yMin)*YEAR_PX + LEFT_PAD]);
-      const buckets = {};
-      jobs.forEach(j => {
-        const yr = j.ai_plus_full_year ?? j.ai_only_full_year;
-        (buckets[yr] = buckets[yr]||[]).push(j);
+    function horizontal(svg,yMin,yMax){
+      const x = d3.scaleLinear().domain([yMin,yMax]).range([LEFT_PAD,(yMax-yMin)*YEAR_PX+LEFT_PAD]);
+      const buckets={};
+      jobs.forEach(j=>{
+        const yr=j.ai_plus_full_year||j.ai_only_full_year;
+        (buckets[yr]=buckets[yr]||[]).push(j);
       });
       const maxStack = Math.max(...Object.values(buckets).map(b=>b.length));
-      const H = TOP_PAD + maxStack*(CARD_H+GAP_V) + 120;
-      const W = x(yMax) + CARD_W + LEFT_PAD;
-      svg.attr('width', W).attr('height', H);
+      const H = TOP_PAD+maxStack*(CARD_H+GAP_V)+120;
+      const W = x(yMax)+CARD_W+LEFT_PAD;
+      svg.attr('width',W).attr('height',H);
 
-      svg.append('g').selectAll('g').data(d3.range(yMin, yMax+1)).enter()
-        .append('g').attr('transform', d => `translate(${x(d)},0)`)
-        .call(g => {
+      svg.append('g').selectAll('g').data(d3.range(yMin,yMax+1)).enter()
+        .append('g').attr('transform',d=>`translate(${x(d)},0)`).call(g=>{
           g.append('line').attr('class','tick-line').attr('y1',0).attr('y2',H);
           g.append('text').attr('class','tick-text').attr('y',18).text(d=>d);
         });
 
-      Object.entries(buckets).forEach(([yr,list]) => {
-        list.forEach((j,i) => {
-          const gx = x(+yr) - CARD_W/2;
-          const gy = TOP_PAD + i*(CARD_H+GAP_V);
-          const g = svg.append('g')
-                       .attr('transform', `translate(${gx},${gy})`)
-                       .attr('data-j', j.job_code);
-          g.append('rect').attr('class','job-rect').attr('width',CARD_W).attr('height',CARD_H);
-          g.append('text')
-           .attr('class','job-text')
-           .attr('x', CARD_W/2)
-           .attr('y', CARD_H/2+4)
-           .attr('text-anchor','middle')
-           .text(trunc(j.job_title,22));
+      Object.entries(buckets).forEach(([yr,list])=>{
+        list.forEach((j,i)=>{
+          const gx=x(+yr)-CARD_W/2, gy=TOP_PAD+i*(CARD_H+GAP_V);
+          const gEl=svg.append('g')
+                       .attr('transform',`translate(${gx},${gy})`)
+                       .attr('data-j',j.job_code);
+          gEl.append('rect').attr('class','job-rect').attr('width',CARD_W).attr('height',CARD_H);
+          gEl.append('text').attr('class','job-text')
+             .attr('x',CARD_W/2).attr('y',CARD_H/2+4)
+             .attr('text-anchor','middle')
+             .text(trunc(j.job_title,22));
         });
       });
     }
 
-    function vertical(svg, yMin, yMax){
-      const y = d3.scaleLinear()
-        .domain([yMin,yMax])
-        .range([TOP_PAD, (yMax-yMin)*YEAR_PX + TOP_PAD]);
-      const buckets = {};
-      jobs.forEach(j => {
-        const yr = j.ai_plus_full_year ?? j.ai_only_full_year;
-        (buckets[yr] = buckets[yr]||[]).push(j);
+    function vertical(svg,yMin,yMax){
+      const y = d3.scaleLinear().domain([yMin,yMax]).range([TOP_PAD,(yMax-yMin)*YEAR_PX+TOP_PAD]);
+      const buckets={};
+      jobs.forEach(j=>{
+        const yr=j.ai_plus_full_year||j.ai_only_full_year;
+        (buckets[yr]=buckets[yr]||[]).push(j);
       });
-      const maxCol = Math.max(...Object.values(buckets).map(b=>Math.ceil(b.length/ROWS_PER_COL_M)));
-      const W = LEFT_PAD_M + maxCol*(CARD_W+GAP_H) + 40;
-      const H = y(yMax) + ROWS_PER_COL_M*(CARD_H+GAP_V) + 120;
+      const maxCol=Math.max(...Object.values(buckets).map(b=>Math.ceil(b.length/ROWS_PER_COL_M)));
+      const W = LEFT_PAD_M+maxCol*(CARD_W+GAP_H)+40;
+      const H = y(yMax)+ROWS_PER_COL_M*(CARD_H+GAP_V)+120;
       svg.attr('width',W).attr('height',H);
 
-      svg.append('g').selectAll('g').data(d3.range(yMin, yMax+1)).enter()
-        .append('g').attr('transform', d=>`translate(0,${y(d)})`)
-        .call(g=>{
+      svg.append('g').selectAll('g').data(d3.range(yMin,yMax+1)).enter()
+        .append('g').attr('transform',d=>`translate(0,${y(d)})`).call(g=>{
           g.append('line').attr('class','tick-line').attr('x1',0).attr('x2',W);
           g.append('text').attr('class','tick-text').attr('x',10).attr('dy',5).text(d=>d);
         });
 
       Object.entries(buckets).forEach(([yr,list])=>{
         list.forEach((j,idx)=>{
-          const col = Math.floor(idx/ROWS_PER_COL_M);
-          const row = idx % ROWS_PER_COL_M;
-          const gx = LEFT_PAD_M + col*(CARD_W+GAP_H);
-          const gy = y(+yr) + row*(CARD_H+GAP_V);
-          const g = svg.append('g')
-                       .attr('transform', `translate(${gx},${gy})`)
-                       .attr('data-j', j.job_code);
-          g.append('rect').attr('class','job-rect').attr('width',CARD_W).attr('height',CARD_H);
-          g.append('text')
-           .attr('class','job-text')
-           .attr('x', CARD_W/2)
-           .attr('y', CARD_H/2+4)
-           .attr('text-anchor','middle')
-           .text(trunc(j.job_title,22));
+          const col=Math.floor(idx/ROWS_PER_COL_M), row=idx%ROWS_PER_COL_M;
+          const gx=LEFT_PAD_M+col*(CARD_W+GAP_H), gy=y(+yr)+row*(CARD_H+GAP_V);
+          const gEl=svg.append('g')
+                       .attr('transform',`translate(${gx},${gy})`)
+                       .attr('data-j',j.job_code);
+          gEl.append('rect').attr('class','job-rect').attr('width',CARD_W).attr('height',CARD_H);
+          gEl.append('text').attr('class','job-text')
+             .attr('x',CARD_W/2).attr('y',CARD_H/2+4)
+             .attr('text-anchor','middle')
+             .text(trunc(j.job_title,22));
         });
       });
     }
 
-    /* -------- interactions ------ */
     function attachCardEvents(){
-      const tip = document.getElementById('tooltip');
+      const tip=document.getElementById('tooltip');
       d3.selectAll('g[data-j]')
-        .on('mousemove', function(e){
+        .on('mousemove',function(e){
           if(isMob) return;
-          const j = find(this.dataset.j);
-          tip.innerHTML = `
+          const j=find(this.dataset.j);
+          tip.innerHTML=`
             <h4>${j.job_title}</h4>
             <p>AI % Now: ${j.ai_pct_now ?? '—'}%</p>
             <p>AI + Auto % Now: ${j.ai_plus_pct_now ?? '—'}%</p>
-            <p>Full-Auto: ${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</p>
+            <p>Full-Auto: ${j.ai_plus_full_year||j.ai_only_full_year||'—'}</p>
             <p><b>Sources:</b> ${renderSources(j.sources)}</p>
           `;
-          tip.style.left = `${e.clientX+16}px`;
-          tip.style.top = `${e.clientY+16}px`;
-          tip.style.visibility = 'visible';
+          tip.style.left=`${e.clientX+16}px`;
+          tip.style.top=`${e.clientY+16}px`;
+          tip.style.visibility='visible';
         })
-        .on('mouseleave', ()=>{ if(!isMob) tip.style.visibility='hidden'; })
-        .on('click', function(){
-          const j = find(this.dataset.j);
+        .on('mouseleave',()=>{ if(!isMob) tip.style.visibility='hidden'; })
+        .on('click',function(){
+          const j=find(this.dataset.j);
           showModal(`
             <h3>${j.job_title}</h3>
             <p><b>Industry:</b> ${j.industry}</p>
             <p><b>AI % Now:</b> ${j.ai_pct_now ?? '—'}%</p>
             <p><b>AI + Auto % Now:</b> ${j.ai_plus_pct_now ?? '—'}%</p>
-            <p><b>Full-Auto Year:</b> ${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</p>
+            <p><b>Full-Auto Year:</b> ${j.ai_plus_full_year||j.ai_only_full_year||'—'}</p>
             <p><b>Sources:</b> ${renderSources(j.sources)}</p>
           `);
         });
     }
 
-    /* dashboard */
     function buildDash(){
-      const tbody = d3.select('#dashTbl tbody');
-      jobs.forEach(j => {
+      const tbody=d3.select('#dashTbl tbody');
+      jobs.forEach(j=>{
         tbody.append('tr').html(`
           <td>${j.job_title}</td>
           <td>${j.ai_pct_now ?? '—'}%</td>
           <td>${j.ai_plus_pct_now ?? '—'}%</td>
           <td>${j.industry}</td>
-          <td>${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</td>
+          <td>${j.ai_plus_full_year||j.ai_only_full_year||'—'}</td>
           <td>${renderSources(j.sources)}</td>
         `);
       });
     }
 
-    /* drag & zoom */
     function enableDrag(){
-      const wrap = document.getElementById('timelineWrap');
-      let down=false, sx, sy, sl, st;
-      wrap.onmousedown = e => { down=true; sx=e.pageX; sy=e.pageY; sl=wrap.scrollLeft; st=wrap.scrollTop; };
-      wrap.onmousemove = e => { if(down){ wrap.scrollLeft = sl - (e.pageX - sx); wrap.scrollTop = st - (e.pageY - sy); } };
-      document.onmouseup = () => down = false;
-      wrap.addEventListener('wheel', e => {
-        if(!e.ctrlKey) return;
-        e.preventDefault();
-        const svg = wrap.querySelector('svg');
-        const cur = wrap._z || 1;
-        const nxt = Math.max(.5, Math.min(3, cur * (e.deltaY < 0 ? 1.1 : .9)));
-        wrap._z = nxt;
-        svg.style.transformOrigin = '0 0';
-        svg.style.transform = `scale(${nxt})`;
-      }, { passive:false });
+      const wrap=document.getElementById('timelineWrap');
+      let down=false, sx,sy,sl,st;
+      wrap.onmousedown=e=>{down=true;sx=e.pageX;sy=e.pageY;sl=wrap.scrollLeft;st=wrap.scrollTop;};
+      wrap.onmousemove=e=>{ if(down){ wrap.scrollLeft=sl-(e.pageX-sx); wrap.scrollTop=st-(e.pageY-sy); } };
+      document.onmouseup=()=>down=false;
+      wrap.addEventListener('wheel',e=>{ if(!e.ctrlKey) return; e.preventDefault();
+        const svg=wrap.querySelector('svg'), cur=wrap._z||1, nxt=Math.max(.5,Math.min(3,cur*(e.deltaY<0?1.1:.9)));
+        wrap._z=nxt; svg.style.transformOrigin='0 0'; svg.style.transform=`scale(${nxt})`;
+      },{ passive:false });
     }
 
-    /* nav / modal / about */
     function navInit(){
-      const t = document.getElementById('btnTime');
-      const d = document.getElementById('btnDash');
-      t.onclick = () => { t.classList.add('active'); d.classList.remove('active'); tl().style.display='block'; dw().style.display='none'; };
-      d.onclick = () => { d.classList.add('active'); t.classList.remove('active'); dw().style.display='block'; tl().style.display='none'; };
-      document.getElementById('btnAbout').onclick = about;
-      function tl(){ return document.getElementById('timelineWrap'); }
-      function dw(){ return document.getElementById('dashWrap'); }
+      const t=document.getElementById('btnTime'), d=document.getElementById('btnDash');
+      t.onclick=()=>{ t.classList.add('active'); d.classList.remove('active'); tl().style.display='block'; dw().style.display='none'; };
+      d.onclick=()=>{ d.classList.add('active'); t.classList.remove('active'); dw().style.display='block'; tl().style.display='none'; };
+      document.getElementById('btnAbout').onclick=about;
+      function tl(){return document.getElementById('timelineWrap')}
+      function dw(){return document.getElementById('dashWrap')}
     }
 
     function modalInit(){
-      document.getElementById('modalOv').onclick = e => {
-        if(e.target.id === 'modalOv') hideModal();
-      };
+      document.getElementById('modalOv').onclick=e=>{ if(e.target.id==='modalOv') hideModal(); };
     }
 
     function showModal(html){
-      document.getElementById('modalBox').innerHTML = html + `
-        <div class="modal-close">
-          <button onclick="hideModal()">Close</button>
-        </div>`;
+      document.getElementById('modalBox').innerHTML=html+`
+        <div class="modal-close"><button onclick="hideModal()">Close</button></div>`;
       document.getElementById('modalOv').classList.add('show');
     }
 
@@ -336,13 +269,13 @@
     function about(){
       showModal(`
         <h3>About AITimeline</h3>
-        <p><strong>AITimeline.net</strong> visualises expert predictions for when AI &amp; automation will fully perform specific jobs, plus how much is automated today.</p>
+        <p><strong>AITimeline.net</strong> visualises expert predictions for when AI & automation will fully perform specific jobs, plus how much is automated today.</p>
         <p>Hover (desktop) or tap (mobile) a card for details. Data sources include WEF 2023, McKinsey 2023, Stanford AI Index 2024, OECD, and peer-reviewed studies (2019-25).</p>
         <p>Built by <em>Oliphant Digital</em>.</p>
       `);
     }
 
-    function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t = setTimeout(()=>fn(...a), ms); }; }
+    function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};}
   </script>
 </body>
 </html>
