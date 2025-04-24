@@ -2,7 +2,7 @@
   "Construction": [
     {
       "job_code": "JOB0001",
-      "job_title": "Construction Role 1",
+      "job_title": "Carpenter",
       "industry": "Construction",
       "ai_pct_now": 16.0,
       "ai_pct_now_confidence": 4,
@@ -22,7 +22,7 @@
     },
     {
       "job_code": "JOB0004",
-      "job_title": "Construction Role 4",
+      "job_title": "Electrician",
       "industry": "Construction",
       "ai_pct_now": 43.9,
       "ai_pct_now_confidence": 5,
@@ -42,7 +42,7 @@
     },
     {
       "job_code": "JOB0018",
-      "job_title": "Construction Role 18",
+      "job_title": "Carpenter",
       "industry": "Construction",
       "ai_pct_now": 79.6,
       "ai_pct_now_confidence": 4,
@@ -62,7 +62,7 @@
     },
     {
       "job_code": "JOB0026",
-      "job_title": "Construction Role 26",
+      "job_title": "Electrician",
       "industry": "Construction",
       "ai_pct_now": 67.7,
       "ai_pct_now_confidence": 4,
@@ -82,7 +82,7 @@
     },
     {
       "job_code": "JOB0037",
-      "job_title": "Construction Role 37",
+      "job_title": "Carpenter",
       "industry": "Construction",
       "ai_pct_now": 78.0,
       "ai_pct_now_confidence": 3,
@@ -102,7 +102,7 @@
     },
     {
       "job_code": "JOB0047",
-      "job_title": "Construction Role 47",
+      "job_title": "Carpenter",
       "industry": "Construction",
       "ai_pct_now": 26.4,
       "ai_pct_now_confidence": 4,
@@ -122,7 +122,7 @@
     },
     {
       "job_code": "JOB0049",
-      "job_title": "Construction Role 49",
+      "job_title": "Electrician",
       "industry": "Construction",
       "ai_pct_now": 10.6,
       "ai_pct_now_confidence": 2,
@@ -142,7 +142,7 @@
     },
     {
       "job_code": "JOB0063",
-      "job_title": "Construction Role 63",
+      "job_title": "Carpenter",
       "industry": "Construction",
       "ai_pct_now": 17.5,
       "ai_pct_now_confidence": 3,
@@ -162,7 +162,7 @@
     },
     {
       "job_code": "JOB0070",
-      "job_title": "Construction Role 70",
+      "job_title": "Electrician",
       "industry": "Construction",
       "ai_pct_now": 75.4,
       "ai_pct_now_confidence": 5,
@@ -182,7 +182,7 @@
     },
     {
       "job_code": "JOB0078",
-      "job_title": "Construction Role 78",
+      "job_title": "Electrician",
       "industry": "Construction",
       "ai_pct_now": 22.0,
       "ai_pct_now_confidence": 2,
@@ -202,7 +202,7 @@
     },
     {
       "job_code": "JOB0087",
-      "job_title": "Construction Role 87",
+      "job_title": "Electrician",
       "industry": "Construction",
       "ai_pct_now": 65.5,
       "ai_pct_now_confidence": 5,
@@ -222,7 +222,7 @@
     },
     {
       "job_code": "JOB0109",
-      "job_title": "Construction Role 109",
+      "job_title": "Carpenter",
       "industry": "Construction",
       "ai_pct_now": 89.1,
       "ai_pct_now_confidence": 2,
@@ -242,7 +242,7 @@
     },
     {
       "job_code": "JOB0110",
-      "job_title": "Construction Role 110",
+      "job_title": "Electrician",
       "industry": "Construction",
       "ai_pct_now": 71.0,
       "ai_pct_now_confidence": 2,
@@ -264,7 +264,7 @@
   "Transportation": [
     {
       "job_code": "JOB0002",
-      "job_title": "Transportation Role 2",
+      "job_title": "Truck Driver",
       "industry": "Transportation",
       "ai_pct_now": 26.5,
       "ai_pct_now_confidence": 2,
@@ -284,7 +284,7 @@
     },
     {
       "job_code": "JOB0033",
-      "job_title": "Transportation Role 33",
+      "job_title": "Truck Driver",
       "industry": "Transportation",
       "ai_pct_now": 74.1,
       "ai_pct_now_confidence": 3,
@@ -304,7 +304,7 @@
     },
     {
       "job_code": "JOB0048",
-      "job_title": "Transportation Role 48",
+      "job_title": "Truck Driver",
       "industry": "Transportation",
       "ai_pct_now": 81.8,
       "ai_pct_now_confidence": 2,
@@ -324,7 +324,7 @@
     },
     {
       "job_code": "JOB0088",
-      "job_title": "Transportation Role 88",
+      "job_title": "Truck Driver",
       "industry": "Transportation",
       "ai_pct_now": 14.7,
       "ai_pct_now_confidence": 5,
@@ -344,7 +344,7 @@
     },
     {
       "job_code": "JOB0095",
-      "job_title": "Transportation Role 95",
+      "job_title": "Truck Driver",
       "industry": "Transportation",
       "ai_pct_now": 72.3,
       "ai_pct_now_confidence": 2,
@@ -364,7 +364,7 @@
     },
     {
       "job_code": "JOB0105",
-      "job_title": "Transportation Role 105",
+      "job_title": "Truck Driver",
       "industry": "Transportation",
       "ai_pct_now": 75.1,
       "ai_pct_now_confidence": 4,
@@ -384,7 +384,7 @@
     },
     {
       "job_code": "JOB0112",
-      "job_title": "Transportation Role 112",
+      "job_title": "Dispatcher",
       "industry": "Transportation",
       "ai_pct_now": 12.5,
       "ai_pct_now_confidence": 4,
@@ -404,7 +404,7 @@
     },
     {
       "job_code": "JOB0113",
-      "job_title": "Transportation Role 113",
+      "job_title": "Truck Driver",
       "industry": "Transportation",
       "ai_pct_now": 31.1,
       "ai_pct_now_confidence": 4,
@@ -426,7 +426,7 @@
   "Manufacturing": [
     {
       "job_code": "JOB0003",
-      "job_title": "Manufacturing Role 3",
+      "job_title": "Maintenance Technician",
       "industry": "Manufacturing",
       "ai_pct_now": 82.0,
       "ai_pct_now_confidence": 3,
@@ -446,7 +446,7 @@
     },
     {
       "job_code": "JOB0025",
-      "job_title": "Manufacturing Role 25",
+      "job_title": "Maintenance Technician",
       "industry": "Manufacturing",
       "ai_pct_now": 20.8,
       "ai_pct_now_confidence": 3,
@@ -466,7 +466,7 @@
     },
     {
       "job_code": "JOB0044",
-      "job_title": "Manufacturing Role 44",
+      "job_title": "Maintenance Technician",
       "industry": "Manufacturing",
       "ai_pct_now": 51.9,
       "ai_pct_now_confidence": 3,
@@ -486,7 +486,7 @@
     },
     {
       "job_code": "JOB0050",
-      "job_title": "Manufacturing Role 50",
+      "job_title": "Maintenance Technician",
       "industry": "Manufacturing",
       "ai_pct_now": 64.1,
       "ai_pct_now_confidence": 4,
@@ -506,7 +506,7 @@
     },
     {
       "job_code": "JOB0052",
-      "job_title": "Manufacturing Role 52",
+      "job_title": "Maintenance Technician",
       "industry": "Manufacturing",
       "ai_pct_now": 80.8,
       "ai_pct_now_confidence": 4,
@@ -526,7 +526,7 @@
     },
     {
       "job_code": "JOB0062",
-      "job_title": "Manufacturing Role 62",
+      "job_title": "Maintenance Technician",
       "industry": "Manufacturing",
       "ai_pct_now": 38.3,
       "ai_pct_now_confidence": 3,
@@ -546,7 +546,7 @@
     },
     {
       "job_code": "JOB0064",
-      "job_title": "Manufacturing Role 64",
+      "job_title": "Maintenance Technician",
       "industry": "Manufacturing",
       "ai_pct_now": 14.5,
       "ai_pct_now_confidence": 4,
@@ -566,7 +566,7 @@
     },
     {
       "job_code": "JOB0071",
-      "job_title": "Manufacturing Role 71",
+      "job_title": "Maintenance Technician",
       "industry": "Manufacturing",
       "ai_pct_now": 53.7,
       "ai_pct_now_confidence": 5,
@@ -586,7 +586,7 @@
     },
     {
       "job_code": "JOB0074",
-      "job_title": "Manufacturing Role 74",
+      "job_title": "Machine Operator",
       "industry": "Manufacturing",
       "ai_pct_now": 56.4,
       "ai_pct_now_confidence": 5,
@@ -606,7 +606,7 @@
     },
     {
       "job_code": "JOB0084",
-      "job_title": "Manufacturing Role 84",
+      "job_title": "Machine Operator",
       "industry": "Manufacturing",
       "ai_pct_now": 14.1,
       "ai_pct_now_confidence": 5,
@@ -626,7 +626,7 @@
     },
     {
       "job_code": "JOB0093",
-      "job_title": "Manufacturing Role 93",
+      "job_title": "Maintenance Technician",
       "industry": "Manufacturing",
       "ai_pct_now": 49.6,
       "ai_pct_now_confidence": 3,
@@ -648,7 +648,7 @@
   "Arts and Entertainment": [
     {
       "job_code": "JOB0005",
-      "job_title": "Arts and Entertainment Role 5",
+      "job_title": "Content Creator",
       "industry": "Arts and Entertainment",
       "ai_pct_now": 70.0,
       "ai_pct_now_confidence": 4,
@@ -668,7 +668,7 @@
     },
     {
       "job_code": "JOB0029",
-      "job_title": "Arts and Entertainment Role 29",
+      "job_title": "Performer",
       "industry": "Arts and Entertainment",
       "ai_pct_now": 32.4,
       "ai_pct_now_confidence": 5,
@@ -688,7 +688,7 @@
     },
     {
       "job_code": "JOB0040",
-      "job_title": "Arts and Entertainment Role 40",
+      "job_title": "Content Creator",
       "industry": "Arts and Entertainment",
       "ai_pct_now": 67.5,
       "ai_pct_now_confidence": 4,
@@ -708,7 +708,7 @@
     },
     {
       "job_code": "JOB0045",
-      "job_title": "Arts and Entertainment Role 45",
+      "job_title": "Content Creator",
       "industry": "Arts and Entertainment",
       "ai_pct_now": 60.0,
       "ai_pct_now_confidence": 2,
@@ -728,7 +728,7 @@
     },
     {
       "job_code": "JOB0069",
-      "job_title": "Arts and Entertainment Role 69",
+      "job_title": "Performer",
       "industry": "Arts and Entertainment",
       "ai_pct_now": 46.6,
       "ai_pct_now_confidence": 4,
@@ -748,7 +748,7 @@
     },
     {
       "job_code": "JOB0085",
-      "job_title": "Arts and Entertainment Role 85",
+      "job_title": "Performer",
       "industry": "Arts and Entertainment",
       "ai_pct_now": 62.8,
       "ai_pct_now_confidence": 2,
@@ -768,7 +768,7 @@
     },
     {
       "job_code": "JOB0090",
-      "job_title": "Arts and Entertainment Role 90",
+      "job_title": "Content Creator",
       "industry": "Arts and Entertainment",
       "ai_pct_now": 56.5,
       "ai_pct_now_confidence": 3,
@@ -788,7 +788,7 @@
     },
     {
       "job_code": "JOB0107",
-      "job_title": "Arts and Entertainment Role 107",
+      "job_title": "Content Creator",
       "industry": "Arts and Entertainment",
       "ai_pct_now": 69.6,
       "ai_pct_now_confidence": 2,
@@ -808,7 +808,7 @@
     },
     {
       "job_code": "JOB0118",
-      "job_title": "Arts and Entertainment Role 118",
+      "job_title": "Performer",
       "industry": "Arts and Entertainment",
       "ai_pct_now": 64.1,
       "ai_pct_now_confidence": 2,
@@ -830,7 +830,7 @@
   "Retail": [
     {
       "job_code": "JOB0006",
-      "job_title": "Retail Role 6",
+      "job_title": "Cashier",
       "industry": "Retail",
       "ai_pct_now": 25.2,
       "ai_pct_now_confidence": 2,
@@ -850,7 +850,7 @@
     },
     {
       "job_code": "JOB0016",
-      "job_title": "Retail Role 16",
+      "job_title": "Cashier",
       "industry": "Retail",
       "ai_pct_now": 82.1,
       "ai_pct_now_confidence": 3,
@@ -870,7 +870,7 @@
     },
     {
       "job_code": "JOB0017",
-      "job_title": "Retail Role 17",
+      "job_title": "Cashier",
       "industry": "Retail",
       "ai_pct_now": 79.8,
       "ai_pct_now_confidence": 4,
@@ -890,7 +890,7 @@
     },
     {
       "job_code": "JOB0022",
-      "job_title": "Retail Role 22",
+      "job_title": "Stock Clerk",
       "industry": "Retail",
       "ai_pct_now": 57.1,
       "ai_pct_now_confidence": 2,
@@ -910,7 +910,7 @@
     },
     {
       "job_code": "JOB0028",
-      "job_title": "Retail Role 28",
+      "job_title": "Cashier",
       "industry": "Retail",
       "ai_pct_now": 44.8,
       "ai_pct_now_confidence": 2,
@@ -930,7 +930,7 @@
     },
     {
       "job_code": "JOB0031",
-      "job_title": "Retail Role 31",
+      "job_title": "Cashier",
       "industry": "Retail",
       "ai_pct_now": 77.8,
       "ai_pct_now_confidence": 5,
@@ -950,7 +950,7 @@
     },
     {
       "job_code": "JOB0065",
-      "job_title": "Retail Role 65",
+      "job_title": "Cashier",
       "industry": "Retail",
       "ai_pct_now": 88.3,
       "ai_pct_now_confidence": 2,
@@ -970,7 +970,7 @@
     },
     {
       "job_code": "JOB0067",
-      "job_title": "Retail Role 67",
+      "job_title": "Stock Clerk",
       "industry": "Retail",
       "ai_pct_now": 25.6,
       "ai_pct_now_confidence": 2,
@@ -990,7 +990,7 @@
     },
     {
       "job_code": "JOB0072",
-      "job_title": "Retail Role 72",
+      "job_title": "Stock Clerk",
       "industry": "Retail",
       "ai_pct_now": 39.8,
       "ai_pct_now_confidence": 3,
@@ -1010,7 +1010,7 @@
     },
     {
       "job_code": "JOB0081",
-      "job_title": "Retail Role 81",
+      "job_title": "Cashier",
       "industry": "Retail",
       "ai_pct_now": 74.0,
       "ai_pct_now_confidence": 2,
@@ -1030,7 +1030,7 @@
     },
     {
       "job_code": "JOB0083",
-      "job_title": "Retail Role 83",
+      "job_title": "Cashier",
       "industry": "Retail",
       "ai_pct_now": 37.7,
       "ai_pct_now_confidence": 5,
@@ -1050,7 +1050,7 @@
     },
     {
       "job_code": "JOB0099",
-      "job_title": "Retail Role 99",
+      "job_title": "Stock Clerk",
       "industry": "Retail",
       "ai_pct_now": 89.9,
       "ai_pct_now_confidence": 5,
@@ -1070,7 +1070,7 @@
     },
     {
       "job_code": "JOB0111",
-      "job_title": "Retail Role 111",
+      "job_title": "Cashier",
       "industry": "Retail",
       "ai_pct_now": 56.5,
       "ai_pct_now_confidence": 2,
@@ -1090,7 +1090,7 @@
     },
     {
       "job_code": "JOB0120",
-      "job_title": "Retail Role 120",
+      "job_title": "Cashier",
       "industry": "Retail",
       "ai_pct_now": 54.6,
       "ai_pct_now_confidence": 4,
@@ -1112,7 +1112,7 @@
   "Healthcare": [
     {
       "job_code": "JOB0007",
-      "job_title": "Healthcare Role 7",
+      "job_title": "Physician",
       "industry": "Healthcare",
       "ai_pct_now": 15.2,
       "ai_pct_now_confidence": 2,
@@ -1132,7 +1132,7 @@
     },
     {
       "job_code": "JOB0008",
-      "job_title": "Healthcare Role 8",
+      "job_title": "Registered Nurse",
       "industry": "Healthcare",
       "ai_pct_now": 24.9,
       "ai_pct_now_confidence": 4,
@@ -1152,7 +1152,7 @@
     },
     {
       "job_code": "JOB0020",
-      "job_title": "Healthcare Role 20",
+      "job_title": "Physician",
       "industry": "Healthcare",
       "ai_pct_now": 59.4,
       "ai_pct_now_confidence": 3,
@@ -1172,7 +1172,7 @@
     },
     {
       "job_code": "JOB0056",
-      "job_title": "Healthcare Role 56",
+      "job_title": "Registered Nurse",
       "industry": "Healthcare",
       "ai_pct_now": 37.8,
       "ai_pct_now_confidence": 2,
@@ -1192,7 +1192,7 @@
     },
     {
       "job_code": "JOB0057",
-      "job_title": "Healthcare Role 57",
+      "job_title": "Registered Nurse",
       "industry": "Healthcare",
       "ai_pct_now": 82.1,
       "ai_pct_now_confidence": 5,
@@ -1212,7 +1212,7 @@
     },
     {
       "job_code": "JOB0060",
-      "job_title": "Healthcare Role 60",
+      "job_title": "Registered Nurse",
       "industry": "Healthcare",
       "ai_pct_now": 12.0,
       "ai_pct_now_confidence": 5,
@@ -1232,7 +1232,7 @@
     },
     {
       "job_code": "JOB0066",
-      "job_title": "Healthcare Role 66",
+      "job_title": "Physician",
       "industry": "Healthcare",
       "ai_pct_now": 87.9,
       "ai_pct_now_confidence": 3,
@@ -1254,7 +1254,7 @@
   "Information Technology": [
     {
       "job_code": "JOB0009",
-      "job_title": "Information Technology Role 9",
+      "job_title": "Software Developer",
       "industry": "Information Technology",
       "ai_pct_now": 18.1,
       "ai_pct_now_confidence": 3,
@@ -1274,7 +1274,7 @@
     },
     {
       "job_code": "JOB0010",
-      "job_title": "Information Technology Role 10",
+      "job_title": "Software Developer",
       "industry": "Information Technology",
       "ai_pct_now": 20.3,
       "ai_pct_now_confidence": 2,
@@ -1294,7 +1294,7 @@
     },
     {
       "job_code": "JOB0011",
-      "job_title": "Information Technology Role 11",
+      "job_title": "Software Developer",
       "industry": "Information Technology",
       "ai_pct_now": 69.8,
       "ai_pct_now_confidence": 5,
@@ -1314,7 +1314,7 @@
     },
     {
       "job_code": "JOB0015",
-      "job_title": "Information Technology Role 15",
+      "job_title": "Software Developer",
       "industry": "Information Technology",
       "ai_pct_now": 56.5,
       "ai_pct_now_confidence": 2,
@@ -1334,7 +1334,7 @@
     },
     {
       "job_code": "JOB0027",
-      "job_title": "Information Technology Role 27",
+      "job_title": "Software Developer",
       "industry": "Information Technology",
       "ai_pct_now": 18.8,
       "ai_pct_now_confidence": 3,
@@ -1354,7 +1354,7 @@
     },
     {
       "job_code": "JOB0038",
-      "job_title": "Information Technology Role 38",
+      "job_title": "Software Developer",
       "industry": "Information Technology",
       "ai_pct_now": 80.6,
       "ai_pct_now_confidence": 3,
@@ -1374,7 +1374,7 @@
     },
     {
       "job_code": "JOB0053",
-      "job_title": "Information Technology Role 53",
+      "job_title": "Software Developer",
       "industry": "Information Technology",
       "ai_pct_now": 86.3,
       "ai_pct_now_confidence": 2,
@@ -1394,7 +1394,7 @@
     },
     {
       "job_code": "JOB0079",
-      "job_title": "Information Technology Role 79",
+      "job_title": "Software Developer",
       "industry": "Information Technology",
       "ai_pct_now": 19.7,
       "ai_pct_now_confidence": 4,
@@ -1414,7 +1414,7 @@
     },
     {
       "job_code": "JOB0089",
-      "job_title": "Information Technology Role 89",
+      "job_title": "Software Developer",
       "industry": "Information Technology",
       "ai_pct_now": 27.2,
       "ai_pct_now_confidence": 3,
@@ -1434,7 +1434,7 @@
     },
     {
       "job_code": "JOB0108",
-      "job_title": "Information Technology Role 108",
+      "job_title": "Software Developer",
       "industry": "Information Technology",
       "ai_pct_now": 65.4,
       "ai_pct_now_confidence": 3,
@@ -1454,7 +1454,7 @@
     },
     {
       "job_code": "JOB0115",
-      "job_title": "Information Technology Role 115",
+      "job_title": "Software Developer",
       "industry": "Information Technology",
       "ai_pct_now": 20.6,
       "ai_pct_now_confidence": 3,
@@ -1474,7 +1474,7 @@
     },
     {
       "job_code": "JOB0119",
-      "job_title": "Information Technology Role 119",
+      "job_title": "Software Developer",
       "industry": "Information Technology",
       "ai_pct_now": 78.5,
       "ai_pct_now_confidence": 3,
@@ -1496,7 +1496,7 @@
   "Legal": [
     {
       "job_code": "JOB0012",
-      "job_title": "Legal Role 12",
+      "job_title": "Contract Lawyer",
       "industry": "Legal",
       "ai_pct_now": 63.5,
       "ai_pct_now_confidence": 5,
@@ -1516,7 +1516,7 @@
     },
     {
       "job_code": "JOB0013",
-      "job_title": "Legal Role 13",
+      "job_title": "Attorney",
       "industry": "Legal",
       "ai_pct_now": 85.5,
       "ai_pct_now_confidence": 2,
@@ -1536,7 +1536,7 @@
     },
     {
       "job_code": "JOB0024",
-      "job_title": "Legal Role 24",
+      "job_title": "Contract Lawyer",
       "industry": "Legal",
       "ai_pct_now": 34.0,
       "ai_pct_now_confidence": 4,
@@ -1556,7 +1556,7 @@
     },
     {
       "job_code": "JOB0030",
-      "job_title": "Legal Role 30",
+      "job_title": "Contract Lawyer",
       "industry": "Legal",
       "ai_pct_now": 61.1,
       "ai_pct_now_confidence": 5,
@@ -1576,7 +1576,7 @@
     },
     {
       "job_code": "JOB0036",
-      "job_title": "Legal Role 36",
+      "job_title": "Contract Lawyer",
       "industry": "Legal",
       "ai_pct_now": 59.2,
       "ai_pct_now_confidence": 5,
@@ -1596,7 +1596,7 @@
     },
     {
       "job_code": "JOB0041",
-      "job_title": "Legal Role 41",
+      "job_title": "Attorney",
       "industry": "Legal",
       "ai_pct_now": 24.0,
       "ai_pct_now_confidence": 5,
@@ -1616,7 +1616,7 @@
     },
     {
       "job_code": "JOB0055",
-      "job_title": "Legal Role 55",
+      "job_title": "Contract Lawyer",
       "industry": "Legal",
       "ai_pct_now": 80.0,
       "ai_pct_now_confidence": 3,
@@ -1636,7 +1636,7 @@
     },
     {
       "job_code": "JOB0058",
-      "job_title": "Legal Role 58",
+      "job_title": "Contract Lawyer",
       "industry": "Legal",
       "ai_pct_now": 51.9,
       "ai_pct_now_confidence": 3,
@@ -1656,7 +1656,7 @@
     },
     {
       "job_code": "JOB0059",
-      "job_title": "Legal Role 59",
+      "job_title": "Attorney",
       "industry": "Legal",
       "ai_pct_now": 50.2,
       "ai_pct_now_confidence": 5,
@@ -1676,7 +1676,7 @@
     },
     {
       "job_code": "JOB0076",
-      "job_title": "Legal Role 76",
+      "job_title": "Contract Lawyer",
       "industry": "Legal",
       "ai_pct_now": 42.0,
       "ai_pct_now_confidence": 3,
@@ -1696,7 +1696,7 @@
     },
     {
       "job_code": "JOB0077",
-      "job_title": "Legal Role 77",
+      "job_title": "Contract Lawyer",
       "industry": "Legal",
       "ai_pct_now": 30.7,
       "ai_pct_now_confidence": 4,
@@ -1716,7 +1716,7 @@
     },
     {
       "job_code": "JOB0091",
-      "job_title": "Legal Role 91",
+      "job_title": "Contract Lawyer",
       "industry": "Legal",
       "ai_pct_now": 12.6,
       "ai_pct_now_confidence": 3,
@@ -1736,7 +1736,7 @@
     },
     {
       "job_code": "JOB0096",
-      "job_title": "Legal Role 96",
+      "job_title": "Attorney",
       "industry": "Legal",
       "ai_pct_now": 70.7,
       "ai_pct_now_confidence": 5,
@@ -1756,7 +1756,7 @@
     },
     {
       "job_code": "JOB0100",
-      "job_title": "Legal Role 100",
+      "job_title": "Contract Lawyer",
       "industry": "Legal",
       "ai_pct_now": 24.8,
       "ai_pct_now_confidence": 3,
@@ -1776,7 +1776,7 @@
     },
     {
       "job_code": "JOB0102",
-      "job_title": "Legal Role 102",
+      "job_title": "Attorney",
       "industry": "Legal",
       "ai_pct_now": 81.6,
       "ai_pct_now_confidence": 3,
@@ -1796,7 +1796,7 @@
     },
     {
       "job_code": "JOB0104",
-      "job_title": "Legal Role 104",
+      "job_title": "Contract Lawyer",
       "industry": "Legal",
       "ai_pct_now": 51.2,
       "ai_pct_now_confidence": 5,
@@ -1816,7 +1816,7 @@
     },
     {
       "job_code": "JOB0114",
-      "job_title": "Legal Role 114",
+      "job_title": "Contract Lawyer",
       "industry": "Legal",
       "ai_pct_now": 30.9,
       "ai_pct_now_confidence": 3,
@@ -1838,7 +1838,7 @@
   "Education": [
     {
       "job_code": "JOB0014",
-      "job_title": "Education Role 14",
+      "job_title": "Instructional Aide",
       "industry": "Education",
       "ai_pct_now": 55.6,
       "ai_pct_now_confidence": 2,
@@ -1858,7 +1858,7 @@
     },
     {
       "job_code": "JOB0021",
-      "job_title": "Education Role 21",
+      "job_title": "Teacher",
       "industry": "Education",
       "ai_pct_now": 58.2,
       "ai_pct_now_confidence": 3,
@@ -1878,7 +1878,7 @@
     },
     {
       "job_code": "JOB0034",
-      "job_title": "Education Role 34",
+      "job_title": "Teacher",
       "industry": "Education",
       "ai_pct_now": 18.2,
       "ai_pct_now_confidence": 4,
@@ -1898,7 +1898,7 @@
     },
     {
       "job_code": "JOB0039",
-      "job_title": "Education Role 39",
+      "job_title": "Instructional Aide",
       "industry": "Education",
       "ai_pct_now": 66.7,
       "ai_pct_now_confidence": 5,
@@ -1918,7 +1918,7 @@
     },
     {
       "job_code": "JOB0042",
-      "job_title": "Education Role 42",
+      "job_title": "Instructional Aide",
       "industry": "Education",
       "ai_pct_now": 49.9,
       "ai_pct_now_confidence": 3,
@@ -1938,7 +1938,7 @@
     },
     {
       "job_code": "JOB0046",
-      "job_title": "Education Role 46",
+      "job_title": "Teacher",
       "industry": "Education",
       "ai_pct_now": 11.4,
       "ai_pct_now_confidence": 4,
@@ -1958,7 +1958,7 @@
     },
     {
       "job_code": "JOB0054",
-      "job_title": "Education Role 54",
+      "job_title": "Teacher",
       "industry": "Education",
       "ai_pct_now": 31.9,
       "ai_pct_now_confidence": 2,
@@ -1978,7 +1978,7 @@
     },
     {
       "job_code": "JOB0080",
-      "job_title": "Education Role 80",
+      "job_title": "Teacher",
       "industry": "Education",
       "ai_pct_now": 64.9,
       "ai_pct_now_confidence": 2,
@@ -1998,7 +1998,7 @@
     },
     {
       "job_code": "JOB0082",
-      "job_title": "Education Role 82",
+      "job_title": "Teacher",
       "industry": "Education",
       "ai_pct_now": 69.6,
       "ai_pct_now_confidence": 2,
@@ -2018,7 +2018,7 @@
     },
     {
       "job_code": "JOB0103",
-      "job_title": "Education Role 103",
+      "job_title": "Teacher",
       "industry": "Education",
       "ai_pct_now": 55.1,
       "ai_pct_now_confidence": 5,
@@ -2038,7 +2038,7 @@
     },
     {
       "job_code": "JOB0106",
-      "job_title": "Education Role 106",
+      "job_title": "Teacher",
       "industry": "Education",
       "ai_pct_now": 32.8,
       "ai_pct_now_confidence": 2,
@@ -2060,7 +2060,7 @@
   "Hospitality": [
     {
       "job_code": "JOB0019",
-      "job_title": "Hospitality Role 19",
+      "job_title": "Front Desk Agent",
       "industry": "Hospitality",
       "ai_pct_now": 75.4,
       "ai_pct_now_confidence": 5,
@@ -2080,7 +2080,7 @@
     },
     {
       "job_code": "JOB0032",
-      "job_title": "Hospitality Role 32",
+      "job_title": "Front Desk Agent",
       "industry": "Hospitality",
       "ai_pct_now": 46.3,
       "ai_pct_now_confidence": 3,
@@ -2100,7 +2100,7 @@
     },
     {
       "job_code": "JOB0043",
-      "job_title": "Hospitality Role 43",
+      "job_title": "Front Desk Agent",
       "industry": "Hospitality",
       "ai_pct_now": 56.1,
       "ai_pct_now_confidence": 3,
@@ -2120,7 +2120,7 @@
     },
     {
       "job_code": "JOB0073",
-      "job_title": "Hospitality Role 73",
+      "job_title": "Front Desk Agent",
       "industry": "Hospitality",
       "ai_pct_now": 28.7,
       "ai_pct_now_confidence": 3,
@@ -2140,7 +2140,7 @@
     },
     {
       "job_code": "JOB0097",
-      "job_title": "Hospitality Role 97",
+      "job_title": "Front Desk Agent",
       "industry": "Hospitality",
       "ai_pct_now": 84.0,
       "ai_pct_now_confidence": 3,
@@ -2160,7 +2160,7 @@
     },
     {
       "job_code": "JOB0117",
-      "job_title": "Hospitality Role 117",
+      "job_title": "Waiter/Server",
       "industry": "Hospitality",
       "ai_pct_now": 22.5,
       "ai_pct_now_confidence": 2,
@@ -2182,7 +2182,7 @@
   "Public Administration": [
     {
       "job_code": "JOB0023",
-      "job_title": "Public Administration Role 23",
+      "job_title": "Policy Analyst",
       "industry": "Public Administration",
       "ai_pct_now": 10.4,
       "ai_pct_now_confidence": 2,
@@ -2202,7 +2202,7 @@
     },
     {
       "job_code": "JOB0051",
-      "job_title": "Public Administration Role 51",
+      "job_title": "Policy Analyst",
       "industry": "Public Administration",
       "ai_pct_now": 36.9,
       "ai_pct_now_confidence": 4,
@@ -2222,7 +2222,7 @@
     },
     {
       "job_code": "JOB0061",
-      "job_title": "Public Administration Role 61",
+      "job_title": "Policy Analyst",
       "industry": "Public Administration",
       "ai_pct_now": 73.8,
       "ai_pct_now_confidence": 3,
@@ -2242,7 +2242,7 @@
     },
     {
       "job_code": "JOB0116",
-      "job_title": "Public Administration Role 116",
+      "job_title": "Policy Analyst",
       "industry": "Public Administration",
       "ai_pct_now": 54.0,
       "ai_pct_now_confidence": 5,
@@ -2264,7 +2264,7 @@
   "Finance": [
     {
       "job_code": "JOB0035",
-      "job_title": "Finance Role 35",
+      "job_title": "Financial Analyst",
       "industry": "Finance",
       "ai_pct_now": 22.4,
       "ai_pct_now_confidence": 5,
@@ -2284,7 +2284,7 @@
     },
     {
       "job_code": "JOB0068",
-      "job_title": "Finance Role 68",
+      "job_title": "Financial Analyst",
       "industry": "Finance",
       "ai_pct_now": 78.0,
       "ai_pct_now_confidence": 3,
@@ -2304,7 +2304,7 @@
     },
     {
       "job_code": "JOB0075",
-      "job_title": "Finance Role 75",
+      "job_title": "Financial Analyst",
       "industry": "Finance",
       "ai_pct_now": 69.9,
       "ai_pct_now_confidence": 5,
@@ -2324,7 +2324,7 @@
     },
     {
       "job_code": "JOB0086",
-      "job_title": "Finance Role 86",
+      "job_title": "Financial Analyst",
       "industry": "Finance",
       "ai_pct_now": 36.0,
       "ai_pct_now_confidence": 3,
@@ -2344,7 +2344,7 @@
     },
     {
       "job_code": "JOB0092",
-      "job_title": "Finance Role 92",
+      "job_title": "Financial Analyst",
       "industry": "Finance",
       "ai_pct_now": 29.4,
       "ai_pct_now_confidence": 5,
@@ -2364,7 +2364,7 @@
     },
     {
       "job_code": "JOB0094",
-      "job_title": "Finance Role 94",
+      "job_title": "Financial Analyst",
       "industry": "Finance",
       "ai_pct_now": 45.6,
       "ai_pct_now_confidence": 3,
@@ -2384,7 +2384,7 @@
     },
     {
       "job_code": "JOB0098",
-      "job_title": "Finance Role 98",
+      "job_title": "Financial Analyst",
       "industry": "Finance",
       "ai_pct_now": 52.7,
       "ai_pct_now_confidence": 5,
@@ -2404,7 +2404,7 @@
     },
     {
       "job_code": "JOB0101",
-      "job_title": "Finance Role 101",
+      "job_title": "Financial Analyst",
       "industry": "Finance",
       "ai_pct_now": 21.2,
       "ai_pct_now_confidence": 5,
