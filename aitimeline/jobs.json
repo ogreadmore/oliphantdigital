@@ -1,352 +1,381 @@
-{
-  "Construction": [
-    {
-      "job_code": "JOB0001",
-      "job_title": "Carpenter",
-      "industry": "Construction",
-      "ai_pct_now": 61.2,
-      "ai_plus_pct_now": 66.6,
-      "ai_only_full_year": 2042,
-      "ai_plus_full_year": 2039,
-      "upskill_suggestions": "Physical stamina|Blueprint reading|Teamwork",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0002",
-      "job_title": "Electrician",
-      "industry": "Construction",
-      "ai_pct_now": 68.9,
-      "ai_plus_pct_now": 84.1,
-      "ai_only_full_year": 2036,
-      "ai_plus_full_year": 2035,
-      "upskill_suggestions": "Physical stamina|Blueprint reading|Teamwork",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0003",
-      "job_title": "Plumber",
-      "industry": "Construction",
-      "ai_pct_now": 17.5,
-      "ai_plus_pct_now": 26.0,
-      "ai_only_full_year": 2057,
-      "ai_plus_full_year": 2055,
-      "upskill_suggestions": "Physical stamina|Blueprint reading|Teamwork",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    }
-  ],
-  "Transportation": [
-    {
-      "job_code": "JOB0011",
-      "job_title": "Truck Driver",
-      "industry": "Transportation",
-      "ai_pct_now": 40.4,
-      "ai_plus_pct_now": 52.2,
-      "ai_only_full_year": 2046,
-      "ai_plus_full_year": 2046,
-      "upskill_suggestions": "Navigation|Attention to detail|Time management",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0014",
-      "job_title": "Taxi Driver",
-      "industry": "Transportation",
-      "ai_pct_now": 77.4,
-      "ai_plus_pct_now": 94.0,
-      "ai_only_full_year": 2060,
-      "ai_plus_full_year": 2045,
-      "upskill_suggestions": "Navigation|Attention to detail|Time management",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    }
-  ],
-  "Information Technology": [
-    {
-      "job_code": "JOB0061",
-      "job_title": "Software Developer",
-      "industry": "Information Technology",
-      "ai_pct_now": 30.0,
-      "ai_plus_pct_now": 36.5,
-      "ai_only_full_year": 2042,
-      "ai_plus_full_year": 2040,
-      "upskill_suggestions": "Creative thinking|Ethical reasoning|Team leadership",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0062",
-      "job_title": "Front-End Developer",
-      "industry": "Information Technology",
-      "ai_pct_now": 88.1,
-      "ai_plus_pct_now": 100.0,
-      "ai_only_full_year": 2040,
-      "ai_plus_full_year": 2058,
-      "upskill_suggestions": "Creative thinking|Ethical reasoning|Team leadership",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0063",
-      "job_title": "Back-End Developer",
-      "industry": "Information Technology",
-      "ai_pct_now": 84.0,
-      "ai_plus_pct_now": 100.0,
-      "ai_only_full_year": 2043,
-      "ai_plus_full_year": 2040,
-      "upskill_suggestions": "Creative thinking|Ethical reasoning|Team leadership",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0065",
-      "job_title": "Data Engineer",
-      "industry": "Information Technology",
-      "ai_pct_now": 75.3,
-      "ai_plus_pct_now": 87.2,
-      "ai_only_full_year": 2042,
-      "ai_plus_full_year": 2035,
-      "upskill_suggestions": "Creative thinking|Ethical reasoning|Team leadership",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0066",
-      "job_title": "QA Engineer",
-      "industry": "Information Technology",
-      "ai_pct_now": 62.8,
-      "ai_plus_pct_now": 73.8,
-      "ai_only_full_year": 2059,
-      "ai_plus_full_year": 2043,
-      "upskill_suggestions": "Creative thinking|Ethical reasoning|Team leadership",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0070",
-      "job_title": "UX Designer",
-      "industry": "Information Technology",
-      "ai_pct_now": 19.3,
-      "ai_plus_pct_now": 37.8,
-      "ai_only_full_year": 2036,
-      "ai_plus_full_year": 2057,
-      "upskill_suggestions": "Creative thinking|Ethical reasoning|Team leadership",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    }
-  ],
-  "Finance": [
-    {
-      "job_code": "JOB0111",
-      "job_title": "Financial Analyst",
-      "industry": "Finance",
-      "ai_pct_now": 80.5,
-      "ai_plus_pct_now": 89.2,
-      "ai_only_full_year": 2045,
-      "ai_plus_full_year": 2035,
-      "upskill_suggestions": "Analytical skills|Communication|Regulatory knowledge",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0112",
-      "job_title": "Accountant",
-      "industry": "Finance",
-      "ai_pct_now": 49.5,
-      "ai_plus_pct_now": 59.4,
-      "ai_only_full_year": 2046,
-      "ai_plus_full_year": 2060,
-      "upskill_suggestions": "Analytical skills|Communication|Regulatory knowledge",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    }
-  ],
-  "Healthcare": [
-    {
-      "job_code": "JOB0051",
-      "job_title": "Registered Nurse",
-      "industry": "Healthcare",
-      "ai_pct_now": 80.5,
-      "ai_plus_pct_now": 98.7,
-      "ai_only_full_year": 2040,
-      "ai_plus_full_year": 2049,
-      "upskill_suggestions": "Communication|Empathy|Manual dexterity",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0052",
-      "job_title": "Physician",
-      "industry": "Healthcare",
-      "ai_pct_now": 76.7,
-      "ai_plus_pct_now": 92.3,
-      "ai_only_full_year": 2056,
-      "ai_plus_full_year": 2038,
-      "upskill_suggestions": "Communication|Empathy|Manual dexterity",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0055",
-      "job_title": "Pharmacist",
-      "industry": "Healthcare",
-      "ai_pct_now": 60.7,
-      "ai_plus_pct_now": 69.7,
-      "ai_only_full_year": 2036,
-      "ai_plus_full_year": 2037,
-      "upskill_suggestions": "Communication|Empathy|Manual dexterity",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    }
-  ],
-  "Arts and Entertainment": [
-    {
-      "job_code": "JOB0031",
-      "job_title": "Video Editor",
-      "industry": "Arts and Entertainment",
-      "ai_pct_now": 28.4,
-      "ai_plus_pct_now": 36.7,
-      "ai_only_full_year": 2042,
-      "ai_plus_full_year": 2037,
-      "upskill_suggestions": "Creativity|Adaptability|Networking",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0032",
-      "job_title": "Content Creator",
-      "industry": "Arts and Entertainment",
-      "ai_pct_now": 82.4,
-      "ai_plus_pct_now": 100.0,
-      "ai_only_full_year": 2043,
-      "ai_plus_full_year": 2056,
-      "upskill_suggestions": "Creativity|Adaptability|Networking",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0033",
-      "job_title": "Animator",
-      "industry": "Arts and Entertainment",
-      "ai_pct_now": 48.8,
-      "ai_plus_pct_now": 61.9,
-      "ai_only_full_year": 2060,
-      "ai_plus_full_year": 2050,
-      "upskill_suggestions": "Creativity|Adaptability|Networking",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0035",
-      "job_title": "Graphic Designer",
-      "industry": "Arts and Entertainment",
-      "ai_pct_now": 42.9,
-      "ai_plus_pct_now": 60.9,
-      "ai_only_full_year": 2036,
-      "ai_plus_full_year": 2047,
-      "upskill_suggestions": "Creativity|Adaptability|Networking",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0034",
-      "job_title": "Music Producer",
-      "industry": "Arts and Entertainment",
-      "ai_pct_now": 74.6,
-      "ai_plus_pct_now": 82.5,
-      "ai_only_full_year": 2046,
-      "ai_plus_full_year": 2048,
-      "upskill_suggestions": "Creativity|Adaptability|Networking",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0037",
-      "job_title": "Actor",
-      "industry": "Arts and Entertainment",
-      "ai_pct_now": 52.9,
-      "ai_plus_pct_now": 60.0,
-      "ai_only_full_year": 2049,
-      "ai_plus_full_year": 2042,
-      "upskill_suggestions": "Creativity|Adaptability|Networking",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    }
-  ],
-  "Education": [
-    {
-      "job_code": "JOB0081",
-      "job_title": "Elementary School Teacher",
-      "industry": "Education",
-      "ai_pct_now": 25.6,
-      "ai_plus_pct_now": 41.0,
-      "ai_only_full_year": 2042,
-      "ai_plus_full_year": 2039,
-      "upskill_suggestions": "Communication|Patience|Subject knowledge",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0082",
-      "job_title": "High School Teacher",
-      "industry": "Education",
-      "ai_pct_now": 62.5,
-      "ai_plus_pct_now": 67.6,
-      "ai_only_full_year": 2042,
-      "ai_plus_full_year": 2040,
-      "upskill_suggestions": "Communication|Patience|Subject knowledge",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0083",
-      "job_title": "ESL Instructor",
-      "industry": "Education",
-      "ai_pct_now": 74.3,
-      "ai_plus_pct_now": 89.7,
-      "ai_only_full_year": 2052,
-      "ai_plus_full_year": 2042,
-      "upskill_suggestions": "Communication|Patience|Subject knowledge",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    }
-  ],
-  "Retail": [
-    {
-      "job_code": "JOB0041",
-      "job_title": "Cashier",
-      "industry": "Retail",
-      "ai_pct_now": 88.8,
-      "ai_plus_pct_now": 97.8,
-      "ai_only_full_year": 2048,
-      "ai_plus_full_year": 2057,
-      "upskill_suggestions": "Sales|Customer service|Cash handling",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    }
-  ],
-  "Hospitality": [
-    {
-      "job_code": "JOB0093",
-      "job_title": "Waiter",
-      "industry": "Hospitality",
-      "ai_pct_now": 68.8,
-      "ai_plus_pct_now": 85.8,
-      "ai_only_full_year": 2042,
-      "ai_plus_full_year": 2043,
-      "upskill_suggestions": "Customer service|Multi-tasking|Problem resolution",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0097",
-      "job_title": "Line Cook",
-      "industry": "Hospitality",
-      "ai_pct_now": 14.0,
-      "ai_plus_pct_now": 24.7,
-      "ai_only_full_year": 2045,
-      "ai_plus_full_year": 2045,
-      "upskill_suggestions": "Customer service|Multi-tasking|Problem resolution",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    }
-  ],
-  "Public Administration": [
-    {
-      "job_code": "JOB0101",
-      "job_title": "Policy Analyst",
-      "industry": "Public Administration",
-      "ai_pct_now": 59.7,
-      "ai_plus_pct_now": 68.3,
-      "ai_only_full_year": 2053,
-      "ai_plus_full_year": 2041,
-      "upskill_suggestions": "Policy knowledge|Organization|Public speaking",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    },
-    {
-      "job_code": "JOB0102",
-      "job_title": "City Planner",
-      "industry": "Public Administration",
-      "ai_pct_now": 47.2,
-      "ai_plus_pct_now": 56.0,
-      "ai_only_full_year": 2054,
-      "ai_plus_full_year": 2054,
-      "upskill_suggestions": "Policy knowledge|Organization|Public speaking",
-      "sources": "World Economic Forum (2023); McKinsey Global Institute (2023); Stanford HAI (2024)"
-    }
-  ]
-}
+[
+  {
+    "job_code": 1,
+    "job_title": "Truck Driver (Freight)",
+    "industry": "Transportation",
+    "ai_pct_now": 5,
+    "ai_plus_pct_now": 20,
+    "ai_only_full_year": 2027,
+    "ai_plus_full_year": 2025,
+    "sources": [
+      "Oxford/Yale AI expert survey (2017) – AI expected to outperform humans at truck driving by 2027&#8203;:contentReference[oaicite:0]{index=0}",
+      "TuSimple 2021 pilot – first 80-mile driverless truck run on public roads&#8203;:contentReference[oaicite:1]{index=1}"
+    ]
+  },
+  {
+    "job_code": 2,
+    "job_title": "Delivery/Courier Driver",
+    "industry": "Logistics",
+    "ai_pct_now": 2,
+    "ai_plus_pct_now": 5,
+    "ai_only_full_year": 2035,
+    "ai_plus_full_year": 2030,
+    "sources": [
+      "WEF Future of Jobs 2025 – \"Light Truck or Delivery Drivers\" still growing (automation impact limited so far)&#8203;:contentReference[oaicite:2]{index=2}",
+      "Emerging drone and robot delivery pilots (e.g., Wing, Nuro) indicate future automation but low adoption as of 2025"
+    ]
+  },
+  {
+    "job_code": 3,
+    "job_title": "Retail Cashier",
+    "industry": "Retail",
+    "ai_pct_now": 30,
+    "ai_only_full_year": 2030,
+    "sources": [
+      "WEF Future of Jobs 2025 – Cashiers are among the fastest declining jobs due to self-checkout automation&#8203;:contentReference[oaicite:3]{index=3}&#8203;:contentReference[oaicite:4]{index=4}"
+    ]
+  },
+  {
+    "job_code": 4,
+    "job_title": "Customer Service Representative",
+    "industry": "Customer Service",
+    "ai_pct_now": 25,
+    "ai_plus_pct_now": 70,
+    "ai_only_full_year": 2029,
+    "sources": [
+      "Market research (2024) – ~20–30% of customer service interactions now handled by AI&#8203;:contentReference[oaicite:5]{index=5}",
+      "Gartner (2021) – predicted ~70% of customer interactions involve AI by 2022&#8203;:contentReference[oaicite:6]{index=6}"
+    ]
+  },
+  {
+    "job_code": 5,
+    "job_title": "Data Entry Clerk",
+    "industry": "Administrative/Clerical",
+    "ai_pct_now": 90,
+    "ai_only_full_year": 2025,
+    "sources": [
+      "WEF Future of Jobs 2025 – Data Entry Clerks are rapidly declining due to near-total automation of their routine tasks&#8203;:contentReference[oaicite:7]{index=7}&#8203;:contentReference[oaicite:8]{index=8}"
+    ]
+  },
+  {
+    "job_code": 6,
+    "job_title": "Administrative Assistant / Executive Secretary",
+    "industry": "Administrative/Clerical",
+    "ai_pct_now": 30,
+    "ai_plus_pct_now": 60,
+    "ai_only_full_year": 2030,
+    "ai_plus_full_year": 2025,
+    "sources": [
+      "OpenAI GPT-4 labor analysis (2023) – Administrative assistants are fully exposed to AI, with nearly all tasks amenable to automation&#8203;:contentReference[oaicite:9]{index=9}",
+      "WEF Future of Jobs 2025 – Administrative assistants are among top declining roles due to automation&#8203;:contentReference[oaicite:10]{index=10}"
+    ]
+  },
+  {
+    "job_code": 7,
+    "job_title": "Paralegal / Legal Assistant",
+    "industry": "Legal",
+    "ai_pct_now": 69,
+    "ai_only_full_year": 2030,
+    "sources": [
+      "2024 Legal Trends Report – ~69% of paralegal work hours could be automated by AI&#8203;:contentReference[oaicite:11]{index=11}",
+      "Goldman Sachs (2023) – estimates nearly half of legal tasks could eventually be automated&#8203;:contentReference[oaicite:12]{index=12}"
+    ]
+  },
+  {
+    "job_code": 8,
+    "job_title": "Lawyer (Attorney)",
+    "industry": "Legal",
+    "ai_pct_now": 30,
+    "ai_plus_pct_now": 50,
+    "ai_only_full_year": 2040,
+    "ai_plus_full_year": 2030,
+    "sources": [
+      "Goldman Sachs (2023) – AI could automate up to 44% of legal tasks over time&#8203;:contentReference[oaicite:13]{index=13}",
+      "GPT-4's performance on the bar exam (2023) shows AI's advanced capabilities in legal reasoning&#8203;:contentReference[oaicite:14]{index=14}"
+    ]
+  },
+  {
+    "job_code": 9,
+    "job_title": "Radiologist",
+    "industry": "Healthcare",
+    "ai_pct_now": 30,
+    "ai_plus_pct_now": 50,
+    "ai_only_full_year": 2035,
+    "ai_plus_full_year": 2025,
+    "sources": [
+      "Survey of radiologists (2023) – Only ~36% use AI daily and few find it decisively improves output&#8203;:contentReference[oaicite:15]{index=15}",
+      "Expert consensus – Complex diagnostic imaging still requires human oversight; near-term replacement unlikely&#8203;:contentReference[oaicite:16]{index=16}"
+    ]
+  },
+  {
+    "job_code": 10,
+    "job_title": "Primary Care Physician (General Practitioner)",
+    "industry": "Healthcare",
+    "ai_pct_now": 15,
+    "ai_plus_pct_now": 30,
+    "ai_only_full_year": 2040,
+    "ai_plus_full_year": 2030,
+    "sources": [
+      "McKinsey Global Institute – Even high-skill jobs like physicians have a significant portion of activities (~15–20%) that current AI could automate&#8203;:contentReference[oaicite:17]{index=17}",
+      "Healthcare experts – Human empathy and clinical judgment keep full AI-only doctors decades away"
+    ]
+  },
+  {
+    "job_code": 11,
+    "job_title": "Registered Nurse",
+    "industry": "Healthcare",
+    "ai_pct_now": 5,
+    "ai_plus_pct_now": 10,
+    "ai_only_full_year": 2050,
+    "ai_plus_full_year": 2035,
+    "sources": [
+      "McKinsey – Roles emphasizing social/emotional skills (e.g. nursing) remain largely un-automated&#8203;:contentReference[oaicite:18]{index=18}",
+      "Healthcare experts – Direct patient care and empathy make full automation of nursing unlikely in the foreseeable future"
+    ]
+  },
+  {
+    "job_code": 12,
+    "job_title": "Accountant / Auditor",
+    "industry": "Finance",
+    "ai_pct_now": 50,
+    "ai_plus_pct_now": 70,
+    "ai_only_full_year": 2030,
+    "ai_plus_full_year": 2025,
+    "sources": [
+      "OpenAI GPT-4 labor analysis (2023) – Accountants/Auditors are fully exposed to AI (automation can significantly handle all tasks)&#8203;:contentReference[oaicite:19]{index=19}",
+      "McKinsey (2017) – ~42% of finance activities can be fully automated with current technology, with another ~19% mostly automated"
+    ]
+  },
+  {
+    "job_code": 13,
+    "job_title": "Fast Food Cook",
+    "industry": "Food Service",
+    "ai_pct_now": 10,
+    "ai_plus_pct_now": 30,
+    "ai_only_full_year": 2030,
+    "ai_plus_full_year": 2027,
+    "sources": [
+      "McKinsey analysis – Routine physical tasks in predictable environments (e.g. fry cooking) are easily automatable with current robots&#8203;:contentReference[oaicite:20]{index=20}",
+      "Examples – Robots like \"Flippy\" are already flipping burgers and frying foods in pilot programs, demonstrating high automation potential"
+    ]
+  },
+  {
+    "job_code": 14,
+    "job_title": "Waiter / Restaurant Server",
+    "industry": "Hospitality",
+    "ai_pct_now": 5,
+    "ai_plus_pct_now": 20,
+    "ai_only_full_year": 2040,
+    "ai_plus_full_year": 2030,
+    "sources": [
+      "WEF/Bridgewater analysis – Food service jobs involve predictable tasks (deliver plates) but also interpersonal service, making partial automation feasible&#8203;:contentReference[oaicite:21]{index=21}&#8203;:contentReference[oaicite:22]{index=22}",
+      "Industry trend – Some restaurants use robot servers for food delivery, but human servers remain crucial for customer interaction"
+    ]
+  },
+  {
+    "job_code": 15,
+    "job_title": "Warehouse Worker (Order Picker/Packer)",
+    "industry": "Warehousing/Logistics",
+    "ai_pct_now": 50,
+    "ai_plus_pct_now": 70,
+    "ai_only_full_year": 2030,
+    "ai_plus_full_year": 2025,
+    "sources": [
+      "Amazon (2023) – Over 750,000 robots now work alongside warehouse employees to handle repetitive material-moving tasks&#8203;:contentReference[oaicite:23]{index=23}",
+      "Market analysis – Modern warehouses increasingly use autonomous mobile robots (AMRs) for fetching goods, though human pickers still handle fine manipulation"
+    ]
+  },
+  {
+    "job_code": 16,
+    "job_title": "Manufacturing Assembly Line Worker",
+    "industry": "Manufacturing",
+    "ai_pct_now": 60,
+    "ai_plus_pct_now": 80,
+    "ai_only_full_year": 2030,
+    "ai_plus_full_year": 2025,
+    "sources": [
+      "WEF/Bridgewater analysis – Manufacturing workers spend much of their time on predictable physical tasks highly susceptible to robot automation&#8203;:contentReference[oaicite:24]{index=24}&#8203;:contentReference[oaicite:25]{index=25}",
+      "International Federation of Robotics – Record robot adoption in factories is automating a majority of assembly tasks"
+    ]
+  },
+  {
+    "job_code": 17,
+    "job_title": "Janitor / Cleaner",
+    "industry": "Maintenance/Cleaning",
+    "ai_pct_now": 10,
+    "ai_plus_pct_now": 20,
+    "ai_only_full_year": 2040,
+    "ai_plus_full_year": 2030,
+    "sources": [
+      "WEF analysis – Cleaning in messy, unpredictable environments remains hard to fully automate with current tech&#8203;:contentReference[oaicite:26]{index=26}",
+      "Examples – Autonomous vacuum and floor-scrubbing robots can handle floors, but most cleaning tasks (trash, detailed cleaning) still require humans"
+    ]
+  },
+  {
+    "job_code": 18,
+    "job_title": "Software Developer / Programmer",
+    "industry": "Technology",
+    "ai_pct_now": 30,
+    "ai_plus_pct_now": 50,
+    "ai_only_full_year": 2040,
+    "ai_plus_full_year": 2030,
+    "sources": [
+      "OpenAI (2023) – AI coding assistants significantly reduce programming workload (e.g., some engineers get ~30-40% of code via GitHub Copilot)",
+      "OpenAI GPT-4 labor analysis – even specialized roles like \"Blockchain Engineer\" showed ~94% task exposure to AI, indicating high automation potential for coding&#8203;:contentReference[oaicite:27]{index=27}"
+    ]
+  },
+  {
+    "job_code": 19,
+    "job_title": "School Teacher (K-12)",
+    "industry": "Education",
+    "ai_pct_now": 5,
+    "ai_plus_pct_now": 15,
+    "ai_only_full_year": 2050,
+    "ai_plus_full_year": 2035,
+    "sources": [
+      "WEF/Bridgewater analysis – Education jobs require high interpersonal and emotional skills, making them far less automatable&#8203;:contentReference[oaicite:28]{index=28}",
+      "Education experts – AI tutors can assist with grading and student practice, but human teachers remain irreplaceable for mentorship and classroom management"
+    ]
+  },
+  {
+    "job_code": 20,
+    "job_title": "Graphic Designer",
+    "industry": "Creative/Design",
+    "ai_pct_now": 40,
+    "ai_plus_pct_now": 70,
+    "ai_only_full_year": 2030,
+    "ai_plus_full_year": 2025,
+    "sources": [
+      "AI art tools (2023) – Generative models like DALL-E and Midjourney can produce artwork and designs, automating a large portion of routine graphic design work",
+      "OpenAI GPT-4 labor analysis – \"Graphic Designers\" show high variance in AI exposure: some design tasks are easily automated, others still require human creativity&#8203;:contentReference[oaicite:29]{index=29}"
+    ]
+  },
+  {
+    "job_code": 21,
+    "job_title": "Journalist / Content Writer",
+    "industry": "Media",
+    "ai_pct_now": 50,
+    "ai_plus_pct_now": 80,
+    "ai_only_full_year": 2030,
+    "ai_plus_full_year": 2025,
+    "sources": [
+      "OpenAI GPT-4 labor analysis – News reporters/journalists are fully exposed to AI, with generative models able to draft articles and summaries&#8203;:contentReference[oaicite:30]{index=30}",
+      "Oxford/Yale AI expert survey (2017) – predicted AI will write a best-selling book by 2049, indicating potential to handle creative writing tasks&#8203;:contentReference[oaicite:31]{index=31}"
+    ]
+  },
+  {
+    "job_code": 22,
+    "job_title": "Translator / Interpreter",
+    "industry": "Language Services",
+    "ai_pct_now": 80,
+    "ai_plus_pct_now": 100,
+    "ai_only_full_year": 2024,
+    "ai_plus_full_year": 2023,
+    "sources": [
+      "Oxford/Yale AI expert survey (2017) – AI expected to outperform human translators by 2024&#8203;:contentReference[oaicite:32]{index=32}",
+      "OpenAI/DeepL advances – AI translation tools now often match human-level accuracy for many languages, requiring only minor human post-editing"
+    ]
+  },
+  {
+    "job_code": 23,
+    "job_title": "Telemarketer",
+    "industry": "Sales",
+    "ai_pct_now": 90,
+    "ai_only_full_year": 2025,
+    "sources": [
+      "Frey & Osborne (Oxford, 2013) – Telemarketers were identified with ~99% automation probability (among the most automatable jobs)",
+      "Trend – Robocall and chatbot technologies already perform outbound sales calls and lead generation with minimal human input"
+    ]
+  },
+  {
+    "job_code": 24,
+    "job_title": "Security Guard",
+    "industry": "Security",
+    "ai_pct_now": 10,
+    "ai_plus_pct_now": 20,
+    "ai_only_full_year": 2040,
+    "ai_plus_full_year": 2030,
+    "sources": [
+      "Industry reports – Autonomous security robots (e.g., patrol robots in malls and parking lots) are being deployed, but currently handle a small fraction of guarding tasks",
+      "WEF analysis – Tasks in unstructured environments requiring human judgment (e.g., responding to incidents) remain challenging for AI&#8203;:contentReference[oaicite:33]{index=33}"
+    ]
+  },
+  {
+    "job_code": 25,
+    "job_title": "Construction Laborer",
+    "industry": "Construction",
+    "ai_pct_now": 5,
+    "ai_plus_pct_now": 15,
+    "ai_only_full_year": 2040,
+    "ai_plus_full_year": 2030,
+    "sources": [
+      "WEF/Bridgewater analysis – Construction involves complex, variable environments (hard to automate with today’s robots)&#8203;:contentReference[oaicite:34]{index=34}",
+      "Emerging tech – 3D printing of buildings and construction robotics (bricklaying, rebar-tying robots) show promise but are not yet widely replacing human labor"
+    ]
+  },
+  {
+    "job_code": 26,
+    "job_title": "Pharmacist",
+    "industry": "Healthcare",
+    "ai_pct_now": 30,
+    "ai_plus_pct_now": 50,
+    "ai_only_full_year": 2030,
+    "ai_plus_full_year": 2025,
+    "sources": [
+      "Case study – UCSF Medical Center’s automated pharmacy has been reliably dispensing medications with robots, greatly reducing manual pharmacist tasks",
+      "Industry trend – Automated dispensing systems and AI-driven prescription verification are increasingly handling the preparation and dispensing tasks in pharmacies"
+    ]
+  },
+  {
+    "job_code": 27,
+    "job_title": "Airline Pilot",
+    "industry": "Aviation",
+    "ai_pct_now": 80,
+    "ai_plus_pct_now": 90,
+    "ai_only_full_year": 2035,
+    "ai_plus_full_year": 2030,
+    "sources": [
+      "McKinsey – Commercial pilots manually fly only a few minutes per flight (autopilot controls ~90% of flight time)&#8203;:contentReference[oaicite:35]{index=35}",
+      "Aerospace reports – Autonomous flight systems are technically capable and used in drones; fully pilotless airliners could be feasible in the 2030s pending regulations and public acceptance"
+    ]
+  },
+  {
+    "job_code": 28,
+    "job_title": "Farmer / Agricultural Equipment Operator",
+    "industry": "Agriculture",
+    "ai_pct_now": 20,
+    "ai_plus_pct_now": 30,
+    "ai_only_full_year": 2035,
+    "ai_plus_full_year": 2030,
+    "sources": [
+      "WEF/Bridgewater analysis – Agriculture involves many predictable, repetitive tasks (planting, plowing) suited to automation&#8203;:contentReference[oaicite:36]{index=36}",
+      "Example – Autonomous tractors and drone crop monitors are already in use, signaling that much of fieldwork could be automated in coming years"
+    ]
+  },
+  {
+    "job_code": 29,
+    "job_title": "HR Specialist (Recruiter)",
+    "industry": "Human Resources",
+    "ai_pct_now": 30,
+    "ai_plus_pct_now": 50,
+    "ai_only_full_year": 2030,
+    "ai_plus_full_year": 2025,
+    "sources": [
+      "Surveys – A large share of companies now use AI for resume screening and interview scheduling, automating substantial portions of recruitment workflows",
+      "McKinsey – Many administrative and routine decision tasks in HR (e.g., initial candidate filtering) can be at least partially automated with current AI&#8203;:contentReference[oaicite:37]{index=37}"
+    ]
+  },
+  {
+    "job_code": 30,
+    "job_title": "Marketing Specialist",
+    "industry": "Marketing/Advertising",
+    "ai_pct_now": 30,
+    "ai_plus_pct_now": 50,
+    "ai_only_full_year": 2030,
+    "ai_plus_full_year": 2025,
+    "sources": [
+      "OpenAI GPT-4 labor analysis – Marketing-related roles (e.g., search marketing) show mixed but significant task exposure to AI, as generative AI can create ads, copy, and analyze trends&#8203;:contentReference[oaicite:38]{index=38}",
+      "Industry trend – AI tools now generate social media content, product descriptions, and basic ad copy, accelerating marketing workflows"
+    ]
+  }
+]
