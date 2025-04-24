@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AITimeline Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<style>
+  :root { --accent:#ff7043; --bg:#f7f7f9; --fg:#222; }
+  *{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--fg);}
+  header{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;background:#1a1a1d;color:#fff}
+  header h1{font-size:1.1rem;margin:0}
+  nav button{border:none;background:#444;color:#fff;padding:0.45rem 0.9rem;margin-left:0.5rem;border-radius:4px;cursor:pointer}
+  nav button.active,nav button:hover{background:var(--accent)}
+  main{height:calc(100vh - 64px);overflow:hidden}
+  section{height:100%;display:none}
+  section.active{display:block}
+  /* timeline pane */
+  #timelinePane{overflow:auto white-space:nowrap;padding:1rem 0 2rem 2rem}
+  .yearCol{display:inline-block;vertical-align:top;padding:0 10px;position:relative}
+  .yearLabel{position:absolute;top:-1.2rem;left:50%;transform:translateX(-50%);font-size:0.8rem;color:#555}
+  .jobNode{background:var(--accent);color:#fff;border-radius:4px;padding:2px 6px;margin-bottom:4px;font-size:0.75rem;cursor:pointer;white-space:unset;max-width:160px}
+  /* tooltip */
+  .tooltip{position:fixed;pointer-events:none;background:#fff;border:1px solid #ccc;border-radius:4px;padding:0.4rem 0.6rem;font-size:0.8rem;box-shadow:0 3px 6px rgba(0,0,0,.15);opacity:0;transition:opacity .15s}
+  /* dashboard table */
+  table{width:100%;border-collapse:collapse;font-size:0.85rem}
+  th,td{padding:0.5rem;border-bottom:1px solid #ddd;text-align:left}
+  th{background:#eee}
+</style>
+</head>
+<body>
+<header>
+  <h1>AI Timeline Demo</h1>
+  <nav>
+    <button id="btnT" class="active">Timeline</button>
+    <button id="btnD">Current %</button>
+  </nav>
+</header>
+
+<main>
+  <section id="timelineSec" class="active">
+    <div id="timelinePane"></div>
+  </section>
+
+  <section id="dashSec">
+    <table id="dashTbl">
+      <thead><tr><th>Job</th><th>AI % Now</th><th>AI+Automation % Now</th><th>Year Fully Automated (AI+)</th><th>Industry</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+</main>
+
+<div id="tip" class="tooltip"></div>
+
+<script>
+const timelinePane = d3.select('#timelinePane');
+const dashBody     = d3.select('#dashTbl tbody');
+const tip          = d3.select('#tip');
+let data = [];
+
+function loadData(){
+  return fetch('jobs.json')
+    .then(r=>r.json())
+    .then(json=>{
+      // flatten nested industries -> jobs array
+      data = Object.values(json).flat();
+      buildTimeline();
+      buildDashboard();
+    });
+}
+
+function buildTimeline(){
+  const yearAccessor = d=> d.ai_plus_full_year ?? d.ai_only_full_year;
+  const years = data.map(yearAccessor).filter(Boolean);
+  const minY = d3.min(years), maxY = d3.max(years);
+  const colW = 140; // px per year
+
+  const byYear = d3.group(data, yearAccessor);
+
+  // build columns sorted by year
+  const colSel = timelinePane.selectAll('.yearCol')
+    .data(d3.range(minY, maxY+1))
+    .join('div')
+      .attr('class','yearCol')
+      .style('width', colW+'px');
+
+  colSel.append('span')
+        .attr('class','yearLabel')
+        .text(y=>y);
+
+  // add jobs (stacked) to each column
+  colSel.each(function(year){
+    const jobs = byYear.get(year) || [];
+    const col  = d3.select(this);
+    col.selectAll('.jobNode')
+        .data(jobs)
+        .join('div')
+          .attr('class','jobNode')
+          .text(j=>j.job_title)
+          .on('mouseover', (e,j)=>{
+              tip.html(`<strong>${j.job_title}</strong><br>
+                        AI Now: ${j.ai_pct_now}%<br>
+                        AI+ Now: ${j.ai_plus_pct_now}%<br>
+                        Full AI+ Year: ${j.ai_plus_full_year ?? '—'}`)
+                  .style('left', (e.pageX+10)+'px')
+                  .style('top', (e.pageY+10)+'px')
+                  .style('opacity',1);
+          })
+          .on('mouseout', ()=>tip.style('opacity',0));
+  });
+
+  // set pane width so horizontal scroll corresponds to year scale
+  timelinePane.style('width', ((maxY - minY + 1) * colW + 40) + 'px');
+}
+
+function buildDashboard(){
+  dashBody.selectAll('tr')
+    .data(data)
+    .join('tr')
+      .html(d=>`
+        <td>${d.job_title}</td>
+        <td>${d.ai_pct_now}%</td>
+        <td>${d.ai_plus_pct_now}%</td>
+        <td>${d.ai_plus_full_year ?? '—'}</td>
+        <td>${d.industry}</td>
+      `);
+}
+
+/* navigation */
+document.getElementById('btnT').onclick = ()=>{
+  document.getElementById('btnT').classList.add('active');
+  document.getElementById('btnD').classList.remove('active');
+  document.getElementById('timelineSec').classList.add('active');
+  document.getElementById('dashSec').classList.remove('active');
+};
+document.getElementById('btnD').onclick = ()=>{
+  document.getElementById('btnD').classList.add('active');
+  document.getElementById('btnT').classList.remove('active');
+  document.getElementById('dashSec').classList.add('active');
+  document.getElementById('timelineSec').classList.remove('active');
+};
+
+loadData();
+</script>
+</body>
+</html>
