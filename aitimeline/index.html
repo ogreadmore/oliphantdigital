@@ -1,70 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>AI Timeline Demo</title>
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 
 <style>
-:root{ --bg:#18181b;--fg:#e4e4e7;--accent:#c026d3;--accent-light:#d946ef;--scrollbar:#3f3f46 }
+:root{--bg:#18181b;--fg:#e4e4e7;--accent:#c026d3;--accent-light:#d946ef;--scroll:#3f3f46}
 *{box-sizing:border-box;margin:0;padding:0}
-body{height:100vh;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif;display:flex;flex-direction:column;overflow:hidden}
+body{height:100vh;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;display:flex;flex-direction:column;overflow:hidden}
 
-/* HEADER */
+/* ----- header ----- */
 header{display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem;background:#000a;backdrop-filter:blur(8px)}
-header h1{font-size:1rem;font-weight:600;letter-spacing:.02em}
-nav{display:flex;gap:.45rem}
-button{cursor:pointer;border:none;border-radius:7px;padding:.45rem .9rem;font-size:.8rem;background:#3f3f46;color:var(--fg);transition:.2s}
+header h1{font-size:1rem;font-weight:600}
+nav{display:flex;gap:.45rem} button{cursor:pointer;border:none;border-radius:7px;padding:.45rem .9rem;font-size:.8rem;background:#3f3f46;color:var(--fg);transition:.2s}
 button.active,button:hover{background:var(--accent)}
 
-/* MAIN WRAPPERS */
+/* ----- main wrappers ----- */
 main{flex:1;position:relative}
 .view{position:absolute;inset:0;overflow:hidden}
 #timelineWrap{overflow:auto;cursor:grab}
 #timelineWrap:active{cursor:grabbing}
 #dashWrap{display:none;overflow:auto;padding:1rem}
 
-/* CUSTOM SCROLLBAR */
+/* scrollbar */
 #timelineWrap::-webkit-scrollbar{height:13px;width:13px}
-#timelineWrap::-webkit-scrollbar-track{background:#1e1e23}
-#timelineWrap::-webkit-scrollbar-thumb{background:var(--scrollbar);border-radius:6px}
+#timelineWrap::-webkit-scrollbar-track{background:#1f1f23}
+#timelineWrap::-webkit-scrollbar-thumb{background:var(--scroll)}
 #timelineWrap:hover::-webkit-scrollbar-thumb{background:var(--accent)}
 
-/* SVG STYLES */
+/* svg styling */
 .tick-line{stroke:#2d2d32;stroke-width:1}
 .tick-text{fill:var(--fg);font-size:.75rem;font-weight:400;text-anchor:middle}
 .job-rect{rx:6;ry:6;fill:var(--accent)}
 .job-text{fill:#fff;font-size:.64rem;font-weight:600;pointer-events:none}
 
-/* DASHBOARD */
+/* dashboard */
 table{width:100%;border-collapse:collapse;min-width:620px}
 thead th{position:sticky;top:0;background:#000c;padding:.6rem;font-size:.75rem;text-align:left;color:var(--accent-light);backdrop-filter:blur(6px)}
 tbody td{padding:.55rem .65rem;font-size:.72rem;border-bottom:1px solid #2f2f33}
 tbody tr:hover{background:#222225}
 
-/* TOOLTIP / MODAL */
-#tooltip{position:fixed;pointer-events:none;visibility:hidden;max-width:240px;background:#000d;padding:.6rem .8rem;border-radius:6px;font-size:.77rem;color:var(--fg);line-height:1.35}
+/* tooltip & modal */
+#tooltip{position:fixed;pointer-events:none;visibility:hidden;background:#000d;padding:.6rem .8rem;border-radius:6px;font-size:.77rem;line-height:1.35;max-width:240px}
 #tooltip h4{margin:0 0 .25rem;font-size:.8rem;color:var(--accent-light)}
-.modal-overlay{position:fixed;inset:0;background:#000c;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:30;visibility:hidden;opacity:0;transition:.2s}
-.modal-overlay.show{visibility:visible;opacity:1}
-.modal{background:#26262b;padding:1.1rem 1.25rem;border-radius:8px;max-width:330px;width:92%;font-size:.84rem}
+.modal-overlay{position:fixed;inset:0;background:#000c;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:30;opacity:0;visibility:hidden;transition:.2s}
+.modal-overlay.show{opacity:1;visibility:visible}
+.modal{background:#26262b;padding:1rem 1.2rem;border-radius:8px;max-width:330px;width:92%;font-size:.84rem}
 .modal h3{margin:0 0 .55rem;font-size:.9rem;color:var(--accent-light)}
-.modal p{margin:.25rem 0}
-.modal-close{text-align:right;margin-top:.9rem}
+.modal-close{text-align:right;margin-top:.85rem}
 .modal-close button{background:#3f3f46;color:var(--fg);padding:.4rem .8rem;border-radius:6px;font-size:.75rem}
 
-/* RESPONSIVE TWEAKS */
-@media(max-width:850px){
- header h1{font-size:.92rem}
- button{font-size:.76rem;padding:.4rem .8rem}
- .job-text{font-size:.6rem}
-}
-@media(max-width:650px){
- button{font-size:.73rem;padding:.35rem .7rem}
- .tick-text{font-size:.8rem;text-anchor:start}
- .job-text{font-size:.68rem}
-}
+/* tweaks */
+@media(max-width:850px){header h1{font-size:.92rem}button{font-size:.76rem;padding:.4rem .8rem}.job-text{font-size:.6rem}}
+@media(max-width:650px){button{font-size:.73rem;padding:.35rem .7rem}.tick-text{font-size:.8rem;text-anchor:start}.job-text{font-size:.55rem}}
 </style>
 </head>
 <body>
@@ -91,186 +81,143 @@ tbody tr:hover{background:#222225}
 <div id="modalOv" class="modal-overlay"><div id="modalBox" class="modal"></div></div>
 
 <script>
-/* ---------- CONFIG ------------------------------------------------*/
+/* ---- constants ---- */
 const CARD_W=140,CARD_H=26;
 const GAP_V=14,GAP_H=14;
-const LEFT_PAD=80,TOP_PAD=60;
-const YEAR_PX=115;               // pixels per year (both modes)
+const LEFT_PAD=90,TOP_PAD=60;        // desktop
+const LEFT_PAD_MOB=110;              // extra so year labels show
+const YEAR_PX=160;                   // 140 + 20 margin ⇒ cards never touch
 const MOBILE_BREAK=650;
-let isMobile=false,jobs=[];
+let jobs=[],isMobile=false;
 
-/* ---------- INITIAL LOAD -----------------------------------------*/
-fetch('jobs.json').then(r=>r.json())
-  .then(j=>{jobs=Object.values(j).flat();init();})
-  .catch(e=>console.error('jobs.json missing',e));
+/* -------- load data & init ------- */
+fetch('jobs.json').then(r=>r.json()).then(j=>{
+  jobs=Object.values(j).flat();
+  init();
+}).catch(e=>console.error('jobs.json missing',e));
 
 function init(){
-  isMobile = window.innerWidth < MOBILE_BREAK;
-  buildTimeline(); buildDash(); navInit(); modalInit();
+  isMobile=window.innerWidth<MOBILE_BREAK;
+  buildTimeline();buildDash();navInit();modalInit();
   window.addEventListener('resize',debounce(()=>location.reload(),300));
 }
 
-/* ---------- BUILD TIMELINE ---------------------------------------*/
+/* -------- timeline (desktop) ------ */
 function buildTimeline(){
-  const svg=d3.select('#timelineSVG'); svg.selectAll('*').remove();
+  const svg=d3.select('#timelineSVG');svg.selectAll('*').remove();
   const yrs=jobs.map(j=>j.ai_plus_full_year??j.ai_only_full_year).filter(Boolean);
   const yMin=Math.min(...yrs),yMax=Math.max(...yrs);
-  isMobile ? renderVertical(svg,yMin,yMax) : renderHorizontal(svg,yMin,yMax);
-  attachCardEvents(); enableDrag();
+  isMobile?renderVertical(svg,yMin,yMax):renderHorizontal(svg,yMin,yMax);
+  attachCardEvents();enableDrag();
 }
 
-/* DESKTOP HORIZONTAL ----------------------------------------------*/
+/* desktop horizontal */
 function renderHorizontal(svg,yMin,yMax){
   const x=d3.scaleLinear().domain([yMin,yMax]).range([LEFT_PAD,(yMax-yMin)*YEAR_PX+LEFT_PAD]);
-  // bucket by year
-  const bucket={};
-  jobs.forEach(j=>{
-    const yr=j.ai_plus_full_year??j.ai_only_full_year;
-    (bucket[yr]=bucket[yr]||[]).push(j);
-  });
-  const maxStack=Math.max(...Object.values(bucket).map(b=>b.length));
-  const svgH=TOP_PAD+maxStack*(CARD_H+GAP_V)+120;
-  const svgW=x(yMax)+CARD_W+LEFT_PAD;
-  svg.attr('width',svgW).attr('height',svgH);
+  const buckets={};jobs.forEach(j=>{const y=j.ai_plus_full_year??j.ai_only_full_year;(buckets[y]=buckets[y]||[]).push(j);});
+  const maxStack=Math.max(...Object.values(buckets).map(b=>b.length));
+  const h=TOP_PAD+maxStack*(CARD_H+GAP_V)+120,w=x(yMax)+CARD_W+LEFT_PAD;
+  svg.attr('width',w).attr('height',h);
 
-  // grid + labels
-  svg.append('g').selectAll('g').data(d3.range(yMin,yMax+1)).enter()
-     .append('g').attr('transform',d=>`translate(${x(d)},0)`)
+  svg.append('g').selectAll('g').data(d3.range(yMin,yMax+1)).enter().append('g')
+     .attr('transform',d=>`translate(${x(d)},0)`)
      .call(g=>{
-       g.append('line').attr('class','tick-line').attr('y1',0).attr('y2',svgH);
-       g.append('text').attr('class','tick-text').attr('y',18).text(d=>d);
+        g.append('line').attr('class','tick-line').attr('y1',0).attr('y2',h);
+        g.append('text').attr('class','tick-text').attr('y',18).text(d=>d);
      });
 
-  // cards
-  Object.entries(bucket).forEach(([yr,list])=>{
+  Object.entries(buckets).forEach(([yr,list])=>{
      list.forEach((j,i)=>{
         const gx=x(+yr)-CARD_W/2,gy=TOP_PAD+i*(CARD_H+GAP_V);
         const g=svg.append('g').attr('transform',`translate(${gx},${gy})`).attr('data-j',j.job_code);
         g.append('rect').attr('class','job-rect').attr('width',CARD_W).attr('height',CARD_H);
-        g.append('text').attr('class','job-text').attr('x',CARD_W/2).attr('y',CARD_H/2+4)
-         .attr('text-anchor','middle').text(trunc(j.job_title,22));
+        g.append('text').attr('class','job-text').attr('x',CARD_W/2).attr('y',CARD_H/2+4).attr('text-anchor','middle').text(trunc(j.job_title,22));
      });
   });
 }
 
-/* MOBILE VERTICAL --------------------------------------------------*/
+/* mobile vertical (cards top→bottom) */
 function renderVertical(svg,yMin,yMax){
   const y=d3.scaleLinear().domain([yMin,yMax]).range([TOP_PAD,(yMax-yMin)*YEAR_PX+TOP_PAD]);
-  const bucket={};
-  jobs.forEach(j=>{
-    const yr=j.ai_plus_full_year??j.ai_only_full_year;
-    (bucket[yr]=bucket[yr]||[]).push(j);
-  });
-  const maxRow=Math.max(...Object.values(bucket).map(b=>b.length));
-  const svgW=LEFT_PAD+maxRow*(CARD_W+GAP_H)+40;
-  const svgH=y(yMax)+CARD_H+120;
-  svg.attr('width',svgW).attr('height',svgH);
+  const buckets={};jobs.forEach(j=>{const yr=j.ai_plus_full_year??j.ai_only_full_year;(buckets[yr]=buckets[yr]||[]).push(j);});
+  const maxRow=Math.max(...Object.values(buckets).map(b=>b.length));
+  const w=LEFT_PAD_MOB+CARD_W+40, h=y(yMax)+maxRow*(CARD_H+GAP_V)+120;
+  svg.attr('width',w).attr('height',h);
 
-  // grid + labels
-  svg.append('g').selectAll('g').data(d3.range(yMin,yMax+1)).enter()
-     .append('g').attr('transform',d=>`translate(0,${y(d)})`)
+  svg.append('g').selectAll('g').data(d3.range(yMin,yMax+1)).enter().append('g')
+     .attr('transform',d=>`translate(0,${y(d)})`)
      .call(g=>{
-       g.append('line').attr('class','tick-line').attr('x1',0).attr('x2',svgW);
-       g.append('text').attr('class','tick-text').attr('x',10).attr('dy',5).text(d=>d);
+        g.append('line').attr('class','tick-line').attr('x1',0).attr('x2',w);
+        g.append('text').attr('class','tick-text').attr('x',10).attr('dy',5).text(d=>d);
      });
 
-  // cards horizontal
-  Object.entries(bucket).forEach(([yr,list])=>{
+  Object.entries(buckets).forEach(([yr,list])=>{
      list.forEach((j,i)=>{
-       const gx=LEFT_PAD+i*(CARD_W+GAP_H),gy=y(+yr)-CARD_H/2;
-       const g=svg.append('g').attr('transform',`translate(${gx},${gy})`).attr('data-j',j.job_code);
-       g.append('rect').attr('class','job-rect').attr('width',CARD_W).attr('height',CARD_H);
-       g.append('text').attr('class','job-text').attr('x',CARD_W/2).attr('y',CARD_H/2+4)
-        .attr('text-anchor','middle').text(trunc(j.job_title,22));
+        const gx=LEFT_PAD_MOB, gy=y(+yr)+i*(CARD_H+GAP_V);
+        const g=svg.append('g').attr('transform',`translate(${gx},${gy})`).attr('data-j',j.job_code);
+        g.append('rect').attr('class','job-rect').attr('width',CARD_W).attr('height',CARD_H);
+        g.append('text').attr('class','job-text').attr('x',CARD_W/2).attr('y',CARD_H/2+4).attr('text-anchor','middle').text(trunc(j.job_title,22));
      });
   });
 }
 
-/* CARD EVENTS ------------------------------------------------------*/
+/* events & helpers */
 function attachCardEvents(){
   const tip=document.getElementById('tooltip');
   d3.selectAll('g[data-j]')
-    .on('mousemove',function(e){ if(isMobile) return;
-       const j=findJob(this.dataset.j);
-       tip.innerHTML=`<h4>${j.job_title}</h4>
-         <p>AI % Now: ${j.ai_pct_now??'—'}%</p>
-         <p>AI + Auto % Now: ${j.ai_plus_pct_now??'—'}%</p>
-         <p>Full-Auto Year: ${(j.ai_plus_full_year??j.ai_only_full_year)||'—'}</p>`;
-       tip.style.left=`${e.clientX+16}px`; tip.style.top=`${e.clientY+16}px`;
-       tip.style.visibility='visible';
+    .on('mousemove',function(e){if(isMobile)return;const j=find(this);
+       tip.innerHTML=`<h4>${j.job_title}</h4><p>AI % Now: ${j.ai_pct_now??'—'}%</p>
+       <p>AI + Auto % Now: ${j.ai_plus_pct_now??'—'}%</p><p>Full-Auto: ${(j.ai_plus_full_year??j.ai_only_full_year)||'—'}</p>`;
+       tip.style.left=`${e.clientX+16}px`;tip.style.top=`${e.clientY+16}px`;tip.style.visibility='visible';
     })
-    .on('mouseleave',()=>{if(!isMobile)tip.style.visibility='hidden'})
-    .on('click',function(){
-       const j=findJob(this.dataset.j);
-       showModal(`<h3>${j.job_title}</h3>
-         <p><b>Industry:</b> ${j.industry}</p>
-         <p><b>AI % Now:</b> ${j.ai_pct_now??'—'}%</p>
-         <p><b>AI + Automation % Now:</b> ${j.ai_plus_pct_now??'—'}%</p>
-         <p><b>Full Automation Year:</b> ${(j.ai_plus_full_year??j.ai_only_full_year)||'—'}</p>
-         <p><b>Upskill:</b> ${(j.upskill_suggestions||'').split('|').join(', ')}</p>`);
-    });
+    .on('mouseleave',()=>{if(!isMobile)document.getElementById('tooltip').style.visibility='hidden'})
+    .on('click',function(){const j=find(this);showModal(`<h3>${j.job_title}</h3>
+      <p><b>Industry:</b> ${j.industry}</p><p><b>AI % Now:</b> ${j.ai_pct_now??'—'}%</p>
+      <p><b>AI + Auto % Now:</b> ${j.ai_plus_pct_now??'—'}%</p>
+      <p><b>Full Automation Year:</b> ${(j.ai_plus_full_year??j.ai_only_full_year)||'—'}</p>
+      <p><b>Upskill:</b> ${(j.upskill_suggestions||'').split('|').join(', ')}</p>`);});
+  function find(el){return jobs.find(j=>j.job_code===el.dataset.j);}
 }
-function findJob(c){return jobs.find(j=>j.job_code===c);}
 function trunc(s,l){return s.length>l?s.slice(0,l-1)+'…':s;}
 
-/* DASHBOARD --------------------------------------------------------*/
-function buildDash(){
-  const tbody=d3.select('#dashTbl tbody');
-  jobs.forEach(j=>{
-    const yr=j.ai_plus_full_year??j.ai_only_full_year??'—';
-    tbody.append('tr').html(`<td>${j.job_title}</td>
+/* dashboard */
+function buildDash(){const tbody=d3.select('#dashTbl tbody');
+  jobs.forEach(j=>tbody.append('tr').html(`<td>${j.job_title}</td>
     <td>${j.ai_pct_now??'—'}%</td><td>${j.ai_plus_pct_now??'—'}%</td>
-    <td>${j.industry}</td><td>${yr}</td>`);
-  });
-}
+    <td>${j.industry}</td><td>${j.ai_plus_full_year??j.ai_only_full_year??'—'}</td>`));}
 
-/* DRAG SCROLL & CTRL-ZOOM -----------------------------------------*/
+/* drag scroll & ctrl-zoom */
 function enableDrag(){
-  const wrap=document.getElementById('timelineWrap');
-  let d=false,sx,sy,sl,st;
+  const wrap=document.getElementById('timelineWrap');let d=false,sx,sy,sl,st;
   wrap.onmousedown=e=>{d=true;sx=e.pageX;sy=e.pageY;sl=wrap.scrollLeft;st=wrap.scrollTop;};
-  wrap.onmousemove=e=>{if(!d)return;wrap.scrollLeft=sl-(e.pageX-sx);wrap.scrollTop=st-(e.pageY-sy);};
+  wrap.onmousemove=e=>{if(!d)return;wrap.scrollLeft=sl-(e.pageX-sx);wrap.scrollTop=st-(e.pageY-sy)};
   document.onmouseup=()=>d=false;
-  wrap.addEventListener('wheel',e=>{
-    if(!e.ctrlKey)return;
-    e.preventDefault();
-    const svg=wrap.querySelector('svg');
-    const cur=wrap._z||1, nxt=Math.max(.5,Math.min(3,cur*(e.deltaY<0?1.1:.9)));
-    wrap._z=nxt; svg.style.transformOrigin='0 0'; svg.style.transform=`scale(${nxt})`;
+  wrap.addEventListener('wheel',e=>{if(!e.ctrlKey)return;e.preventDefault();
+     const svg=wrap.querySelector('svg'),cur=wrap._z||1,nxt=Math.max(.5,Math.min(3,cur*(e.deltaY<0?1.1:.9)));
+     wrap._z=nxt;svg.style.transformOrigin='0 0';svg.style.transform=`scale(${nxt})`;
   },{passive:false});
 }
 
-/* NAV --------------------------------------------------------------*/
+/* nav */
 function navInit(){
   const t=document.getElementById('btnTime'),d=document.getElementById('btnDash');
-  t.onclick=()=>{t.classList.add('active');d.classList.remove('active');
-    tl().style.display='block';dw().style.display='none';};
-  d.onclick=()=>{d.classList.add('active');t.classList.remove('active');
-    dw().style.display='block';tl().style.display='none';};
+  t.onclick=()=>{t.classList.add('active');d.classList.remove('active');tl().style.display='block';dw().style.display='none';};
+  d.onclick=()=>{d.classList.add('active');t.classList.remove('active');dw().style.display='block';tl().style.display='none';};
   document.getElementById('btnAbout').onclick=about;
   function tl(){return document.getElementById('timelineWrap')}
   function dw(){return document.getElementById('dashWrap')}
 }
 
-/* MODAL ------------------------------------------------------------*/
-function modalInit(){
-  const ov=document.getElementById('modalOv');
-  ov.onclick=e=>{if(e.target===ov)hideModal();};
-}
-function showModal(html){
-  const box=document.getElementById('modalBox');
-  box.innerHTML=html+`<div class="modal-close"><button onclick="hideModal()">Close</button></div>`;
-  document.getElementById('modalOv').classList.add('show');
-}
-function hideModal(){document.getElementById('modalOv').classList.remove('show');}
-function about(){
-  showModal(`<h3>About&nbsp;AITimeline</h3>
-    <p><strong>AITimeline.net</strong> visualises expert predictions for when AI (alone or with complementary automation) will fully perform specific jobs, plus how automated each job already is.</p>
-    <p>Data sources: WEF 2023, McKinsey 2023, Stanford AI Index 2024, OECD, peer-reviewed studies (2019-2025).</p>
-    <p>Tap/hover cards for details. Built by <em>Oliphant Digital</em>.</p>`);
-}
+/* modal */
+function modalInit(){document.getElementById('modalOv').onclick=e=>{if(e.target.id==='modalOv')hide()};}
+function showModal(html){const box=document.getElementById('modalBox');box.innerHTML=html+`<div class="modal-close"><button onclick="hide()">Close</button></div>`;document.getElementById('modalOv').classList.add('show');}
+function hide(){document.getElementById('modalOv').classList.remove('show');}
+function about(){showModal(`<h3>About AITimeline</h3>
+  <p><strong>AITimeline.net</strong> visualises expert predictions on job automation timelines.</p>
+  <p>Hover (desktop) or tap (mobile) cards for details. Data from WEF 2023, McKinsey 2023, Stanford AI Index 2024, OECD, and peer-reviewed studies (2019-25).</p>
+  <p>Built by <em>Oliphant Digital</em>.</p>`);}
 
-/* UTIL -------------------------------------------------------------*/
+/* util */
 function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);}}
 </script>
 </body>
