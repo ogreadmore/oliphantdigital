@@ -6,42 +6,142 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <style>
-    :root{--bg:#18181b;--fg:#e4e4e7;--accent:#c026d3;--accent-light:#d946ef;--scroll:#3f3f46}
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{height:100vh;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;display:flex;flex-direction:column;overflow:hidden}
-    a{color:var(--accent-light);text-decoration:none}
-    header{display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem;background:#000a;backdrop-filter:blur(8px)}
-    header h1{font-size:1rem;font-weight:600}
-    nav{display:flex;gap:.45rem}
-    button{cursor:pointer;border:none;border-radius:7px;padding:.45rem .9rem;font-size:.8rem;background:#3f3f46;color:var(--fg);transition:.2s}
-    button.active,button:hover{background:var(--accent)}
-    main{flex:1;position:relative}
-    .view{position:absolute;inset:0;overflow:hidden}
-    #timelineWrap{overflow:auto;cursor:grab}
-    #timelineWrap:active{cursor:grabbing}
-    #dashWrap{display:none;overflow:auto;padding:1rem}
-    #timelineWrap::-webkit-scrollbar{height:13px;width:13px}
-    #timelineWrap::-webkit-scrollbar-track{background:#1f1f23}
-    #timelineWrap::-webkit-scrollbar-thumb{background:var(--scroll)}
-    #timelineWrap:hover::-webkit-scrollbar-thumb{background:var(--accent)}
-    .tick-line{stroke:#2d2d32;stroke-width:1}
-    .tick-text{fill:var(--fg);font-size:.75rem;font-weight:400;text-anchor:middle}
-    .job-rect{rx:6;ry:6;fill:var(--accent)}
-    .job-text{fill:#fff;font-size:.64rem;font-weight:600;pointer-events:none}
-    table{width:100%;border-collapse:collapse;min-width:620px}
-    thead th{position:sticky;top:0;background:#000c;padding:.6rem;font-size:.75rem;text-align:left;color:var(--accent-light);backdrop-filter:blur(6px)}
-    tbody td{padding:.55rem .65rem;font-size:.72rem;border-bottom:1px solid #2f2f33}
-    tbody tr:hover{background:#222225}
-    #tooltip{position:fixed;pointer-events:none;visibility:hidden;background:#000d;padding:.6rem .8rem;border-radius:6px;font-size:.77rem;max-width:280px;line-height:1.4}
-    #tooltip h4{margin:0 0 .25rem;font-size:.8rem;color:var(--accent-light)}
-    .modal-overlay{position:fixed;inset:0;background:#000c;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:30;opacity:0;visibility:hidden;transition:.2s}
-    .modal-overlay.show{opacity:1;visibility:visible}
-    .modal{background:#26262b;padding:1rem 1.2rem;border-radius:8px;max-width:330px;width:92%;font-size:.84rem}
-    .modal h3{margin:0 0 .55rem;font-size:.9rem;color:var(--accent-light)}
-    .modal-close{text-align:right;margin-top:.85rem}
-    .modal-close button{background:#3f3f46;color:var(--fg);padding:.4rem .8rem;border-radius:6px;font-size:.75rem}
-    @media(max-width:850px){header h1{font-size:.92rem}button{font-size:.76rem;padding:.4rem .8rem}.job-text{font-size:.6rem}}
-    @media(max-width:650px){button{font-size:.73rem;padding:.35rem .7rem}.tick-text{font-size:.8rem;text-anchor:start}.job-text{font-size:.55rem}}
+    :root {
+      --bg: #18181b;
+      --fg: #e4e4e7;
+      --accent: #c026d3;
+      --accent-light: #d946ef;
+      --scroll: #3f3f46;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      height: 100vh;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    a { color: var(--accent-light); text-decoration: none; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .75rem 1rem;
+      background: #000a;
+      backdrop-filter: blur(8px);
+    }
+    header h1 { font-size: 1rem; font-weight: 600; }
+    nav { display: flex; gap: .45rem; }
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 7px;
+      padding: .45rem .9rem;
+      font-size: .8rem;
+      background: #3f3f46;
+      color: var(--fg);
+      transition: .2s;
+    }
+    button.active,
+    button:hover { background: var(--accent); }
+    main { flex: 1; position: relative; }
+    .view { position: absolute; inset: 0; overflow: hidden; }
+    #timelineWrap { overflow: auto; cursor: grab; }
+    #timelineWrap:active { cursor: grabbing; }
+    #dashWrap { display: none; overflow: auto; padding: 1rem; }
+    /* scrollbar */
+    #timelineWrap::-webkit-scrollbar { height: 13px; width: 13px; }
+    #timelineWrap::-webkit-scrollbar-track { background: #1f1f23; }
+    #timelineWrap::-webkit-scrollbar-thumb { background: var(--scroll); }
+    #timelineWrap:hover::-webkit-scrollbar-thumb { background: var(--accent); }
+    /* svg elements */
+    .tick-line { stroke: #2d2d32; stroke-width: 1; }
+    .tick-text { fill: var(--fg); font-size: .75rem; font-weight: 400; text-anchor: middle; }
+    .job-rect {
+      rx: 6; ry: 6;
+      fill: var(--accent);
+      pointer-events: all;    /* make sure rect gets the events */
+    }
+    .job-text {
+      fill: #fff;
+      font-size: .64rem;
+      font-weight: 600;
+      pointer-events: none;
+    }
+    /* dashboard */
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #000c;
+      padding: .6rem;
+      font-size: .75rem;
+      text-align: left;
+      color: var(--accent-light);
+      backdrop-filter: blur(6px);
+    }
+    tbody td {
+      padding: .55rem .65rem;
+      font-size: .72rem;
+      border-bottom: 1px solid #2f2f33;
+    }
+    tbody tr:hover { background: #222225; }
+    /* tooltip / modal */
+    #tooltip {
+      position: fixed;
+      pointer-events: none;
+      visibility: hidden;
+      background: #000d;
+      padding: .6rem .8rem;
+      border-radius: 6px;
+      font-size: .77rem;
+      max-width: 280px;
+      line-height: 1.4;
+    }
+    #tooltip h4 { margin: 0 0 .25rem; font-size: .8rem; color: var(--accent-light); }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: #000c;
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      opacity: 0;
+      visibility: hidden;
+      transition: .2s;
+    }
+    .modal-overlay.show { opacity: 1; visibility: visible; }
+    .modal {
+      background: #26262b;
+      padding: 1rem 1.2rem;
+      border-radius: 8px;
+      max-width: 330px;
+      width: 92%;
+      font-size: .84rem;
+    }
+    .modal h3 { margin: 0 0 .55rem; font-size: .9rem; color: var(--accent-light); }
+    .modal-close { text-align: right; margin-top: .85rem; }
+    .modal-close button {
+      background: #3f3f46;
+      color: var(--fg);
+      padding: .4rem .8rem;
+      border-radius: 6px;
+      font-size: .75rem;
+    }
+    @media(max-width:850px){
+      header h1{font-size:.92rem}
+      button{font-size:.76rem;padding:.4rem .8rem}
+      .job-text{font-size:.6rem}
+    }
+    @media(max-width:650px){
+      button{font-size:.73rem;padding:.35rem .7rem}
+      .tick-text{font-size:.8rem;text-anchor:start}
+      .job-text{font-size:.55rem}
+    }
   </style>
 </head>
 <body>
@@ -76,16 +176,13 @@
     const CARD_W=140, CARD_H=26, GAP_V=14, GAP_H=14;
     const LEFT_PAD=90, TOP_PAD=60, LEFT_PAD_M=110, YEAR_PX=160;
     const MOBILE_BREAK=650, ROWS_PER_COL_M=4;
-    let jobs=[];
+    let jobs = [];
 
-    fetch('jobs.json')
-      .then(r=>r.json())
-      .then(data=>{
-        // flatten if it's an object of categories, or use as-is if array
-        jobs = Array.isArray(data) ? data : Object.values(data).flat();
-        init();
-      })
-      .catch(err=>console.error('Failed to load jobs.json:',err));
+    // load your external JSON exactly once
+    d3.json('jobs.json').then(data => {
+      jobs = Array.isArray(data) ? data : Object.values(data).flat();
+      init();
+    }).catch(err => console.error('jobs.json load error:', err));
 
     function init(){
       buildTimeline();
@@ -101,109 +198,105 @@
     function renderSources(src){
       if(!src) return '—';
       const arr = Array.isArray(src) ? src : src.split(/[;|]/);
-      return arr.map(item=>{
-        const txt = (typeof item==='object' ? (item.url||item.label||'') : item).trim();
-        if(!txt) return '';
-        if(/^https?:\/\//.test(txt)){
-          return `<a href="${txt}" target="_blank">${txt}</a>`;
-        }
-        return txt;
-      }).filter(x=>x).join(', ');
+      return arr
+        .map(item => {
+          const t = (typeof item==='object' ? (item.url||item.label||'') : item).trim();
+          if(!t) return '';
+          if(/^https?:\/\//.test(t)) return `<a href="${t}" target="_blank">${t}</a>`;
+          return t;
+        })
+        .filter(t=>t)
+        .join(', ');
     }
 
     function buildTimeline(){
-      const svg = d3.select('#timelineSVG').attr('width',0).attr('height',0);
+      const svg = d3.select('#timelineSVG');
       svg.selectAll('*').remove();
 
-      const years = jobs.map(j=>j.ai_plus_full_year||j.ai_only_full_year).filter(y=>!!y);
+      const years = jobs.map(j=>j.ai_plus_full_year||j.ai_only_full_year).filter(Boolean);
       const yMin = Math.min(...years), yMax = Math.max(...years);
 
       const xScale = d3.scaleLinear()
         .domain([yMin,yMax])
-        .range([LEFT_PAD,(yMax-yMin)*YEAR_PX+LEFT_PAD]);
+        .range([LEFT_PAD, (yMax-yMin)*YEAR_PX + LEFT_PAD]);
 
-      // group jobs by year
+      // bucket by target year
       const buckets = {};
-      jobs.forEach(j=>{
+      jobs.forEach(j => {
         const yr = j.ai_plus_full_year||j.ai_only_full_year;
         if(!yr) return;
         (buckets[yr] = buckets[yr]||[]).push(j);
       });
 
-      const maxStack = Math.max(...Object.values(buckets).map(arr=>arr.length));
+      const maxStack = Math.max(...Object.values(buckets).map(a=>a.length));
       const H = TOP_PAD + maxStack*(CARD_H+GAP_V) + 120;
       const W = xScale(yMax) + CARD_W + LEFT_PAD;
-
       svg.attr('width',W).attr('height',H);
 
-      // year lines & labels
-      svg.append('g')
-        .selectAll('g').data(d3.range(yMin,yMax+1)).enter()
+      // draw year lines & labels
+      svg.append('g').selectAll('g').data(d3.range(yMin,yMax+1)).enter()
         .append('g')
-          .attr('transform', d => `translate(${xScale(d)},0)`)
+          .attr('transform',d=>`translate(${xScale(d)},0)`)
         .call(g=>{
           g.append('line').attr('class','tick-line').attr('y1',0).attr('y2',H);
           g.append('text').attr('class','tick-text').attr('y',18).text(d=>d);
         });
 
-      // job cards
+      // draw each job card
       Object.entries(buckets).forEach(([yr,list])=>{
-        list.forEach((jobObj, i)=>{
+        list.forEach((j,i)=>{
           const gx = xScale(+yr) - CARD_W/2;
           const gy = TOP_PAD + i*(CARD_H+GAP_V);
-
           const gEl = svg.append('g')
             .attr('transform',`translate(${gx},${gy})`)
-            .attr('data-j', jobObj.job_code);
+            .attr('data-j', j.job_code);
 
+          // rect catches events
           gEl.append('rect')
             .attr('class','job-rect')
             .attr('width',CARD_W)
-            .attr('height',CARD_H);
+            .attr('height',CARD_H)
+            .on('mousemove', handleHover)
+            .on('mouseleave',()=>d3.select('#tooltip').style('visibility','hidden'))
+            .on('click', handleClick);
 
           gEl.append('text')
             .attr('class','job-text')
             .attr('x',CARD_W/2)
             .attr('y',CARD_H/2+4)
             .attr('text-anchor','middle')
-            .text(trunc(jobObj.job_title,22));
+            .text(trunc(j.job_title,22));
         });
       });
-
-      attachCardEvents();
-      enableDrag();
     }
 
-    function attachCardEvents(){
-      const tip = d3.select('#tooltip');
-      d3.selectAll('g[data-j]')
-        .on('mousemove', function(event){
-          const code = this.getAttribute('data-j');
-          const j = findJob(code);
-          tip.html(`
-            <h4>${j.job_title}</h4>
-            <p>AI % Now: ${j.ai_pct_now ?? '—'}%</p>
-            <p>AI + Auto % Now: ${j.ai_plus_pct_now ?? '—'}%</p>
-            <p>Full-Auto Year: ${j.ai_plus_full_year||j.ai_only_full_year||'—'}</p>
-            <p><b>Sources:</b> ${renderSources(j.sources)}</p>
-          `)
-          .style('visibility','visible')
-          .style('left', (event.clientX+16) + 'px')
-          .style('top',  (event.clientY+16) + 'px');
-        })
-        .on('mouseleave', ()=> tip.style('visibility','hidden'))
-        .on('click', function(){
-          const code = this.getAttribute('data-j');
-          const j = findJob(code);
-          showModal(`
-            <h3>${j.job_title}</h3>
-            <p><b>Industry:</b> ${j.industry}</p>
-            <p><b>AI % Now:</b> ${j.ai_pct_now ?? '—'}%</p>
-            <p><b>AI + Auto % Now:</b> ${j.ai_plus_pct_now ?? '—'}%</p>
-            <p><b>Full-Auto Year:</b> ${j.ai_plus_full_year||j.ai_only_full_year||'—'}</p>
-            <p><b>Sources:</b> ${renderSources(j.sources)}</p>
-          `);
-        });
+    function handleHover(event){
+      const code = d3.select(this.parentNode).attr('data-j');
+      const j = findJob(code);
+      d3.select('#tooltip')
+        .html(`
+          <h4>${j.job_title}</h4>
+          <p>AI % Now: ${j.ai_pct_now ?? '—'}%</p>
+          <p>AI + Auto % Now: ${j.ai_plus_pct_now ?? '—'}%</p>
+          <p>Full-Auto Year: ${j.ai_plus_full_year||j.ai_only_full_year||'—'}</p>
+          <p><b>Sources:</b> ${renderSources(j.sources)}</p>
+        `)
+        .style('visibility','visible')
+        .style('left', (event.clientX+16)+'px')
+        .style('top',  (event.clientY+16)+'px');
+    }
+
+    function handleClick(){
+      const code = d3.select(this.parentNode).attr('data-j');
+      const j = findJob(code);
+      showModal(`
+        <h3>${j.job_title}</h3>
+        <p><b>Industry:</b> ${j.industry}</p>
+        <p><b>AI % Now:</b> ${j.ai_pct_now ?? '—'}%</p>
+        <p><b>AI + Auto % Now:</b> ${j.ai_plus_pct_now ?? '—'}%</p>
+        <p><b>Full-Auto Year:</b> ${j.ai_plus_full_year||j.ai_only_full_year||'—'}</p>
+        <p><b>Sources:</b> ${renderSources(j.sources)}</p>
+      `);
     }
 
     function buildDash(){
@@ -224,18 +317,27 @@
     function enableDrag(){
       const wrap = document.getElementById('timelineWrap');
       let down=false, sx,sy,sl,st;
-      wrap.onmousedown = e => { down=true; sx=e.pageX; sy=e.pageY; sl=wrap.scrollLeft; st=wrap.scrollTop; };
-      wrap.onmousemove = e => { if(down){ wrap.scrollLeft = sl-(e.pageX-sx); wrap.scrollTop = st-(e.pageY-sy); }};
+      wrap.onmousedown = e=>{
+        down=true; sx=e.pageX; sy=e.pageY;
+        sl=wrap.scrollLeft; st=wrap.scrollTop;
+      };
+      wrap.onmousemove = e=>{
+        if(down){
+          wrap.scrollLeft = sl-(e.pageX-sx);
+          wrap.scrollTop  = st-(e.pageY-sy);
+        }
+      };
       document.onmouseup = ()=> down=false;
       wrap.addEventListener('wheel', e=>{
         if(!e.ctrlKey) return;
         e.preventDefault();
         const svg = wrap.querySelector('svg');
-        const cur = wrap._z||1, nxt = Math.max(.5, Math.min(3, cur*(e.deltaY<0?1.1:.9)));
+        const cur = wrap._z||1;
+        const nxt = Math.max(.5, Math.min(3, cur * (e.deltaY<0 ? 1.1 : .9)));
         wrap._z = nxt;
         svg.style.transformOrigin = '0 0';
         svg.style.transform = `scale(${nxt})`;
-      }, {passive:false});
+      }, { passive: false });
     }
 
     function navInit(){
@@ -243,10 +345,11 @@
       const d = document.getElementById('btnDash');
       t.onclick = ()=>{ t.classList.add('active'); d.classList.remove('active'); showView('timelineWrap'); };
       d.onclick = ()=>{ d.classList.add('active'); t.classList.remove('active'); showView('dashWrap'); };
-      document.getElementById('btnAbout').onclick = about;
+      document.getElementById('btnAbout').onclick = showAbout;
+
       function showView(id){
-        document.getElementById('timelineWrap').style.display = id==='timelineWrap'?'block':'none';
-        document.getElementById('dashWrap').style.display     = id==='dashWrap'    ?'block':'none';
+        document.getElementById('timelineWrap').style.display = id==='timelineWrap' ? 'block' : 'none';
+        document.getElementById('dashWrap').style.display     = id==='dashWrap'     ? 'block' : 'none';
       }
     }
 
@@ -257,14 +360,15 @@
     }
 
     function showModal(html){
-      document.getElementById('modalBox').innerHTML = html + `<div class="modal-close"><button onclick="hideModal()">Close</button></div>`;
+      document.getElementById('modalBox').innerHTML = html + 
+        `<div class="modal-close"><button onclick="hideModal()">Close</button></div>`;
       document.getElementById('modalOv').classList.add('show');
     }
     function hideModal(){
       document.getElementById('modalOv').classList.remove('show');
     }
 
-    function about(){
+    function showAbout(){
       showModal(`
         <h3>About AITimeline</h3>
         <p><strong>AITimeline.net</strong> visualises expert predictions for when AI & automation will fully perform specific jobs, plus how much is automated today.</p>
@@ -273,7 +377,16 @@
       `);
     }
 
-    function debounce(fn,ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
+    function debounce(fn,ms){
+      let t;
+      return function(...args){
+        clearTimeout(t);
+        t = setTimeout(()=>fn.apply(this,args), ms);
+      };
+    }
+
+    // after defining everything, enable drag on first init
+    document.addEventListener('DOMContentLoaded', enableDrag);
   </script>
 </body>
 </html>
