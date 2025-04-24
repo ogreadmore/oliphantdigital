@@ -9,7 +9,6 @@
 :root{--bg:#18181b;--fg:#e4e4e7;--accent:#c026d3;--accent-light:#d946ef;--scroll:#3f3f46}
 *{box-sizing:border-box;margin:0;padding:0}
 body{height:100vh;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;display:flex;flex-direction:column;overflow:hidden}
-a{color:var(--accent-light);text-decoration:none}
 /* header ------------------------------------------------------------*/
 header{display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem;background:#000a;backdrop-filter:blur(8px)}
 header h1{font-size:1rem;font-weight:600}
@@ -38,7 +37,7 @@ thead th{position:sticky;top:0;background:#000c;padding:.6rem;font-size:.75rem;t
 tbody td{padding:.55rem .65rem;font-size:.72rem;border-bottom:1px solid #2f2f33}
 tbody tr:hover{background:#222225}
 /* tooltip / modal ---------------------------------------------------*/
-#tooltip{position:fixed;pointer-events:none;visibility:hidden;background:#000d;padding:.6rem .8rem;border-radius:6px;font-size:.77rem;max-width:280px;line-height:1.4}
+#tooltip{position:fixed;pointer-events:none;visibility:hidden;background:#000d;padding:.6rem .8rem;border-radius:6px;font-size:.77rem;max-width:240px;line-height:1.35;z-index:40}
 #tooltip h4{margin:0 0 .25rem;font-size:.8rem;color:var(--accent-light)}
 .modal-overlay{position:fixed;inset:0;background:#000c;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:30;opacity:0;visibility:hidden;transition:.2s}
 .modal-overlay.show{opacity:1;visibility:visible}
@@ -48,7 +47,7 @@ tbody tr:hover{background:#222225}
 .modal-close button{background:#3f3f46;color:var(--fg);padding:.4rem .8rem;border-radius:6px;font-size:.75rem}
 /* tweaks */
 @media(max-width:850px){header h1{font-size:.92rem}button{font-size:.76rem;padding:.4rem .8rem}.job-text{font-size:.6rem}}
-@media(max-width:650px){button{font-size:.73rem;padding:.35rem .7rem}.tick-text{font-size:.8rem;text-anchor:start}.job-text{font-size:.55rem}}
+@media(max-width:650px){button{font-size:.73rem;padding:.35rem .7rem}.tick-text{text-anchor:start;font-size:.8rem}.job-text{font-size:.55rem}}
 </style>
 </head>
 <body>
@@ -66,12 +65,17 @@ tbody tr:hover{background:#222225}
   <div id="dashWrap" class="view">
     <table id="dashTbl"><thead><tr>
       <th>Job</th><th>AI % Now</th><th>AI + Auto % Now</th>
-      <th>Industry</th><th>Full-Auto Year</th><th>Sources</th></tr></thead><tbody></tbody></table>
+      <th>Industry</th><th>Full-Auto Year</th></tr></thead><tbody></tbody></table>
   </div>
 </main>
 
 <div id="tooltip"></div>
 <div id="modalOv" class="modal-overlay"><div id="modalBox" class="modal"></div></div>
+
+<!-- --------------- COMPLETE DATA --------------- -->
+<script id="jobData" type="application/json">
+PUT-YOUR-FULL-JSON-HERE  <!-- (for brevity in this snippet).   Paste exactly the object you wrote in the last message) -->
+</script>
 
 <script>
 /* -------- constants ---------- */
@@ -85,31 +89,17 @@ const ROWS_PER_COL_M=4;                // mobile rows per column
 let jobs=[],isMob=false;
 
 /* -------- load data ---------- */
-fetch('jobs.json').then(r=>r.json()).then(j=>{
-  jobs=Object.values(j).flat();
+(function loadData(){
+  const raw=JSON.parse(document.getElementById('jobData').textContent);
+  jobs=Object.values(raw).flat();
   init();
-}).catch(e=>console.error('jobs.json missing',e));
+})();
 
+/* -------- init --------------- */
 function init(){
   isMob=window.innerWidth<MOBILE_BREAK;
   buildTimeline(); buildDash(); navInit(); modalInit();
   window.addEventListener('resize',debounce(()=>location.reload(),300));
-}
-
-/* -------- helpers ------------*/
-function trunc(s,l){return s.length>l?s.slice(0,l-1)+'…':s;}
-function find(code){return jobs.find(j=>j.job_code===code);}  
-function renderSources(src){
-  if(!src||src.length===0)return '—';
-  const arr=Array.isArray(src)?src:(typeof src==='string'?src.split(/[;|]/):[]);
-  return arr.map(s=>{
-     if(typeof s==='object'){
-        const label=s.label||s.url||''; const url=s.url||'';
-        return url?`<a href="${url}" target="_blank">${label}</a>`:label;
-     }
-     const st=s.trim();
-     return st.startsWith('http')?`<a href="${st}" target="_blank">Source</a>`:st;
-  }).join(', ');
 }
 
 /* -------- timeline -----------*/
@@ -150,13 +140,11 @@ function horizontal(svg,yMin,yMax){
 function vertical(svg,yMin,yMax){
   const y=d3.scaleLinear().domain([yMin,yMax]).range([TOP_PAD,(yMax-yMin)*YEAR_PX+TOP_PAD]);
   const buckets={}; jobs.forEach(j=>{const yr=j.ai_plus_full_year??j.ai_only_full_year;(buckets[yr]=buckets[yr]||[]).push(j);});
-  /* calc max columns across years */
   const maxCol=Math.max(...Object.values(buckets).map(b=>Math.ceil(b.length/ROWS_PER_COL_M)));
   const W=LEFT_PAD_M+maxCol*(CARD_W+GAP_H)+40;
   const H=y(yMax)+ROWS_PER_COL_M*(CARD_H+GAP_V)+120;
   svg.attr('width',W).attr('height',H);
 
-  /* grid */
   svg.append('g').selectAll('g').data(d3.range(yMin,yMax+1)).enter()
      .append('g').attr('transform',d=>`translate(0,${y(d)})`)
      .call(g=>{
@@ -164,7 +152,6 @@ function vertical(svg,yMin,yMax){
        g.append('text').attr('class','tick-text').attr('x',10).attr('dy',5).text(d=>d);
      });
 
-  /* cards with wrap */
   Object.entries(buckets).forEach(([yr,list])=>{
      list.forEach((j,idx)=>{
         const col=Math.floor(idx/ROWS_PER_COL_M);
@@ -179,15 +166,17 @@ function vertical(svg,yMin,yMax){
   });
 }
 
-/* -------- interactions ------*/
+/* -------- shared helpers ------*/
+function trunc(s,l){return s.length>l?s.slice(0,l-1)+'…':s;}
+function find(code){return jobs.find(j=>j.job_code===code);}
+
 function attachCardEvents(){
   const tip=document.getElementById('tooltip');
   d3.selectAll('g[data-j]')
     .on('mousemove',function(e){if(isMob)return;const j=find(this.dataset.j);
        tip.innerHTML=`<h4>${j.job_title}</h4><p>AI % Now: ${j.ai_pct_now??'—'}%</p>
        <p>AI + Auto % Now: ${j.ai_plus_pct_now??'—'}%</p>
-       <p>Full-Auto: ${(j.ai_plus_full_year??j.ai_only_full_year)||'—'}</p>
-       <p><b>Sources:</b> ${renderSources(j.sources)}</p>`;
+       <p>Full-Auto: ${(j.ai_plus_full_year??j.ai_only_full_year)||'—'}</p>`;
        tip.style.left=`${e.clientX+16}px`;tip.style.top=`${e.clientY+16}px`;tip.style.visibility='visible';
     }).on('mouseleave',()=>{if(!isMob)tip.style.visibility='hidden'})
     .on('click',function(){const j=find(this.dataset.j);
@@ -195,8 +184,7 @@ function attachCardEvents(){
          <p><b>AI % Now:</b> ${j.ai_pct_now??'—'}%</p>
          <p><b>AI + Automation % Now:</b> ${j.ai_plus_pct_now??'—'}%</p>
          <p><b>Full Automation Year:</b> ${(j.ai_plus_full_year??j.ai_only_full_year)||'—'}</p>
-         <p><b>Upskill:</b> ${(j.upskill_suggestions||'').split('|').join(', ')}</p>
-         <p><b>Sources:</b> ${renderSources(j.sources)}</p>`);});
+         <p><b>Upskill:</b> ${(j.upskill_suggestions||'').split('|').join(', ')}</p>`);});
 }
 
 /* dashboard */
@@ -205,8 +193,7 @@ function buildDash(){
   jobs.forEach(j=>{
     tbody.append('tr').html(`<td>${j.job_title}</td>
       <td>${j.ai_pct_now??'—'}%</td><td>${j.ai_plus_pct_now??'—'}%</td>
-      <td>${j.industry}</td><td>${j.ai_plus_full_year??j.ai_only_full_year??'—'}</td>
-      <td>${renderSources(j.sources)}</td>`);
+      <td>${j.industry}</td><td>${j.ai_plus_full_year??j.ai_only_full_year??'—'}</td>`);
   });
 }
 
@@ -235,8 +222,8 @@ function showModal(html){document.getElementById('modalBox').innerHTML=html+`<di
 function hideModal(){document.getElementById('modalOv').classList.remove('show');}
 function about(){showModal(`<h3>About AITimeline</h3>
   <p><strong>AITimeline.net</strong> visualises expert predictions for when AI &amp; automation will fully perform specific jobs, plus how much is automated today.</p>
-  <p>Hover (desktop) or tap (mobile) a card for details. Data sources include WEF 2023, McKinsey 2023, Stanford AI Index 2024, OECD, and peer-reviewed studies (2019-25).</p>
-  <p>Built by <em>Oliphant Digital</em>.</p>`);}  
+  <p>Hover (desktop) or tap (mobile) a card for details. Data sources include WEF 2023, McKinsey 2023, Stanford AI Index 2024, OECD &amp; peer-reviewed studies (2019-25).</p>
+  <p>Built by <em>Oliphant Digital</em>.</p>`);}
 function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);}}
 </script>
 </body>
