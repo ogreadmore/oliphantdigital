@@ -13,7 +13,7 @@
   <meta name="twitter:title" content="AI Job Replacement Timeline" />
   <meta name="twitter:description" content="Explore expert predictions for when AI will automate your job. Browse an interactive timeline by industry." />
   <meta name="twitter:image" content="https://aitimeline.net/preview.jpg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <style>
     :root {
@@ -42,6 +42,7 @@
       color: var(--accent-light);
       text-decoration: none;
     }
+
     header {
       display: flex;
       justify-content: space-between;
@@ -72,6 +73,7 @@
     button:hover {
       background: var(--accent);
     }
+
     #filters {
       background: #1f1f23;
       padding: 0.8rem 1rem;
@@ -95,6 +97,7 @@
       border-radius: 4px;
       font-size: .85rem;
     }
+
     main {
       flex: 1;
       position: relative;
@@ -116,6 +119,9 @@
       overflow: auto;
       padding: 1rem;
     }
+    /* --------------------
+       SCROLLBAR
+       -------------------- */
     #timelineWrap::-webkit-scrollbar {
       height: 13px;
       width: 13px;
@@ -129,6 +135,187 @@
     #timelineWrap:hover::-webkit-scrollbar-thumb {
       background: var(--accent);
     }
+
+    /* --------------------
+       SVG ELEMENTS
+       -------------------- */
+    .tick-line {
+      stroke: #2d2d32;
+      stroke-width: 1;
+    }
+    .tick-text {
+      fill: var(--fg);
+      font-size: .75rem;
+      font-weight: 400;
+      text-anchor: middle;
+    }
+    .job-rect {
+      rx: 6;
+      ry: 6;
+      fill: var(--accent);
+    }
+    .job-text {
+      fill: #fff;
+      font-size: .64rem;
+      font-weight: 600;
+      pointer-events: none;
+    }
+
+    /* --------------------
+       DASHBOARD TABLE
+       -------------------- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #000c;
+      padding: .6rem;
+      font-size: .75rem;
+      text-align: left;
+      color: var(--accent-light);
+      backdrop-filter: blur(6px);
+    }
+    tbody td {
+      padding: .55rem .65rem;
+      font-size: .72rem;
+      border-bottom: 1px solid #2f2f33;
+      vertical-align: top;
+    }
+    tbody tr:hover {
+      background: #222225;
+    }
+
+    /* --------------------
+       TOOLTIP & MODAL
+       -------------------- */
+    #tooltip {
+      position: fixed;
+      pointer-events: none;
+      visibility: hidden;
+      background: #000d;
+      padding: .6rem .8rem;
+      border-radius: 6px;
+      font-size: .77rem;
+      max-width: 300px;
+      line-height: 1.4;
+    }
+    #tooltip h4 {
+      margin: 0 0 .25rem;
+      font-size: .8rem;
+      color: var(--accent-light);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: #000c;
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      opacity: 0;
+      visibility: hidden;
+      transition: .2s;
+    }
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: #26262b;
+      padding: 1rem 1.2rem;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 92%;
+      font-size: .84rem;
+      line-height: 1.5;
+    }
+    .modal h3 {
+      margin: 0 0 .55rem;
+      font-size: .95rem;
+      color: var(--accent-light);
+    }
+    .modal-close {
+      text-align: right;
+      margin-top: .85rem;
+    }
+    .modal-close button {
+      background: #3f3f46;
+      color: var(--fg);
+      padding: .4rem .8rem;
+      border-radius: 6px;
+      font-size: .75rem;
+    }
+
+    .modal-tabs {
+      display: flex;
+      gap: .5rem;
+      margin-bottom: .75rem;
+    }
+    .modal-tabs button {
+      background: #3a3a40;
+      padding: .4rem .8rem;
+      border-radius: 5px;
+      border: none;
+      color: var(--fg);
+      font-size: .75rem;
+      cursor: pointer;
+    }
+    .modal-tabs button.active {
+      background: var(--accent-light);
+      color: #000;
+    }
+    .modal-tab-content {
+      display: none;
+    }
+    .modal-tab-content.active {
+      display: block;
+    }
+
+    /* --------------------
+       IMPACT BAR
+       -------------------- */
+    .impact-bar {
+      display: flex;
+      gap: 6px;
+      margin: .6rem 0;
+    }
+    .impact-bar div {
+      flex: 1;
+      height: 12px;
+      border-radius: 4px;
+      background: #3a3a3f;
+      position: relative;
+    }
+    .impact-bar div.filled {
+      background: var(--accent-light);
+    }
+    .impact-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: .72rem;
+      opacity: 0.7;
+    }
+
+    /* --------------------
+       RESPONSIVE TWEAKS
+       -------------------- */
+    @media(max-width:850px) {
+      header h1 { font-size:.92rem; }
+      button { font-size:.76rem; padding:.4rem .8rem; }
+      .job-text { font-size:.6rem; }
+    }
+    @media(max-width:650px) {
+      button { font-size:.73rem; padding:.35rem .7rem; }
+      .tick-text { font-size:.8rem; text-anchor:start; }
+      .job-text { font-size:.55rem; }
+    }
   </style>
 </head>
 <body>
@@ -140,35 +327,41 @@
       <button id="btnAbout">About</button>
     </nav>
   </header>
-  <div id="filters">
-    <label>
+
+  <!-- FILTER BAR -->
+  <div style="padding: .75rem 1rem; background: #1f1f23; display: flex; gap: 1rem; flex-wrap: wrap;">
+    <label style="font-size:.75rem;">
       Industry:
-      <select id="filterIndustry">
+      <select id="filterIndustry" style="margin-left: .4rem; font-size:.75rem;">
         <option value="">All</option>
       </select>
     </label>
-    <label>
+
+    <label style="font-size:.75rem;">
       Automation Risk:
-      <select id="filterRisk">
+      <select id="filterRisk" style="margin-left: .4rem; font-size:.75rem;">
         <option value="">All</option>
         <option value="Low">Low</option>
         <option value="Medium">Medium</option>
         <option value="High">High</option>
       </select>
     </label>
-    <label>
+
+    <label style="font-size:.75rem;">
       Min Year:
-      <input type="number" id="filterMinYear" placeholder="2025" min="2020">
+      <input type="number" id="filterMinYear" style="width:70px; font-size:.75rem;" min="2024" />
     </label>
-    <label>
+
+    <label style="font-size:.75rem;">
       Mode:
-      <select id="filterMode">
+      <select id="filterMode" style="margin-left: .4rem; font-size:.75rem;">
         <option value="">Any</option>
         <option value="AI">AI Only</option>
         <option value="AIPlus">AI + Robotics</option>
       </select>
     </label>
   </div>
+
   <main>
     <div id="timelineWrap" class="view">
       <svg id="timelineSVG"></svg>
@@ -190,6 +383,7 @@
       </table>
     </div>
   </main>
+
   <div id="tooltip"></div>
 
   <div id="modalOv" class="modal-overlay">
@@ -207,8 +401,10 @@
       </div>
     </div>
   </div>
-
   <script>
+    /* ---------------------------------------
+       CONSTANTS
+       --------------------------------------- */
     const CARD_W = 140, CARD_H = 26;
     const GAP_V = 14, GAP_H = 14;
     const LEFT_PAD = 90, TOP_PAD = 60;
@@ -218,6 +414,9 @@
     const ROWS_PER_COL_M = 4;
     let jobs = [], isMob = false;
 
+    /* ---------------------------------------
+       LOAD DATA
+       --------------------------------------- */
     fetch('jobs.json')
       .then(r => r.json())
       .then(data => {
@@ -227,6 +426,9 @@
       })
       .catch(e => console.error('jobs.json missing', e));
 
+    /* ---------------------------------------
+       INIT + FILTERS
+       --------------------------------------- */
     function init(){
       isMob = window.innerWidth < MOBILE_BREAK;
       attachFilterListeners();
@@ -237,7 +439,8 @@
     }
 
     function attachFilterListeners(){
-      ['filterIndustry', 'filterRisk', 'filterMinYear', 'filterMode'].forEach(id => {
+      const controls = ['filterIndustry', 'filterRisk', 'filterMinYear', 'filterMode'];
+      controls.forEach(id => {
         document.getElementById(id).addEventListener('input', applyFilters);
       });
     }
@@ -248,7 +451,7 @@
       const minYear = parseInt(document.getElementById('filterMinYear').value, 10);
       const mode = document.getElementById('filterMode').value;
 
-      const filtered = jobs.filter(j => {
+      let filtered = jobs.filter(j => {
         if (industry && j.industry !== industry) return false;
         if (risk && getRisk(j) !== risk) return false;
         const yr = j.ai_plus_full_year ?? j.ai_only_full_year;
@@ -304,39 +507,33 @@
       jobs = filteredJobs;
       buildDash();
     }
-  </script>
-  <script>
+
     function showModalTabs(j){
       document.querySelectorAll('.modal-tab-content').forEach(e => e.classList.remove('active'));
       document.querySelectorAll('.modal-tabs button').forEach(e => e.classList.remove('active'));
       document.querySelector('[data-tab="overview"]').classList.add('active');
       document.getElementById('tab-overview').classList.add('active');
 
-      document.getElementById('tab-overview').innerHTML = `
+      document.getElementById('tab-overview').innerHTML = 
         <h3>${j.job_title}</h3>
         <p><b>Industry:</b> ${j.industry}</p>
         <p><b>Automation Risk:</b> ${getRisk(j)}</p>
         <p><b>Confidence Level:</b> ${getConsensusScore(j)}</p>
         <p><b>Job Impact Score:</b> ${getImpactScore(j)} / 2</p>
-      `;
+      ;
 
-      document.getElementById('tab-forecast').innerHTML = `
+      document.getElementById('tab-forecast').innerHTML = 
         <p><b>AI % Now:</b> ${j.ai_pct_now ?? '—'}%</p>
         <p><b>AI + Auto % Now:</b> ${j.ai_plus_pct_now ?? '—'}%</p>
         <p><b>Full-Auto Year:</b> ${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</p>
-      `;
+      ;
 
-      document.getElementById('tab-sources').innerHTML = `
+      document.getElementById('tab-sources').innerHTML = 
         <p><b>Sources:</b><br>${renderSources(j.sources)}</p>
         <p><b>Reasoning:</b> ${j.reasoning}</p>
-      `;
+      ;
 
       document.getElementById('modalOv').classList.add('show');
-    }
-
-    function renderSources(src){
-      if(!src || src.length === 0) return '—';
-      return src.map(s => s.trim()).join('<br>');
     }
 
     document.addEventListener('click', e => {
@@ -344,58 +541,9 @@
         document.querySelectorAll('.modal-tab-content').forEach(e => e.classList.remove('active'));
         document.querySelectorAll('.modal-tabs button').forEach(e => e.classList.remove('active'));
         e.target.classList.add('active');
-        document.getElementById(`tab-${e.target.dataset.tab}`).classList.add('active');
+        document.getElementById(tab-${e.target.dataset.tab}).classList.add('active');
       }
     });
-
-    function hideModal(){
-      document.getElementById('modalOv').classList.remove('show');
-    }
-
-    function navInit(){
-      const t = document.getElementById('btnTime');
-      const d = document.getElementById('btnDash');
-      t.onclick = () => {
-        t.classList.add('active');
-        d.classList.remove('active');
-        document.getElementById('timelineWrap').style.display = 'block';
-        document.getElementById('dashWrap').style.display = 'none';
-      };
-      d.onclick = () => {
-        d.classList.add('active');
-        t.classList.remove('active');
-        document.getElementById('timelineWrap').style.display = 'none';
-        document.getElementById('dashWrap').style.display = 'block';
-      };
-      document.getElementById('btnAbout').onclick = about;
-    }
-
-    function modalInit(){
-      document.getElementById('modalOv').onclick = e => {
-        if (e.target.id === 'modalOv') hideModal();
-      };
-    }
-
-    function about(){
-      showModalTabs({
-        job_title: "About AITimeline.net",
-        industry: "N/A",
-        ai_pct_now: null,
-        ai_plus_pct_now: null,
-        ai_plus_full_year: null,
-        ai_only_full_year: null,
-        sources: ["Academic and industry whitepapers", "Expert panels", "AI research consortia"],
-        reasoning: "AITimeline.net is a public visualization tool built by Oliphant Digital. It showcases current and predicted automation levels across job roles. Hover or tap a job to see automation predictions and reasoning."
-      });
-    }
-
-    function debounce(fn, ms){
-      let timer;
-      return (...args) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => fn(...args), ms);
-      };
-    }
   </script>
 </body>
 </html>
