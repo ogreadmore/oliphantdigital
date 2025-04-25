@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Job Replacement Timeline | AITimeline.net</title>
+  <meta name="description" content="See when AI is projected to replace your job — and by how much. Explore a visual timeline with expert predictions across industries. Updated 2025.">
+  <meta property="og:title" content="AI Job Replacement Timeline" />
+  <meta property="og:description" content="When will AI take over your job? This interactive timeline visualizes AI's impact on 30+ job roles, based on expert forecasts." />
+  <meta property="og:url" content="https://aitimeline.net/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://aitimeline.net/preview.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AI Job Replacement Timeline" />
+  <meta name="twitter:description" content="Explore expert predictions for when AI will automate your job. Browse an interactive timeline by industry." />
+  <meta name="twitter:image" content="https://aitimeline.net/preview.jpg" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <style>
+    :root {
+      --bg: #18181b;
+      --fg: #e4e4e7;
+      --accent: #c026d3;
+      --accent-light: #d946ef;
+      --scroll: #3f3f46;
+      --card-bg: #2c2c30;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      height: 100vh;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    a {
+      color: var(--accent-light);
+      text-decoration: none;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .75rem 1rem;
+      background: #000a;
+      backdrop-filter: blur(8px);
+    }
+    header h1 {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    nav {
+      display: flex;
+      gap: .45rem;
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 7px;
+      padding: .45rem .9rem;
+      font-size: .8rem;
+      background: #3f3f46;
+      color: var(--fg);
+      transition: .2s;
+    }
+    button.active,
+    button:hover {
+      background: var(--accent);
+    }
+
+    #filters {
+      background: #1f1f23;
+      padding: 0.8rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: .85rem;
+      border-bottom: 1px solid #2a2a2f;
+    }
+    #filters label {
+      display: flex;
+      flex-direction: column;
+      gap: .25rem;
+    }
+    #filters select,
+    #filters input {
+      background: #2d2d32;
+      border: none;
+      color: var(--fg);
+      padding: .3rem .5rem;
+      border-radius: 4px;
+      font-size: .85rem;
+    }
+
+    main {
+      flex: 1;
+      position: relative;
+    }
+    .view {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    #timelineWrap {
+      overflow: auto;
+      cursor: grab;
+    }
+    #timelineWrap:active {
+      cursor: grabbing;
+    }
+    #dashWrap {
+      display: none;
+      overflow: auto;
+      padding: 1rem;
+    }
+    /* --------------------
+       SCROLLBAR
+       -------------------- */
+    #timelineWrap::-webkit-scrollbar {
+      height: 13px;
+      width: 13px;
+    }
+    #timelineWrap::-webkit-scrollbar-track {
+      background: #1f1f23;
+    }
+    #timelineWrap::-webkit-scrollbar-thumb {
+      background: var(--scroll);
+    }
+    #timelineWrap:hover::-webkit-scrollbar-thumb {
+      background: var(--accent);
+    }
+
+    /* --------------------
+       SVG ELEMENTS
+       -------------------- */
+    .tick-line {
+      stroke: #2d2d32;
+      stroke-width: 1;
+    }
+    .tick-text {
+      fill: var(--fg);
+      font-size: .75rem;
+      font-weight: 400;
+      text-anchor: middle;
+    }
+    .job-rect {
+      rx: 6;
+      ry: 6;
+      fill: var(--accent);
+    }
+    .job-text {
+      fill: #fff;
+      font-size: .64rem;
+      font-weight: 600;
+      pointer-events: none;
+    }
+
+    /* --------------------
+       DASHBOARD TABLE
+       -------------------- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #000c;
+      padding: .6rem;
+      font-size: .75rem;
+      text-align: left;
+      color: var(--accent-light);
+      backdrop-filter: blur(6px);
+    }
+    tbody td {
+      padding: .55rem .65rem;
+      font-size: .72rem;
+      border-bottom: 1px solid #2f2f33;
+      vertical-align: top;
+    }
+    tbody tr:hover {
+      background: #222225;
+    }
+
+    /* --------------------
+       TOOLTIP & MODAL
+       -------------------- */
+    #tooltip {
+      position: fixed;
+      pointer-events: none;
+      visibility: hidden;
+      background: #000d;
+      padding: .6rem .8rem;
+      border-radius: 6px;
+      font-size: .77rem;
+      max-width: 300px;
+      line-height: 1.4;
+    }
+    #tooltip h4 {
+      margin: 0 0 .25rem;
+      font-size: .8rem;
+      color: var(--accent-light);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: #000c;
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      opacity: 0;
+      visibility: hidden;
+      transition: .2s;
+    }
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: #26262b;
+      padding: 1rem 1.2rem;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 92%;
+      font-size: .84rem;
+      line-height: 1.5;
+    }
+    .modal h3 {
+      margin: 0 0 .55rem;
+      font-size: .95rem;
+      color: var(--accent-light);
+    }
+    .modal-close {
+      text-align: right;
+      margin-top: .85rem;
+    }
+    .modal-close button {
+      background: #3f3f46;
+      color: var(--fg);
+      padding: .4rem .8rem;
+      border-radius: 6px;
+      font-size: .75rem;
+    }
+
+    .modal-tabs {
+      display: flex;
+      gap: .5rem;
+      margin-bottom: .75rem;
+    }
+    .modal-tabs button {
+      background: #3a3a40;
+      padding: .4rem .8rem;
+      border-radius: 5px;
+      border: none;
+      color: var(--fg);
+      font-size: .75rem;
+      cursor: pointer;
+    }
+    .modal-tabs button.active {
+      background: var(--accent-light);
+      color: #000;
+    }
+    .modal-tab-content {
+      display: none;
+    }
+    .modal-tab-content.active {
+      display: block;
+    }
+
+    /* --------------------
+       IMPACT BAR
+       -------------------- */
+    .impact-bar {
+      display: flex;
+      gap: 6px;
+      margin: .6rem 0;
+    }
+    .impact-bar div {
+      flex: 1;
+      height: 12px;
+      border-radius: 4px;
+      background: #3a3a3f;
+      position: relative;
+    }
+    .impact-bar div.filled {
+      background: var(--accent-light);
+    }
+    .impact-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: .72rem;
+      opacity: 0.7;
+    }
+
+    /* --------------------
+       RESPONSIVE TWEAKS
+       -------------------- */
+    @media(max-width:850px) {
+      header h1 { font-size:.92rem; }
+      button { font-size:.76rem; padding:.4rem .8rem; }
+      .job-text { font-size:.6rem; }
+    }
+    @media(max-width:650px) {
+      button { font-size:.73rem; padding:.35rem .7rem; }
+      .tick-text { font-size:.8rem; text-anchor:start; }
+      .job-text { font-size:.55rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AI Job Replacement Timeline</h1>
+    <nav>
+      <button id="btnTime" class="active">Timeline</button>
+      <button id="btnDash">Current %</button>
+      <button id="btnAbout">About</button>
+    </nav>
+  </header>
+
+  <!-- FILTER BAR -->
+  <div style="padding: .75rem 1rem; background: #1f1f23; display: flex; gap: 1rem; flex-wrap: wrap;">
+    <label style="font-size:.75rem;">
+      Industry:
+      <select id="filterIndustry" style="margin-left: .4rem; font-size:.75rem;">
+        <option value="">All</option>
+      </select>
+    </label>
+
+    <label style="font-size:.75rem;">
+      Automation Risk:
+      <select id="filterRisk" style="margin-left: .4rem; font-size:.75rem;">
+        <option value="">All</option>
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+    </label>
+
+    <label style="font-size:.75rem;">
+      Min Year:
+      <input type="number" id="filterMinYear" style="width:70px; font-size:.75rem;" min="2024" />
+    </label>
+
+    <label style="font-size:.75rem;">
+      Mode:
+      <select id="filterMode" style="margin-left: .4rem; font-size:.75rem;">
+        <option value="">Any</option>
+        <option value="AI">AI Only</option>
+        <option value="AIPlus">AI + Robotics</option>
+      </select>
+    </label>
+  </div>
+
+  <main>
+    <div id="timelineWrap" class="view">
+      <svg id="timelineSVG"></svg>
+    </div>
+    <div id="dashWrap" class="view">
+      <table id="dashTbl">
+        <thead>
+          <tr>
+            <th>Job</th>
+            <th>AI % Now</th>
+            <th>AI + Auto % Now</th>
+            <th>Industry</th>
+            <th>Full-Auto Year</th>
+            <th>Sources</th>
+            <th>Reasoning</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <div id="tooltip"></div>
+
+  <div id="modalOv" class="modal-overlay">
+    <div id="modalBox" class="modal">
+      <div class="modal-tabs">
+        <button data-tab="overview" class="active">Overview</button>
+        <button data-tab="forecast">Forecast</button>
+        <button data-tab="sources">Sources</button>
+      </div>
+      <div id="tab-overview" class="modal-tab-content active"></div>
+      <div id="tab-forecast" class="modal-tab-content"></div>
+      <div id="tab-sources" class="modal-tab-content"></div>
+      <div class="modal-close">
+        <button onclick="hideModal()">Close</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    /* ---------------------------------------
+       CONSTANTS
+       --------------------------------------- */
+    const CARD_W = 140, CARD_H = 26;
+    const GAP_V = 14, GAP_H = 14;
+    const LEFT_PAD = 90, TOP_PAD = 60;
+    const LEFT_PAD_M = 110;
+    const YEAR_PX = 160;
+    const MOBILE_BREAK = 650;
+    const ROWS_PER_COL_M = 4;
+    let jobs = [], isMob = false;
+
+    /* ---------------------------------------
+       LOAD DATA
+       --------------------------------------- */
+    fetch('jobs.json')
+      .then(r => r.json())
+      .then(data => {
+        jobs = Array.isArray(data) ? data : Object.values(data).flat();
+        populateIndustryDropdown();
+        init();
+      })
+      .catch(e => console.error('jobs.json missing', e));
+
+    /* ---------------------------------------
+       INIT + FILTERS
+       --------------------------------------- */
+    function init(){
+      isMob = window.innerWidth < MOBILE_BREAK;
+      attachFilterListeners();
+      applyFilters();
+      navInit();
+      modalInit();
+      window.addEventListener('resize', debounce(() => location.reload(), 300));
+    }
+
+    function attachFilterListeners(){
+      const controls = ['filterIndustry', 'filterRisk', 'filterMinYear', 'filterMode'];
+      controls.forEach(id => {
+        document.getElementById(id).addEventListener('input', applyFilters);
+      });
+    }
+
+    function applyFilters(){
+      const industry = document.getElementById('filterIndustry').value;
+      const risk = document.getElementById('filterRisk').value;
+      const minYear = parseInt(document.getElementById('filterMinYear').value, 10);
+      const mode = document.getElementById('filterMode').value;
+
+      let filtered = jobs.filter(j => {
+        if (industry && j.industry !== industry) return false;
+        if (risk && getRisk(j) !== risk) return false;
+        const yr = j.ai_plus_full_year ?? j.ai_only_full_year;
+        if (!yr || (minYear && yr < minYear)) return false;
+        if (mode === 'AI' && !j.ai_only_full_year) return false;
+        if (mode === 'AIPlus' && !j.ai_plus_full_year) return false;
+        return true;
+      });
+
+      updateTimeline(filtered);
+      updateDashboard(filtered);
+    }
+
+    function populateIndustryDropdown(){
+      const select = document.getElementById('filterIndustry');
+      const allIndustries = [...new Set(jobs.map(j => j.industry).filter(Boolean))].sort();
+      allIndustries.forEach(i => {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = i;
+        select.appendChild(opt);
+      });
+    }
+
+    function getRisk(j){
+      const pct = j.ai_plus_pct_now ?? j.ai_pct_now ?? 0;
+      if (pct >= 70) return 'High';
+      if (pct >= 30) return 'Medium';
+      return 'Low';
+    }
+
+    function getConsensusScore(j){
+      return (j.sources?.length || 0) >= 3 ? 'High' :
+             (j.sources?.length || 0) === 2 ? 'Medium' : 'Low';
+    }
+
+    function getImpactScore(j){
+      let score = 0;
+      if ((j.ai_plus_pct_now ?? 0) >= 70) score += 1;
+      if ((j.ai_only_full_year ?? j.ai_plus_full_year ?? 2100) < 2040) score += 1;
+      if ((j.reasoning || '').match(/empathy|social|judgment|courtroom|human interaction/i)) {
+        score -= 1;
+      }
+      return Math.max(0, score);
+    }
+
+    function updateTimeline(filteredJobs){
+      jobs = filteredJobs;
+      buildTimeline();
+    }
+
+    function updateDashboard(filteredJobs){
+      jobs = filteredJobs;
+      buildDash();
+    }
+
+    function showModalTabs(j){
+      document.querySelectorAll('.modal-tab-content').forEach(e => e.classList.remove('active'));
+      document.querySelectorAll('.modal-tabs button').forEach(e => e.classList.remove('active'));
+      document.querySelector('[data-tab="overview"]').classList.add('active');
+      document.getElementById('tab-overview').classList.add('active');
+
+      document.getElementById('tab-overview').innerHTML = `
+        <h3>${j.job_title}</h3>
+        <p><b>Industry:</b> ${j.industry}</p>
+        <p><b>Automation Risk:</b> ${getRisk(j)}</p>
+        <p><b>Confidence Level:</b> ${getConsensusScore(j)}</p>
+        <p><b>Job Impact Score:</b> ${getImpactScore(j)} / 2</p>
+      `;
+
+      document.getElementById('tab-forecast').innerHTML = `
+        <p><b>AI % Now:</b> ${j.ai_pct_now ?? '—'}%</p>
+        <p><b>AI + Auto % Now:</b> ${j.ai_plus_pct_now ?? '—'}%</p>
+        <p><b>Full-Auto Year:</b> ${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</p>
+      `;
+
+      document.getElementById('tab-sources').innerHTML = `
+        <p><b>Sources:</b><br>${renderSources(j.sources)}</p>
+        <p><b>Reasoning:</b> ${j.reasoning}</p>
+      `;
+
+      document.getElementById('modalOv').classList.add('show');
+    }
+
+    document.addEventListener('click', e => {
+      if (e.target.dataset.tab) {
+        document.querySelectorAll('.modal-tab-content').forEach(e => e.classList.remove('active'));
+        document.querySelectorAll('.modal-tabs button').forEach(e => e.classList.remove('active'));
+        e.target.classList.add('active');
+        document.getElementById(`tab-${e.target.dataset.tab}`).classList.add('active');
+      }
+    });
+  </script>
+</body>
+</html>
