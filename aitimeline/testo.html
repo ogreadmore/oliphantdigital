@@ -1,18 +1,22 @@
+this good?
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
   <meta charset="UTF-8">
   <title>AI Job Replacement Timeline | AITimeline.net</title>
-  <meta name="description" content="See when AI is projected to replace your job — and by how much. Explore a visual timeline with expert predictions across industries. Updated 2025.">
-  <meta property="og:title" content="AI Job Replacement Timeline" />
-  <meta property="og:description" content="When will AI take over your job? This interactive timeline visualizes AI's impact on 30+ job roles, based on expert forecasts." />
-  <meta property="og:url" content="https://aitimeline.net/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://aitimeline.net/preview.jpg" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="AI Job Replacement Timeline" />
-  <meta name="twitter:description" content="Explore expert predictions for when AI will automate your job. Browse an interactive timeline by industry." />
-  <meta name="twitter:image" content="https://aitimeline.net/preview.jpg" />
+<meta name="description" content="See when AI is projected to replace your job — and by how much. Explore a visual timeline with expert predictions across industries. Updated 2025.">
+<meta property="og:title" content="AI Job Replacement Timeline" />
+<meta property="og:description" content="When will AI take over your job? This interactive timeline visualizes AI's impact on 30+ job roles, based on expert forecasts." />
+<meta property="og:url" content="https://aitimeline.net/" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://aitimeline.net/preview.jpg" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AI Job Replacement Timeline" />
+<meta name="twitter:description" content="Explore expert predictions for when AI will automate your job. Browse an interactive timeline by industry." />
+<meta name="twitter:image" content="https://aitimeline.net/preview.jpg" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <style>
@@ -22,7 +26,6 @@
       --accent: #c026d3;
       --accent-light: #d946ef;
       --scroll: #3f3f46;
-      --card-bg: #2c2c30;
     }
     * {
       box-sizing: border-box;
@@ -42,7 +45,9 @@
       color: var(--accent-light);
       text-decoration: none;
     }
-
+    /* --------------------
+       HEADER STYLES
+       -------------------- */
     header {
       display: flex;
       justify-content: space-between;
@@ -74,30 +79,9 @@
       background: var(--accent);
     }
 
-    #filters {
-      background: #1f1f23;
-      padding: 0.8rem 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      font-size: .85rem;
-      border-bottom: 1px solid #2a2a2f;
-    }
-    #filters label {
-      display: flex;
-      flex-direction: column;
-      gap: .25rem;
-    }
-    #filters select,
-    #filters input {
-      background: #2d2d32;
-      border: none;
-      color: var(--fg);
-      padding: .3rem .5rem;
-      border-radius: 4px;
-      font-size: .85rem;
-    }
-
+    /* --------------------
+       MAIN WRAPPERS
+       -------------------- */
     main {
       flex: 1;
       position: relative;
@@ -119,6 +103,7 @@
       overflow: auto;
       padding: 1rem;
     }
+
     /* --------------------
        SCROLLBAR
        -------------------- */
@@ -208,7 +193,6 @@
       font-size: .8rem;
       color: var(--accent-light);
     }
-
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -226,19 +210,18 @@
       opacity: 1;
       visibility: visible;
     }
-
     .modal {
       background: #26262b;
       padding: 1rem 1.2rem;
       border-radius: 8px;
-      max-width: 600px;
+      max-width: 500px;
       width: 92%;
       font-size: .84rem;
-      line-height: 1.5;
+      line-height: 1.4;
     }
     .modal h3 {
       margin: 0 0 .55rem;
-      font-size: .95rem;
+      font-size: .9rem;
       color: var(--accent-light);
     }
     .modal-close {
@@ -251,56 +234,6 @@
       padding: .4rem .8rem;
       border-radius: 6px;
       font-size: .75rem;
-    }
-
-    .modal-tabs {
-      display: flex;
-      gap: .5rem;
-      margin-bottom: .75rem;
-    }
-    .modal-tabs button {
-      background: #3a3a40;
-      padding: .4rem .8rem;
-      border-radius: 5px;
-      border: none;
-      color: var(--fg);
-      font-size: .75rem;
-      cursor: pointer;
-    }
-    .modal-tabs button.active {
-      background: var(--accent-light);
-      color: #000;
-    }
-    .modal-tab-content {
-      display: none;
-    }
-    .modal-tab-content.active {
-      display: block;
-    }
-
-    /* --------------------
-       IMPACT BAR
-       -------------------- */
-    .impact-bar {
-      display: flex;
-      gap: 6px;
-      margin: .6rem 0;
-    }
-    .impact-bar div {
-      flex: 1;
-      height: 12px;
-      border-radius: 4px;
-      background: #3a3a3f;
-      position: relative;
-    }
-    .impact-bar div.filled {
-      background: var(--accent-light);
-    }
-    .impact-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: .72rem;
-      opacity: 0.7;
     }
 
     /* --------------------
@@ -328,40 +261,6 @@
     </nav>
   </header>
 
-  <!-- FILTER BAR -->
-  <div style="padding: .75rem 1rem; background: #1f1f23; display: flex; gap: 1rem; flex-wrap: wrap;">
-    <label style="font-size:.75rem;">
-      Industry:
-      <select id="filterIndustry" style="margin-left: .4rem; font-size:.75rem;">
-        <option value="">All</option>
-      </select>
-    </label>
-
-    <label style="font-size:.75rem;">
-      Automation Risk:
-      <select id="filterRisk" style="margin-left: .4rem; font-size:.75rem;">
-        <option value="">All</option>
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-      </select>
-    </label>
-
-    <label style="font-size:.75rem;">
-      Min Year:
-      <input type="number" id="filterMinYear" style="width:70px; font-size:.75rem;" min="2024" />
-    </label>
-
-    <label style="font-size:.75rem;">
-      Mode:
-      <select id="filterMode" style="margin-left: .4rem; font-size:.75rem;">
-        <option value="">Any</option>
-        <option value="AI">AI Only</option>
-        <option value="AIPlus">AI + Robotics</option>
-      </select>
-    </label>
-  </div>
-
   <main>
     <div id="timelineWrap" class="view">
       <svg id="timelineSVG"></svg>
@@ -385,269 +284,347 @@
   </main>
 
   <div id="tooltip"></div>
-
   <div id="modalOv" class="modal-overlay">
-    <div id="modalBox" class="modal">
-      <div class="modal-tabs">
-        <button data-tab="overview" class="active">Overview</button>
-        <button data-tab="forecast">Forecast</button>
-        <button data-tab="sources">Sources</button>
-      </div>
-      <div id="tab-overview" class="modal-tab-content active"></div>
-      <div id="tab-forecast" class="modal-tab-content"></div>
-      <div id="tab-sources" class="modal-tab-content"></div>
-      <div class="modal-close">
-        <button onclick="hideModal()">Close</button>
-      </div>
-    </div>
+    <div id="modalBox" class="modal"></div>
   </div>
-<script>
-  const CARD_W = 140, CARD_H = 26;
-  const GAP_V = 14, GAP_H = 14;
-  const LEFT_PAD = 90, TOP_PAD = 60;
-  const LEFT_PAD_M = 110;
-  const YEAR_PX = 160;
-  const MOBILE_BREAK = 650;
-  const ROWS_PER_COL_M = 4;
-  let jobs = [], isMob = false;
 
-  fetch('jobs.json')
-    .then(r => r.json())
-    .then(data => {
-      jobs = Array.isArray(data) ? data : Object.values(data).flat();
-      populateIndustryDropdown();
-      init();
-    })
-    .catch(e => console.error('jobs.json missing', e));
+  <script>
+    /* ---------------------------------------
+       CONSTANTS
+       --------------------------------------- */
+    const CARD_W = 140, CARD_H = 26;
+    const GAP_V = 14, GAP_H = 14;
+    const LEFT_PAD = 90, TOP_PAD = 60;
+    const LEFT_PAD_M = 110;
+    const YEAR_PX = 160;
+    const MOBILE_BREAK = 650;
+    const ROWS_PER_COL_M = 4;
+    let jobs = [], isMob = false;
 
-  function init() {
-    isMob = window.innerWidth < MOBILE_BREAK;
-    attachFilterListeners();
-    applyFilters();
-    navInit();
-    modalInit();
-    window.addEventListener('resize', debounce(() => location.reload(), 300));
-  }
+    /* ---------------------------------------
+       LOAD DATA
+       --------------------------------------- */
+    fetch('jobs.json')
+      .then(r => r.json())
+      .then(data => {
+        jobs = Array.isArray(data) ? data : Object.values(data).flat();
+        init();
+      })
+      .catch(e => console.error('jobs.json missing', e));
 
-  function attachFilterListeners() {
-    ['filterIndustry', 'filterRisk', 'filterMinYear', 'filterMode'].forEach(id => {
-      document.getElementById(id).addEventListener('input', applyFilters);
-    });
-  }
-
-  function applyFilters() {
-    const industry = document.getElementById('filterIndustry').value;
-    const risk = document.getElementById('filterRisk').value;
-    const minYear = parseInt(document.getElementById('filterMinYear').value, 10);
-    const mode = document.getElementById('filterMode').value;
-
-    const filtered = jobs.filter(j => {
-      if (industry && j.industry !== industry) return false;
-      if (risk && getRisk(j) !== risk) return false;
-      const yr = j.ai_plus_full_year ?? j.ai_only_full_year;
-      if (!yr || (minYear && yr < minYear)) return false;
-      if (mode === 'AI' && !j.ai_only_full_year) return false;
-      if (mode === 'AIPlus' && !j.ai_plus_full_year) return false;
-      return true;
-    });
-
-    updateTimeline(filtered);
-    updateDashboard(filtered);
-  }
-
-  function updateTimeline(filteredJobs) {
-    jobs = filteredJobs;
-    buildTimeline();
-  }
-
-  function updateDashboard(filteredJobs) {
-    const tbody = document.querySelector("#dashTbl tbody");
-    tbody.innerHTML = "";
-    filteredJobs.forEach(j => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${j.job_title}</td>
-        <td>${j.ai_pct_now ?? '—'}%</td>
-        <td>${j.ai_plus_pct_now ?? '—'}%</td>
-        <td>${j.industry}</td>
-        <td>${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</td>
-        <td>${renderSources(j.sources)}</td>
-        <td>${(j.reasoning ?? '').slice(0, 100)}${j.reasoning?.length > 100 ? '…' : ''}</td>
-      `;
-      tbody.appendChild(row);
-    });
-  }
-
-  function buildTimeline() {
-    const svg = d3.select("#timelineSVG");
-    svg.html("");
-
-    const w = jobs.length * 160 + 200;
-    const h = 400;
-
-    svg.attr("width", w).attr("height", h);
-
-    const years = [...new Set(jobs.map(j => j.ai_plus_full_year ?? j.ai_only_full_year).filter(Boolean))].sort();
-    years.forEach((y, i) => {
-      const x = 100 + i * 160;
-      svg.append("line")
-        .attr("x1", x)
-        .attr("x2", x)
-        .attr("y1", 40)
-        .attr("y2", h)
-        .attr("class", "tick-line");
-      svg.append("text")
-        .attr("x", x)
-        .attr("y", 30)
-        .attr("class", "tick-text")
-        .text(y);
-    });
-
-    jobs.forEach((j, i) => {
-      const x = 100 + years.indexOf(j.ai_plus_full_year ?? j.ai_only_full_year) * 160;
-      const y = 80 + (i % 10) * 30;
-
-      svg.append("rect")
-        .attr("x", x)
-        .attr("y", y)
-        .attr("width", 140)
-        .attr("height", 26)
-        .attr("class", "job-rect")
-        .on("click", () => showModalTabs(j));
-
-      svg.append("text")
-        .attr("x", x + 8)
-        .attr("y", y + 17)
-        .text(j.job_title)
-        .attr("class", "job-text");
-    });
-  }
-
-  function getRisk(j) {
-    const pct = j.ai_plus_pct_now ?? j.ai_pct_now ?? 0;
-    if (pct >= 70) return 'High';
-    if (pct >= 30) return 'Medium';
-    return 'Low';
-  }
-
-  function getConsensusScore(j) {
-    return (j.sources?.length || 0) >= 3 ? 'High' :
-           (j.sources?.length || 0) === 2 ? 'Medium' : 'Low';
-  }
-
-  function getImpactScore(j) {
-    let score = 0;
-    if ((j.ai_plus_pct_now ?? 0) >= 70) score += 1;
-    if ((j.ai_only_full_year ?? j.ai_plus_full_year ?? 2100) < 2040) score += 1;
-    if ((j.reasoning || '').match(/empathy|social|judgment|courtroom|human interaction/i)) {
-      score -= 1;
+    /* ---------------------------------------
+       INITIALIZATION
+       --------------------------------------- */
+    function init(){
+      isMob = window.innerWidth < MOBILE_BREAK;
+      buildTimeline();
+      buildDash();
+      navInit();
+      modalInit();
+      window.addEventListener('resize', debounce(() => location.reload(), 300));
     }
-    return Math.max(0, score);
-  }
 
-  function populateIndustryDropdown() {
-    const select = document.getElementById('filterIndustry');
-    const allIndustries = [...new Set(jobs.map(j => j.industry).filter(Boolean))].sort();
-    allIndustries.forEach(i => {
-      const opt = document.createElement('option');
-      opt.value = i;
-      opt.textContent = i;
-      select.appendChild(opt);
-    });
-  }
-
-  function renderSources(src) {
-    if (!src || src.length === 0) return '—';
-    return src.map(s => s.trim()).join('<br>');
-  }
-
-  function showModalTabs(j) {
-    document.querySelectorAll('.modal-tab-content').forEach(e => e.classList.remove('active'));
-    document.querySelectorAll('.modal-tabs button').forEach(e => e.classList.remove('active'));
-    document.querySelector('[data-tab="overview"]').classList.add('active');
-    document.getElementById('tab-overview').classList.add('active');
-
-    document.getElementById('tab-overview').innerHTML = `
-      <h3>${j.job_title}</h3>
-      <p><b>Industry:</b> ${j.industry}</p>
-      <p><b>Automation Risk:</b> ${getRisk(j)}</p>
-      <p><b>Confidence Level:</b> ${getConsensusScore(j)}</p>
-      <p><b>Job Impact Score:</b> ${getImpactScore(j)} / 2</p>
-    `;
-
-    document.getElementById('tab-forecast').innerHTML = `
-      <p><b>AI % Now:</b> ${j.ai_pct_now ?? '—'}%</p>
-      <p><b>AI + Auto % Now:</b> ${j.ai_plus_pct_now ?? '—'}%</p>
-      <p><b>Full-Auto Year:</b> ${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</p>
-    `;
-
-    document.getElementById('tab-sources').innerHTML = `
-      <p><b>Sources:</b><br>${renderSources(j.sources)}</p>
-      <p><b>Reasoning:</b> ${j.reasoning}</p>
-    `;
-
-    document.getElementById('modalOv').classList.add('show');
-  }
-
-  document.addEventListener('click', e => {
-    if (e.target.dataset.tab) {
-      document.querySelectorAll('.modal-tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.modal-tabs button').forEach(el => el.classList.remove('active'));
-      e.target.classList.add('active');
-      document.getElementById(`tab-${e.target.dataset.tab}`).classList.add('active');
+    /* ---------------------------------------
+       HELPERS
+       --------------------------------------- */
+    function trunc(s, l){
+      return s && s.length > l ? s.slice(0, l-1) + '…' : s;
     }
-  });
+    function find(code){
+      return jobs.find(j => j.job_code == code);
+    }
+    function renderSources(src){
+      if(!src || src.length === 0) return '—';
+      return src.map(s => s.trim()).join('; ');
+    }
 
-  function hideModal() {
-    document.getElementById('modalOv').classList.remove('show');
-  }
+    /* ---------------------------------------
+       BUILD TIMELINE
+       --------------------------------------- */
+    function buildTimeline(){
+      const svg = d3.select('#timelineSVG');
+      svg.selectAll('*').remove();
 
-  function navInit() {
-    const t = document.getElementById('btnTime');
-    const d = document.getElementById('btnDash');
-    t.onclick = () => {
-      t.classList.add('active');
-      d.classList.remove('active');
-      document.getElementById('timelineWrap').style.display = 'block';
-      document.getElementById('dashWrap').style.display = 'none';
-    };
-    d.onclick = () => {
-      d.classList.add('active');
-      t.classList.remove('active');
-      document.getElementById('timelineWrap').style.display = 'none';
-      document.getElementById('dashWrap').style.display = 'block';
-    };
-    document.getElementById('btnAbout').onclick = about;
-  }
+      const years = jobs
+        .map(j => j.ai_plus_full_year ?? j.ai_only_full_year)
+        .filter(Boolean);
+      const yMin = Math.min(...years),
+            yMax = Math.max(...years);
 
-  function modalInit() {
-    document.getElementById('modalOv').onclick = e => {
-      if (e.target.id === 'modalOv') hideModal();
-    };
-  }
+      if(isMob) {
+        vertical(svg, yMin, yMax);
+      } else {
+        horizontal(svg, yMin, yMax);
+      }
 
-  function about() {
-    showModalTabs({
-      job_title: "About AITimeline.net",
-      industry: "N/A",
-      ai_pct_now: null,
-      ai_plus_pct_now: null,
-      ai_plus_full_year: null,
-      ai_only_full_year: null,
-      sources: ["Academic and industry whitepapers", "Expert panels", "AI research consortia"],
-      reasoning: "AITimeline.net is a public visualization tool built by Oliphant Digital. It showcases current and predicted automation levels across job roles. Hover or tap a job to see automation predictions and reasoning."
-    });
-  }
+      attachCardEvents();
+      enableDrag();
+    }
 
-  function debounce(fn, ms) {
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => fn(...args), ms);
-    };
-  }
-</script>
+    function horizontal(svg, yMin, yMax){
+      const x = d3.scaleLinear()
+                  .domain([yMin, yMax])
+                  .range([LEFT_PAD, (yMax - yMin) * YEAR_PX + LEFT_PAD]);
 
+      const buckets = {};
+      jobs.forEach(j => {
+        const yr = j.ai_plus_full_year ?? j.ai_only_full_year;
+        (buckets[yr] = buckets[yr] || []).push(j);
+      });
 
+      const maxStack = Math.max(...Object.values(buckets).map(b => b.length));
+      const H = TOP_PAD + maxStack * (CARD_H + GAP_V) + 120;
+      const W = x(yMax) + CARD_W + LEFT_PAD;
+      svg.attr('width', W).attr('height', H);
+
+      // Year grid
+      svg.append('g').selectAll('g').data(d3.range(yMin, yMax + 1)).enter()
+        .append('g')
+        .attr('transform', d => `translate(${x(d)},0)`)
+        .call(g => {
+          g.append('line')
+            .attr('class','tick-line')
+            .attr('y1',0).attr('y2',H);
+          g.append('text')
+            .attr('class','tick-text')
+            .attr('y',18)
+            .text(d => d);
+        });
+
+      // Job cards
+      Object.entries(buckets).forEach(([yr, list]) => {
+        list.forEach((j, i) => {
+          const gx = x(+yr) - CARD_W / 2;
+          const gy = TOP_PAD + i * (CARD_H + GAP_V);
+          const g = svg.append('g')
+                       .attr('transform', `translate(${gx},${gy})`)
+                       .attr('data-j', j.job_code);
+          g.append('rect')
+            .attr('class','job-rect')
+            .attr('width', CARD_W)
+            .attr('height', CARD_H);
+          g.append('text')
+            .attr('class','job-text')
+            .attr('x', CARD_W / 2)
+            .attr('y', CARD_H / 2 + 4)
+            .attr('text-anchor','middle')
+            .text(trunc(j.job_title, 22));
+        });
+      });
+    }
+
+    function vertical(svg, yMin, yMax){
+      const yScale = d3.scaleLinear()
+                       .domain([yMin, yMax])
+                       .range([TOP_PAD, (yMax - yMin) * YEAR_PX + TOP_PAD]);
+
+      const buckets = {};
+      jobs.forEach(j => {
+        const yr = j.ai_plus_full_year ?? j.ai_only_full_year;
+        (buckets[yr] = buckets[yr] || []).push(j);
+      });
+
+      const maxCols = Math.max(...Object.values(buckets)
+        .map(b => Math.ceil(b.length / ROWS_PER_COL_M)));
+      const W = LEFT_PAD_M + maxCols * (CARD_W + GAP_H) + 40;
+      const H = yScale(yMax) + ROWS_PER_COL_M * (CARD_H + GAP_V) + 120;
+
+      svg.attr('width', W).attr('height', H);
+
+      // Vertical grid
+      svg.append('g').selectAll('g').data(d3.range(yMin, yMax + 1)).enter()
+        .append('g')
+        .attr('transform', d => `translate(0,${yScale(d)})`)
+        .call(g => {
+          g.append('line')
+            .attr('class','tick-line')
+            .attr('x1',0)
+            .attr('x2',W);
+          g.append('text')
+            .attr('class','tick-text')
+            .attr('x',10)
+            .attr('dy',5)
+            .text(d => d);
+        });
+
+      // Job cards with wrapping
+      Object.entries(buckets).forEach(([yr, list]) => {
+        list.forEach((j, idx) => {
+          const col = Math.floor(idx / ROWS_PER_COL_M);
+          const row = idx % ROWS_PER_COL_M;
+          const gx = LEFT_PAD_M + col * (CARD_W + GAP_H);
+          const gy = yScale(+yr) + row * (CARD_H + GAP_V);
+          const g = svg.append('g')
+                       .attr('transform', `translate(${gx},${gy})`)
+                       .attr('data-j', j.job_code);
+          g.append('rect')
+            .attr('class','job-rect')
+            .attr('width', CARD_W)
+            .attr('height', CARD_H);
+          g.append('text')
+            .attr('class','job-text')
+            .attr('x', CARD_W / 2)
+            .attr('y', CARD_H / 2 + 4)
+            .attr('text-anchor','middle')
+            .text(trunc(j.job_title, 22));
+        });
+      });
+    }
+
+    /* ---------------------------------------
+       INTERACTIONS
+       --------------------------------------- */
+    function attachCardEvents(){
+      const tip = document.getElementById('tooltip');
+      d3.selectAll('g[data-j]')
+        .on('mousemove', function(e){
+          if(isMob) return;
+          const j = find(this.dataset.j);
+          tip.innerHTML = `
+            <h4>${j.job_title}</h4>
+            <p>AI % Now: ${j.ai_pct_now ?? '—'}%</p>
+            <p>AI + Auto % Now: ${j.ai_plus_pct_now ?? '—'}%</p>
+            <p>Full-Auto Year: ${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</p>
+          `;
+          tip.style.left = `${e.clientX + 16}px`;
+          tip.style.top = `${e.clientY + 16}px`;
+          tip.style.visibility = 'visible';
+        })
+        .on('mouseleave', () => {
+          if(!isMob) tip.style.visibility = 'hidden';
+        })
+        .on('click', function(){
+          const j = find(this.dataset.j);
+          showModal(`
+            <h3>${j.job_title}</h3>
+            <p><b>Industry:</b> ${j.industry}</p>
+            <p><b>AI % Now:</b> ${j.ai_pct_now ?? '—'}%</p>
+            <p><b>AI + Auto % Now:</b> ${j.ai_plus_pct_now ?? '—'}%</p>
+            <p><b>Full-Auto Year:</b> ${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</p>
+            <p><b>Sources:</b> ${renderSources(j.sources)}</p>
+            <p><b>Reasoning:</b> ${j.reasoning}</p>
+          `);
+        });
+    }
+
+    /* ---------------------------------------
+       BUILD DASHBOARD
+       --------------------------------------- */
+    function buildDash(){
+      const tbody = d3.select('#dashTbl tbody');
+      tbody.selectAll('tr').remove();
+
+      jobs.forEach(j => {
+        tbody.append('tr').html(`
+          <td>${j.job_title}</td>
+          <td>${j.ai_pct_now ?? '—'}%</td>
+          <td>${j.ai_plus_pct_now ?? '—'}%</td>
+          <td>${j.industry}</td>
+          <td>${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</td>
+          <td>${renderSources(j.sources)}</td>
+          <td>${trunc(j.reasoning || '', 120)}</td>
+        `);
+      });
+    }
+
+    /* ---------------------------------------
+       DRAG & ZOOM
+       --------------------------------------- */
+    function enableDrag(){
+      const wrap = document.getElementById('timelineWrap');
+      let down = false, sx, sy, sl, st;
+      wrap.onmousedown = e => {
+        down = true;
+        sx = e.pageX;
+        sy = e.pageY;
+        sl = wrap.scrollLeft;
+        st = wrap.scrollTop;
+      };
+      wrap.onmousemove = e => {
+        if (down) {
+          wrap.scrollLeft = sl - (e.pageX - sx);
+          wrap.scrollTop = st - (e.pageY - sy);
+        }
+      };
+      document.onmouseup = () => down = false;
+      wrap.addEventListener('wheel', e => {
+        if (!e.ctrlKey) return;
+        e.preventDefault();
+        const svg = wrap.querySelector('svg');
+        const cur = wrap._z || 1;
+        const nxt = Math.max(.5, Math.min(3, cur * (e.deltaY < 0 ? 1.1 : .9)));
+        wrap._z = nxt;
+        svg.style.transformOrigin = '0 0';
+        svg.style.transform = `scale(${nxt})`;
+      }, { passive: false });
+    }
+
+    /* ---------------------------------------
+       NAVIGATION & MODAL
+       --------------------------------------- */
+    function navInit(){
+      const t = document.getElementById('btnTime');
+      const d = document.getElementById('btnDash');
+      t.onclick = () => {
+        t.classList.add('active');
+        d.classList.remove('active');
+        tl().style.display = 'block';
+        dw().style.display = 'none';
+      };
+      d.onclick = () => {
+        d.classList.add('active');
+        t.classList.remove('active');
+        dw().style.display = 'block';
+        tl().style.display = 'none';
+      };
+      document.getElementById('btnAbout').onclick = about;
+      function tl(){ return document.getElementById('timelineWrap'); }
+      function dw(){ return document.getElementById('dashWrap'); }
+    }
+
+    function modalInit(){
+      document.getElementById('modalOv').onclick = e => {
+        if (e.target.id === 'modalOv') {
+          hideModal();
+        }
+      };
+    }
+
+    function showModal(html){
+      document.getElementById('modalBox').innerHTML = html +
+        `<div class="modal-close">
+          <button onclick="hideModal()">Close</button>
+        </div>`;
+      document.getElementById('modalOv').classList.add('show');
+    }
+
+    function hideModal(){
+      document.getElementById('modalOv').classList.remove('show');
+    }
+
+    /* ---------------------------------------
+       ABOUT DIALOG
+       --------------------------------------- */
+    function about(){
+      showModal(`
+<h3>About the AI Job Replacement Timeline</h3>
+<p><strong>AITimeline.net</strong> is an interactive tool that visualizes when artificial intelligence and automation are expected to fully replace specific jobs—based on expert predictions from leading academic, consulting, and industry sources.</p>
+<p>Explore a timeline of 30+ occupations across industries. See how much of each role is already automated, and discover projected dates for full AI-only or AI+robotics replacement.</p>
+<p>Hover (desktop) or tap (mobile) on any job card to view detailed insights, sources, and reasoning.</p>
+<p>Built by <a href="https://oliphantdigital.com" target="_blank" rel="noopener">Oliphant Digital</a> — empowering workers, educators, and business leaders to prepare for the future of work.</p>
+      `);
+    }
+
+    /* ---------------------------------------
+       DEBOUNCE UTILITY
+       --------------------------------------- */
+    function debounce(fn, ms) {
+      let t;
+      return (...args) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn(...args), ms);
+      };
+    }
+  </script>
 </body>
 </html>
