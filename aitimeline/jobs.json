@@ -58,9 +58,7 @@
       "WEF 2025 – role marked for steep decline"
     ],
     "reasoning": "RPA, OCR, and document ingestion tools automate nearly all routine data entry. Full workflow automation (with minimal human review) will reach ~98% by 2025 in finance, insurance, and HR industries."
-  }
-]
-[
+  },
   {
     "job_code": 6,
     "job_title": "Administrative Assistant / Executive Secretary",
@@ -120,9 +118,7 @@
       "McKinsey 2024 – 15–30% of GP tasks are automatable"
     ],
     "reasoning": "Triage, symptom checking, and documentation (~15–30%) can be AI-supported now. AI agents will handle more of chronic care and follow-ups by 2040, though human judgment will still be central for decades."
-  }
-]
-[
+  },
   {
     "job_code": 11,
     "job_title": "Registered Nurse",
@@ -182,9 +178,7 @@
       "McKinsey 2024 – ~70% warehouse automation possible with AI + robotics"
     ],
     "reasoning": "Mobile robots and AI-driven conveyor systems already automate ~50% of tasks. AI vision and robotic arms for picking/packing expected to reach 70% coverage by 2026, with fully autonomous fulfillment centers by 2032."
-  }
-]
-[
+  },
   {
     "job_code": 16,
     "job_title": "Manufacturing Assembly Line Worker",
@@ -244,9 +238,7 @@
       "OpenAI 2024 – ~70% of design task exposure with generative tools"
     ],
     "reasoning": "AI image tools already generate ~40% of mockups, social media graphics, and stock assets. With layout automation and brand adaptation tools, 70%+ of tasks could be AI-assisted by 2028. Full campaign automation likely by 2035."
-  }
-]
-[
+  },
   {
     "job_code": 21,
     "job_title": "Journalist / Content Writer",
@@ -306,9 +298,7 @@
       "ICON, Apis Cor – 3D printing buildings in pilots"
     ],
     "reasoning": "Modular units and simple site prep can be automated (~5–15% of labor). AI-controlled machinery (graders, 3D printers) may grow by 2035. Human dexterity and problem-solving will be needed until ~2045 for most roles."
-  }
-]
-[
+  },
   {
     "job_code": 26,
     "job_title": "Pharmacist",
