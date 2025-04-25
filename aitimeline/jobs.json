@@ -137,8 +137,7 @@
       "McKinsey 2024 – 15–30% of GP tasks are automatable"
     ],
     "reasoning": "Triage, symptom checking, and documentation (~15–30%) can be AI-supported now. AI agents will handle more of chronic care and follow-ups by 2040, though human judgment will still be central for decades."
-  }
-
+  },
   {
     "job_code": 11,
     "job_title": "Registered Nurse",
@@ -278,8 +277,7 @@
       "OpenAI 2024 – ~70% of design task exposure with generative tools"
     ],
     "reasoning": "AI image tools already generate ~40% of mockups, social media graphics, and stock assets. With layout automation and brand adaptation tools, 70%+ of tasks could be AI-assisted by 2028. Full campaign automation likely by 2035."
-  }
-
+  },
   {
     "job_code": 21,
     "job_title": "Journalist / Content Writer",
@@ -336,7 +334,7 @@
     ],
     "reasoning": "Static monitoring, anomaly detection, and patrols in structured spaces are increasingly robotic. AI + robotics can cover ~60% of roles by 2032. Human guards remain necessary for judgment-based decisions and crowd management until ~2040."
   },
-  {
+   {
     "job_code": 25,
     "job_title": "Construction Laborer",
     "industry": "Construction",
