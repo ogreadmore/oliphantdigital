@@ -1,26 +1,22 @@
 [
   {
-  "job_code": 1,
-  "job_title": "Truck Driver (Freight)",
-  "industry": "Transportation",
-  "ai_pct_now": 30,
-  "ai_plus_pct_now": 70,
-  "ai_only_full_year": null,
-  "ai_plus_full_year": 2027,
-  "sources": [
-    "Aurora, TuSimple, Kodiak Robotics – operational autonomous freight runs as of 2023",
-    "McKinsey 2024 – autonomous trucking commercial deployment forecast 2027–2030"
-  ],
-  "reasoning": "Long-haul trucking is one of the most ready-for-automation industries. Level 4 autonomous trucks are already deployed in real-world freight operations. With highway driving being predictable and infrastructure improving, widespread AI+robotics adoption is likely by 2027. Full driverless trucking on major routes could reach majority adoption by 2030, pending regulatory approvals. AI-only automation is not applicable, as physical driving requires robotic systems."
-},
+    "job_code": 1,
+    "job_title": "Truck Driver (Freight)",
+    "industry": "Transportation",
+    "current_automation_pct": 70,
+    "full_auto_year": 2027,
+    "sources": [
+      "Aurora, TuSimple, Kodiak Robotics – operational autonomous freight runs as of 2023",
+      "McKinsey 2024 – autonomous trucking commercial deployment forecast 2027–2030"
+    ],
+    "reasoning": "Long-haul trucking is one of the most ready-for-automation industries. Level 4 autonomous trucks are already deployed in real-world freight operations. With highway driving being predictable and infrastructure improving, widespread AI+robotics adoption is likely by 2027. Full driverless trucking on major routes could reach majority adoption by 2030, pending regulatory approvals."
+  },
   {
     "job_code": 2,
     "job_title": "Delivery/Courier Driver",
     "industry": "Logistics",
-    "ai_pct_now": 5,
-    "ai_plus_pct_now": 10,
-    "ai_only_full_year": 2045,
-    "ai_plus_full_year": 2035,
+    "current_automation_pct": 10,
+    "full_auto_year": 2035,
     "sources": [
       "WEF 2024 – last-mile delivery remains a complex AI challenge",
       "Amazon Scout & Starship pilot studies (2023–2024)"
@@ -31,10 +27,8 @@
     "job_code": 3,
     "job_title": "Retail Cashier",
     "industry": "Retail",
-    "ai_pct_now": 60,
-    "ai_plus_pct_now": 80,
-    "ai_only_full_year": 2030,
-    "ai_plus_full_year": 2030,
+    "current_automation_pct": 80,
+    "full_auto_year": 2030,
     "sources": [
       "WEF 2024 – cashier roles among fastest-declining",
       "NACS 2024 – self-checkout & unattended stores rising"
@@ -45,10 +39,8 @@
     "job_code": 4,
     "job_title": "Customer Service Representative",
     "industry": "Customer Service",
-    "ai_pct_now": 40,
-    "ai_plus_pct_now": 50,
-    "ai_only_full_year": 2030,
-    "ai_plus_full_year": 2030,
+    "current_automation_pct": 50,
+    "full_auto_year": 2030,
     "sources": [
       "Zendesk 2024 – 80% of customer service interactions to be AI-handled",
       "Gartner 2023 – growth in AI-first call centers"
@@ -59,24 +51,22 @@
     "job_code": 5,
     "job_title": "Data Entry Clerk",
     "industry": "Administrative/Clerical",
-    "ai_pct_now": 90,
-    "ai_plus_pct_now": 98,
-    "ai_only_full_year": 2025,
-    "ai_plus_full_year": 2025,
+    "current_automation_pct": 98,
+    "full_auto_year": 2025,
     "sources": [
       "UiPath 2023 – RPA handles 90%+ structured data",
       "WEF 2025 – role marked for steep decline"
     ],
     "reasoning": "RPA, OCR, and document ingestion tools automate nearly all routine data entry. Full workflow automation (with minimal human review) will reach ~98% by 2025 in finance, insurance, and HR industries."
-  },
+  }
+]
+[
   {
     "job_code": 6,
     "job_title": "Administrative Assistant / Executive Secretary",
     "industry": "Administrative/Clerical",
-    "ai_pct_now": 30,
-    "ai_plus_pct_now": 60,
-    "ai_only_full_year": 2035,
-    "ai_plus_full_year": 2028,
+    "current_automation_pct": 60,
+    "full_auto_year": 2028,
     "sources": [
       "OpenAI 2023 – scheduling, drafting automated via GPT-4",
       "Microsoft 365 Copilot pilots – real-world workflow replacement"
@@ -87,10 +77,8 @@
     "job_code": 7,
     "job_title": "Paralegal / Legal Assistant",
     "industry": "Legal",
-    "ai_pct_now": 40,
-    "ai_plus_pct_now": 50,
-    "ai_only_full_year": 2030,
-    "ai_plus_full_year": 2030,
+    "current_automation_pct": 50,
+    "full_auto_year": 2030,
     "sources": [
       "Harvard Law Tech 2024 – AI legal assistants handling document review",
       "Goldman Sachs 2023 – 44% legal task automation"
@@ -101,10 +89,8 @@
     "job_code": 8,
     "job_title": "Lawyer (Attorney)",
     "industry": "Legal",
-    "ai_pct_now": 25,
-    "ai_plus_pct_now": 40,
-    "ai_only_full_year": 2040,
-    "ai_plus_full_year": 2035,
+    "current_automation_pct": 40,
+    "full_auto_year": 2035,
     "sources": [
       "Goldman Sachs 2023 – 44% legal work AI-susceptible",
       "OpenAI 2024 – GPT-4 bar-passing AI and contract drafting"
@@ -115,10 +101,8 @@
     "job_code": 9,
     "job_title": "Radiologist",
     "industry": "Healthcare",
-    "ai_pct_now": 30,
-    "ai_plus_pct_now": 40,
-    "ai_only_full_year": 2040,
-    "ai_plus_full_year": 2035,
+    "current_automation_pct": 40,
+    "full_auto_year": 2035,
     "sources": [
       "RSNA 2023 – widespread AI triage in radiology",
       "Nature Medicine 2022 – AI accuracy comparable to specialists"
@@ -129,24 +113,22 @@
     "job_code": 10,
     "job_title": "Primary Care Physician (General Practitioner)",
     "industry": "Healthcare",
-    "ai_pct_now": 15,
-    "ai_plus_pct_now": 30,
-    "ai_only_full_year": 2050,
-    "ai_plus_full_year": 2040,
+    "current_automation_pct": 30,
+    "full_auto_year": 2040,
     "sources": [
       "JAMA 2024 – diagnostic LLMs assist routine consults",
       "McKinsey 2024 – 15–30% of GP tasks are automatable"
     ],
     "reasoning": "Triage, symptom checking, and documentation (~15–30%) can be AI-supported now. AI agents will handle more of chronic care and follow-ups by 2040, though human judgment will still be central for decades."
-  },
+  }
+]
+[
   {
     "job_code": 11,
     "job_title": "Registered Nurse",
     "industry": "Healthcare",
-    "ai_pct_now": 20,
-    "ai_plus_pct_now": 30,
-    "ai_only_full_year": 2050,
-    "ai_plus_full_year": 2040,
+    "current_automation_pct": 30,
+    "full_auto_year": 2040,
     "sources": [
       "McKinsey 2023 – <30% of nursing tasks automatable",
       "JAMA 2024 – AI assistants reduce nurse administrative load"
@@ -157,10 +139,8 @@
     "job_code": 12,
     "job_title": "Accountant / Auditor",
     "industry": "Finance",
-    "ai_pct_now": 50,
-    "ai_plus_pct_now": 70,
-    "ai_only_full_year": 2035,
-    "ai_plus_full_year": 2027,
+    "current_automation_pct": 70,
+    "full_auto_year": 2027,
     "sources": [
       "PwC 2023 – AI used for audit, compliance, reporting",
       "McKinsey 2024 – 70% of finance/accounting tasks can be automated"
@@ -171,10 +151,8 @@
     "job_code": 13,
     "job_title": "Fast Food Cook",
     "industry": "Food Service",
-    "ai_pct_now": 10,
-    "ai_plus_pct_now": 30,
-    "ai_only_full_year": 2035,
-    "ai_plus_full_year": 2028,
+    "current_automation_pct": 30,
+    "full_auto_year": 2028,
     "sources": [
       "Miso Robotics – 'Flippy' automates grill & fry tasks",
       "McKinsey 2023 – ~30% automation in QSR kitchens by 2028"
@@ -185,10 +163,8 @@
     "job_code": 14,
     "job_title": "Waiter / Restaurant Server",
     "industry": "Hospitality",
-    "ai_pct_now": 5,
-    "ai_plus_pct_now": 20,
-    "ai_only_full_year": 2045,
-    "ai_plus_full_year": 2035,
+    "current_automation_pct": 20,
+    "full_auto_year": 2035,
     "sources": [
       "WEF 2024 – low automation in roles requiring social interaction",
       "Bear Robotics – robot servers in pilot use"
@@ -199,24 +175,22 @@
     "job_code": 15,
     "job_title": "Warehouse Worker (Order Picker/Packer)",
     "industry": "Warehousing/Logistics",
-    "ai_pct_now": 50,
-    "ai_plus_pct_now": 70,
-    "ai_only_full_year": 2032,
-    "ai_plus_full_year": 2026,
+    "current_automation_pct": 70,
+    "full_auto_year": 2026,
     "sources": [
       "Amazon 2023 – 750,000+ warehouse robots",
       "McKinsey 2024 – ~70% warehouse automation possible with AI + robotics"
     ],
     "reasoning": "Mobile robots and AI-driven conveyor systems already automate ~50% of tasks. AI vision and robotic arms for picking/packing expected to reach 70% coverage by 2026, with fully autonomous fulfillment centers by 2032."
-  },
+  }
+]
+[
   {
     "job_code": 16,
     "job_title": "Manufacturing Assembly Line Worker",
     "industry": "Manufacturing",
-    "ai_pct_now": 60,
-    "ai_plus_pct_now": 80,
-    "ai_only_full_year": 2028,
-    "ai_plus_full_year": 2025,
+    "current_automation_pct": 80,
+    "full_auto_year": 2025,
     "sources": [
       "IFR 2023 – record industrial robot installs",
       "Boston Consulting Group 2024 – vision systems boost automation"
@@ -227,10 +201,8 @@
     "job_code": 17,
     "job_title": "Janitor / Cleaner",
     "industry": "Maintenance/Cleaning",
-    "ai_pct_now": 30,
-    "ai_plus_pct_now": 50,
-    "ai_only_full_year": 2038,
-    "ai_plus_full_year": 2030,
+    "current_automation_pct": 50,
+    "full_auto_year": 2030,
     "sources": [
       "IFR 2024 – cleaning robots up 30% year-over-year",
       "SoftBank Whiz, Ecovacs – examples of floor-cleaning automation"
@@ -241,10 +213,8 @@
     "job_code": 18,
     "job_title": "Software Developer / Programmer",
     "industry": "Technology",
-    "ai_pct_now": 40,
-    "ai_plus_pct_now": 60,
-    "ai_only_full_year": 2035,
-    "ai_plus_full_year": 2030,
+    "current_automation_pct": 60,
+    "full_auto_year": 2030,
     "sources": [
       "GitHub Copilot 2024 – ~40% of code AI-assisted",
       "OpenAI Codex/GPT-4 – 80%+ exposure for developer roles"
@@ -255,10 +225,8 @@
     "job_code": 19,
     "job_title": "School Teacher (K-12)",
     "industry": "Education",
-    "ai_pct_now": 5,
-    "ai_plus_pct_now": 15,
-    "ai_only_full_year": 2050,
-    "ai_plus_full_year": 2035,
+    "current_automation_pct": 15,
+    "full_auto_year": 2035,
     "sources": [
       "OECD 2024 – ~5% of teaching tasks AI-automated",
       "Khanmigo (Khan Academy AI tutor) – increasing role of AI in classrooms"
@@ -269,24 +237,22 @@
     "job_code": 20,
     "job_title": "Graphic Designer",
     "industry": "Creative/Design",
-    "ai_pct_now": 40,
-    "ai_plus_pct_now": 70,
-    "ai_only_full_year": 2035,
-    "ai_plus_full_year": 2028,
+    "current_automation_pct": 70,
+    "full_auto_year": 2028,
     "sources": [
       "Midjourney/DALL-E – generating 40%+ of basic design assets",
       "OpenAI 2024 – ~70% of design task exposure with generative tools"
     ],
     "reasoning": "AI image tools already generate ~40% of mockups, social media graphics, and stock assets. With layout automation and brand adaptation tools, 70%+ of tasks could be AI-assisted by 2028. Full campaign automation likely by 2035."
-  },
+  }
+]
+[
   {
     "job_code": 21,
     "job_title": "Journalist / Content Writer",
     "industry": "Media",
-    "ai_pct_now": 50,
-    "ai_plus_pct_now": 80,
-    "ai_only_full_year": 2035,
-    "ai_plus_full_year": 2025,
+    "current_automation_pct": 80,
+    "full_auto_year": 2025,
     "sources": [
       "OpenAI GPT-4 analysis 2023 – 50% of articles draftable by AI",
       "Associated Press & Bloomberg – widespread AI use in reporting"
@@ -297,10 +263,8 @@
     "job_code": 22,
     "job_title": "Translator / Interpreter",
     "industry": "Language Services",
-    "ai_pct_now": 80,
-    "ai_plus_pct_now": 100,
-    "ai_only_full_year": 2024,
-    "ai_plus_full_year": 2023,
+    "current_automation_pct": 100,
+    "full_auto_year": 2023,
     "sources": [
       "DeepL, Google Translate, OpenAI 2023 – near-human parity in many languages",
       "European Parliament – uses machine translation extensively"
@@ -311,10 +275,8 @@
     "job_code": 23,
     "job_title": "Telemarketer",
     "industry": "Sales",
-    "ai_pct_now": 90,
-    "ai_plus_pct_now": 95,
-    "ai_only_full_year": 2025,
-    "ai_plus_full_year": 2025,
+    "current_automation_pct": 95,
+    "full_auto_year": 2025,
     "sources": [
       "Nielsen 2024 – ~90% of cold calls now automated",
       "Frey & Osborne 2013 – 99% automation risk"
@@ -325,38 +287,34 @@
     "job_code": 24,
     "job_title": "Security Guard",
     "industry": "Security",
-    "ai_pct_now": 40,
-    "ai_plus_pct_now": 60,
-    "ai_only_full_year": 2040,
-    "ai_plus_full_year": 2032,
+    "current_automation_pct": 60,
+    "full_auto_year": 2032,
     "sources": [
       "Knightscope, Cobalt Robotics – patrol bots in operation",
       "WEF 2025 – AI-enabled surveillance expanding"
     ],
     "reasoning": "Static monitoring, anomaly detection, and patrols in structured spaces are increasingly robotic. AI + robotics can cover ~60% of roles by 2032. Human guards remain necessary for judgment-based decisions and crowd management until ~2040."
   },
-   {
+  {
     "job_code": 25,
     "job_title": "Construction Laborer",
     "industry": "Construction",
-    "ai_pct_now": 5,
-    "ai_plus_pct_now": 15,
-    "ai_only_full_year": 2045,
-    "ai_plus_full_year": 2035,
+    "current_automation_pct": 15,
+    "full_auto_year": 2035,
     "sources": [
       "WEF 2024 – robotics in site prep and modular construction",
       "ICON, Apis Cor – 3D printing buildings in pilots"
     ],
     "reasoning": "Modular units and simple site prep can be automated (~5–15% of labor). AI-controlled machinery (graders, 3D printers) may grow by 2035. Human dexterity and problem-solving will be needed until ~2045 for most roles."
-  },
+  }
+]
+[
   {
     "job_code": 26,
     "job_title": "Pharmacist",
     "industry": "Healthcare",
-    "ai_pct_now": 40,
-    "ai_plus_pct_now": 50,
-    "ai_only_full_year": 2035,
-    "ai_plus_full_year": 2030,
+    "current_automation_pct": 50,
+    "full_auto_year": 2030,
     "sources": [
       "UCSF 2023 – robotic pharmacy operations",
       "CVS/Walgreens 2024 – central fill AI automation expansion"
@@ -367,10 +325,8 @@
     "job_code": 27,
     "job_title": "Airline Pilot",
     "industry": "Aviation",
-    "ai_pct_now": 80,
-    "ai_plus_pct_now": 90,
-    "ai_only_full_year": 2040,
-    "ai_plus_full_year": 2032,
+    "current_automation_pct": 90,
+    "full_auto_year": 2032,
     "sources": [
       "NASA/Airbus 2024 – autopilot covers 80–90% of flight time",
       "Boeing 2023 – single-pilot commercial aircraft R&D"
@@ -381,10 +337,8 @@
     "job_code": 28,
     "job_title": "Farmer / Agricultural Equipment Operator",
     "industry": "Agriculture",
-    "ai_pct_now": 30,
-    "ai_plus_pct_now": 60,
-    "ai_only_full_year": 2035,
-    "ai_plus_full_year": 2030,
+    "current_automation_pct": 60,
+    "full_auto_year": 2030,
     "sources": [
       "CNH Industrial 2024 – autonomous tractors",
       "John Deere, DJI – drones and precision farming"
@@ -395,10 +349,8 @@
     "job_code": 29,
     "job_title": "HR Specialist (Recruiter)",
     "industry": "Human Resources",
-    "ai_pct_now": 30,
-    "ai_plus_pct_now": 50,
-    "ai_only_full_year": 2035,
-    "ai_plus_full_year": 2027,
+    "current_automation_pct": 50,
+    "full_auto_year": 2027,
     "sources": [
       "LinkedIn 2024 – 30%+ AI use in candidate screening",
       "McKinsey 2023 – matching, scheduling, outreach automation"
@@ -409,10 +361,8 @@
     "job_code": 30,
     "job_title": "Marketing Specialist",
     "industry": "Marketing/Advertising",
-    "ai_pct_now": 30,
-    "ai_plus_pct_now": 60,
-    "ai_only_full_year": 2035,
-    "ai_plus_full_year": 2027,
+    "current_automation_pct": 60,
+    "full_auto_year": 2027,
     "sources": [
       "HubSpot 2024 – AI ad generation tools widespread",
       "OpenAI GPT-4 – 60%+ task exposure for marketing content creation"
