@@ -1,17 +1,18 @@
 [
   {
-    "job_code": 1,
-    "job_title": "Truck Driver (Freight)",
-    "industry": "Transportation",
-    "ai_pct_now": 5,
-    "ai_plus_pct_now": 15,
-    "ai_only_full_year": 2100,
-    "ai_plus_full_year": 2040,
-    "sources": [
-      "McKinsey 2024 – projections for autonomous trucking adoption between 2027–2040"
-    ],
-    "reasoning": "Heavy truck driving requires robotics for vehicle control. McKinsey projects autonomous trucking (L4) gradually between 2027–2040. Currently only a small fraction (5–15%) of tasks (e.g. lane-keeping) are automatable. Full automation (AI + robotics) of long-haul trucks may be achieved by 2040, but AI without robotics cannot replace human drivers (hence effectively impossible under AI-only)."
-  },
+  "job_code": 1,
+  "job_title": "Truck Driver (Freight)",
+  "industry": "Transportation",
+  "ai_pct_now": 30,
+  "ai_plus_pct_now": 70,
+  "ai_only_full_year": null,
+  "ai_plus_full_year": 2027,
+  "sources": [
+    "Aurora, TuSimple, Kodiak Robotics – operational autonomous freight runs as of 2023",
+    "McKinsey 2024 – autonomous trucking commercial deployment forecast 2027–2030"
+  ],
+  "reasoning": "Long-haul trucking is one of the most ready-for-automation industries. Level 4 autonomous trucks are already deployed in real-world freight operations. With highway driving being predictable and infrastructure improving, widespread AI+robotics adoption is likely by 2027. Full driverless trucking on major routes could reach majority adoption by 2030, pending regulatory approvals. AI-only automation is not applicable, as physical driving requires robotic systems."
+},
   {
     "job_code": 2,
     "job_title": "Delivery/Courier Driver",
