@@ -402,148 +402,196 @@
     </div>
   </div>
   <script>
-    /* ---------------------------------------
-       CONSTANTS
-       --------------------------------------- */
-    const CARD_W = 140, CARD_H = 26;
-    const GAP_V = 14, GAP_H = 14;
-    const LEFT_PAD = 90, TOP_PAD = 60;
-    const LEFT_PAD_M = 110;
-    const YEAR_PX = 160;
-    const MOBILE_BREAK = 650;
-    const ROWS_PER_COL_M = 4;
-    let jobs = [], isMob = false;
+  /* ---------------------------------------
+     CONSTANTS
+     --------------------------------------- */
+  const CARD_W = 140, CARD_H = 26;
+  const GAP_V = 14, GAP_H = 14;
+  const LEFT_PAD = 90, TOP_PAD = 60;
+  const LEFT_PAD_M = 110;
+  const YEAR_PX = 160;
+  const MOBILE_BREAK = 650;
+  const ROWS_PER_COL_M = 4;
+  let jobs = [], isMob = false;
 
-    /* ---------------------------------------
-       LOAD DATA
-       --------------------------------------- */
-    fetch('jobs.json')
-      .then(r => r.json())
-      .then(data => {
-        jobs = Array.isArray(data) ? data : Object.values(data).flat();
-        populateIndustryDropdown();
-        init();
-      })
-      .catch(e => console.error('jobs.json missing', e));
+  fetch('jobs.json')
+    .then(r => r.json())
+    .then(data => {
+      jobs = Array.isArray(data) ? data : Object.values(data).flat();
+      populateIndustryDropdown();
+      init();
+    })
+    .catch(e => console.error('jobs.json missing', e));
 
-    /* ---------------------------------------
-       INIT + FILTERS
-       --------------------------------------- */
-    function init(){
-      isMob = window.innerWidth < MOBILE_BREAK;
-      attachFilterListeners();
-      applyFilters();
-      navInit();
-      modalInit();
-      window.addEventListener('resize', debounce(() => location.reload(), 300));
+  function init(){
+    isMob = window.innerWidth < MOBILE_BREAK;
+    attachFilterListeners();
+    applyFilters();
+    navInit();
+    modalInit();
+    window.addEventListener('resize', debounce(() => location.reload(), 300));
+  }
+
+  function attachFilterListeners(){
+    ['filterIndustry', 'filterRisk', 'filterMinYear', 'filterMode'].forEach(id => {
+      document.getElementById(id).addEventListener('input', applyFilters);
+    });
+  }
+
+  function applyFilters(){
+    const industry = document.getElementById('filterIndustry').value;
+    const risk = document.getElementById('filterRisk').value;
+    const minYear = parseInt(document.getElementById('filterMinYear').value, 10);
+    const mode = document.getElementById('filterMode').value;
+
+    const filtered = jobs.filter(j => {
+      if (industry && j.industry !== industry) return false;
+      if (risk && getRisk(j) !== risk) return false;
+      const yr = j.ai_plus_full_year ?? j.ai_only_full_year;
+      if (!yr || (minYear && yr < minYear)) return false;
+      if (mode === 'AI' && !j.ai_only_full_year) return false;
+      if (mode === 'AIPlus' && !j.ai_plus_full_year) return false;
+      return true;
+    });
+
+    updateTimeline(filtered);
+    updateDashboard(filtered);
+  }
+
+  function populateIndustryDropdown(){
+    const select = document.getElementById('filterIndustry');
+    const allIndustries = [...new Set(jobs.map(j => j.industry).filter(Boolean))].sort();
+    allIndustries.forEach(i => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = i;
+      select.appendChild(opt);
+    });
+  }
+
+  function getRisk(j){
+    const pct = j.ai_plus_pct_now ?? j.ai_pct_now ?? 0;
+    if (pct >= 70) return 'High';
+    if (pct >= 30) return 'Medium';
+    return 'Low';
+  }
+
+  function getConsensusScore(j){
+    return (j.sources?.length || 0) >= 3 ? 'High' :
+           (j.sources?.length || 0) === 2 ? 'Medium' : 'Low';
+  }
+
+  function getImpactScore(j){
+    let score = 0;
+    if ((j.ai_plus_pct_now ?? 0) >= 70) score += 1;
+    if ((j.ai_only_full_year ?? j.ai_plus_full_year ?? 2100) < 2040) score += 1;
+    if ((j.reasoning || '').match(/empathy|social|judgment|courtroom|human interaction/i)) {
+      score -= 1;
     }
+    return Math.max(0, score);
+  }
 
-    function attachFilterListeners(){
-      const controls = ['filterIndustry', 'filterRisk', 'filterMinYear', 'filterMode'];
-      controls.forEach(id => {
-        document.getElementById(id).addEventListener('input', applyFilters);
-      });
-    }
+  function updateTimeline(filteredJobs){
+    jobs = filteredJobs;
+    buildTimeline();
+  }
 
-    function applyFilters(){
-      const industry = document.getElementById('filterIndustry').value;
-      const risk = document.getElementById('filterRisk').value;
-      const minYear = parseInt(document.getElementById('filterMinYear').value, 10);
-      const mode = document.getElementById('filterMode').value;
+  function updateDashboard(filteredJobs){
+    jobs = filteredJobs;
+    buildDash();
+  }
 
-      let filtered = jobs.filter(j => {
-        if (industry && j.industry !== industry) return false;
-        if (risk && getRisk(j) !== risk) return false;
-        const yr = j.ai_plus_full_year ?? j.ai_only_full_year;
-        if (!yr || (minYear && yr < minYear)) return false;
-        if (mode === 'AI' && !j.ai_only_full_year) return false;
-        if (mode === 'AIPlus' && !j.ai_plus_full_year) return false;
-        return true;
-      });
+  function showModalTabs(j){
+    document.querySelectorAll('.modal-tab-content').forEach(e => e.classList.remove('active'));
+    document.querySelectorAll('.modal-tabs button').forEach(e => e.classList.remove('active'));
+    document.querySelector('[data-tab="overview"]').classList.add('active');
+    document.getElementById('tab-overview').classList.add('active');
 
-      updateTimeline(filtered);
-      updateDashboard(filtered);
-    }
+    document.getElementById('tab-overview').innerHTML = `
+      <h3>${j.job_title}</h3>
+      <p><b>Industry:</b> ${j.industry}</p>
+      <p><b>Automation Risk:</b> ${getRisk(j)}</p>
+      <p><b>Confidence Level:</b> ${getConsensusScore(j)}</p>
+      <p><b>Job Impact Score:</b> ${getImpactScore(j)} / 2</p>
+    `;
 
-    function populateIndustryDropdown(){
-      const select = document.getElementById('filterIndustry');
-      const allIndustries = [...new Set(jobs.map(j => j.industry).filter(Boolean))].sort();
-      allIndustries.forEach(i => {
-        const opt = document.createElement('option');
-        opt.value = i;
-        opt.textContent = i;
-        select.appendChild(opt);
-      });
-    }
+    document.getElementById('tab-forecast').innerHTML = `
+      <p><b>AI % Now:</b> ${j.ai_pct_now ?? '—'}%</p>
+      <p><b>AI + Auto % Now:</b> ${j.ai_plus_pct_now ?? '—'}%</p>
+      <p><b>Full-Auto Year:</b> ${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</p>
+    `;
 
-    function getRisk(j){
-      const pct = j.ai_plus_pct_now ?? j.ai_pct_now ?? 0;
-      if (pct >= 70) return 'High';
-      if (pct >= 30) return 'Medium';
-      return 'Low';
-    }
+    document.getElementById('tab-sources').innerHTML = `
+      <p><b>Sources:</b><br>${renderSources(j.sources)}</p>
+      <p><b>Reasoning:</b> ${j.reasoning}</p>
+    `;
 
-    function getConsensusScore(j){
-      return (j.sources?.length || 0) >= 3 ? 'High' :
-             (j.sources?.length || 0) === 2 ? 'Medium' : 'Low';
-    }
+    document.getElementById('modalOv').classList.add('show');
+  }
 
-    function getImpactScore(j){
-      let score = 0;
-      if ((j.ai_plus_pct_now ?? 0) >= 70) score += 1;
-      if ((j.ai_only_full_year ?? j.ai_plus_full_year ?? 2100) < 2040) score += 1;
-      if ((j.reasoning || '').match(/empathy|social|judgment|courtroom|human interaction/i)) {
-        score -= 1;
-      }
-      return Math.max(0, score);
-    }
+  function renderSources(src){
+    if (!src || src.length === 0) return '—';
+    return src.map(s => s.trim()).join('<br>');
+  }
 
-    function updateTimeline(filteredJobs){
-      jobs = filteredJobs;
-      buildTimeline();
-    }
-
-    function updateDashboard(filteredJobs){
-      jobs = filteredJobs;
-      buildDash();
-    }
-
-    function showModalTabs(j){
+  document.addEventListener('click', e => {
+    if (e.target.dataset.tab) {
       document.querySelectorAll('.modal-tab-content').forEach(e => e.classList.remove('active'));
       document.querySelectorAll('.modal-tabs button').forEach(e => e.classList.remove('active'));
-      document.querySelector('[data-tab="overview"]').classList.add('active');
-      document.getElementById('tab-overview').classList.add('active');
-
-      document.getElementById('tab-overview').innerHTML = 
-        <h3>${j.job_title}</h3>
-        <p><b>Industry:</b> ${j.industry}</p>
-        <p><b>Automation Risk:</b> ${getRisk(j)}</p>
-        <p><b>Confidence Level:</b> ${getConsensusScore(j)}</p>
-        <p><b>Job Impact Score:</b> ${getImpactScore(j)} / 2</p>
-      ;
-
-      document.getElementById('tab-forecast').innerHTML = 
-        <p><b>AI % Now:</b> ${j.ai_pct_now ?? '—'}%</p>
-        <p><b>AI + Auto % Now:</b> ${j.ai_plus_pct_now ?? '—'}%</p>
-        <p><b>Full-Auto Year:</b> ${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</p>
-      ;
-
-      document.getElementById('tab-sources').innerHTML = 
-        <p><b>Sources:</b><br>${renderSources(j.sources)}</p>
-        <p><b>Reasoning:</b> ${j.reasoning}</p>
-      ;
-
-      document.getElementById('modalOv').classList.add('show');
+      e.target.classList.add('active');
+      document.getElementById(`tab-${e.target.dataset.tab}`).classList.add('active');
     }
+  });
 
-    document.addEventListener('click', e => {
-      if (e.target.dataset.tab) {
-        document.querySelectorAll('.modal-tab-content').forEach(e => e.classList.remove('active'));
-        document.querySelectorAll('.modal-tabs button').forEach(e => e.classList.remove('active'));
-        e.target.classList.add('active');
-        document.getElementById(tab-${e.target.dataset.tab}).classList.add('active');
-      }
+  function hideModal(){
+    document.getElementById('modalOv').classList.remove('show');
+  }
+
+  function navInit(){
+    const t = document.getElementById('btnTime');
+    const d = document.getElementById('btnDash');
+    t.onclick = () => {
+      t.classList.add('active');
+      d.classList.remove('active');
+      document.getElementById('timelineWrap').style.display = 'block';
+      document.getElementById('dashWrap').style.display = 'none';
+    };
+    d.onclick = () => {
+      d.classList.add('active');
+      t.classList.remove('active');
+      document.getElementById('timelineWrap').style.display = 'none';
+      document.getElementById('dashWrap').style.display = 'block';
+    };
+    document.getElementById('btnAbout').onclick = about;
+  }
+
+  function modalInit(){
+    document.getElementById('modalOv').onclick = e => {
+      if (e.target.id === 'modalOv') hideModal();
+    };
+  }
+
+  function about(){
+    showModalTabs({
+      job_title: "About AITimeline.net",
+      industry: "N/A",
+      ai_pct_now: null,
+      ai_plus_pct_now: null,
+      ai_plus_full_year: null,
+      ai_only_full_year: null,
+      sources: ["Academic and industry whitepapers", "Expert panels", "AI research consortia"],
+      reasoning: "AITimeline.net is a public visualization tool built by Oliphant Digital. It showcases current and predicted automation levels across job roles. Hover or tap a job to see automation predictions and reasoning."
     });
-  </script>
+  }
+
+  function debounce(fn, ms){
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), ms);
+    };
+  }
+</script>
+
 </body>
 </html>
