@@ -401,10 +401,7 @@
       </div>
     </div>
   </div>
-  <script>
-  /* ---------------------------------------
-     CONSTANTS
-     --------------------------------------- */
+<script>
   const CARD_W = 140, CARD_H = 26;
   const GAP_V = 14, GAP_H = 14;
   const LEFT_PAD = 90, TOP_PAD = 60;
@@ -423,7 +420,7 @@
     })
     .catch(e => console.error('jobs.json missing', e));
 
-  function init(){
+  function init() {
     isMob = window.innerWidth < MOBILE_BREAK;
     attachFilterListeners();
     applyFilters();
@@ -432,13 +429,13 @@
     window.addEventListener('resize', debounce(() => location.reload(), 300));
   }
 
-  function attachFilterListeners(){
+  function attachFilterListeners() {
     ['filterIndustry', 'filterRisk', 'filterMinYear', 'filterMode'].forEach(id => {
       document.getElementById(id).addEventListener('input', applyFilters);
     });
   }
 
-  function applyFilters(){
+  function applyFilters() {
     const industry = document.getElementById('filterIndustry').value;
     const risk = document.getElementById('filterRisk').value;
     const minYear = parseInt(document.getElementById('filterMinYear').value, 10);
@@ -458,7 +455,97 @@
     updateDashboard(filtered);
   }
 
-  function populateIndustryDropdown(){
+  function updateTimeline(filteredJobs) {
+    jobs = filteredJobs;
+    buildTimeline();
+  }
+
+  function updateDashboard(filteredJobs) {
+    const tbody = document.querySelector("#dashTbl tbody");
+    tbody.innerHTML = "";
+    filteredJobs.forEach(j => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${j.job_title}</td>
+        <td>${j.ai_pct_now ?? '—'}%</td>
+        <td>${j.ai_plus_pct_now ?? '—'}%</td>
+        <td>${j.industry}</td>
+        <td>${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</td>
+        <td>${renderSources(j.sources)}</td>
+        <td>${(j.reasoning ?? '').slice(0, 100)}${j.reasoning?.length > 100 ? '…' : ''}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  function buildTimeline() {
+    const svg = d3.select("#timelineSVG");
+    svg.html("");
+
+    const w = jobs.length * 160 + 200;
+    const h = 400;
+
+    svg.attr("width", w).attr("height", h);
+
+    const years = [...new Set(jobs.map(j => j.ai_plus_full_year ?? j.ai_only_full_year).filter(Boolean))].sort();
+    years.forEach((y, i) => {
+      const x = 100 + i * 160;
+      svg.append("line")
+        .attr("x1", x)
+        .attr("x2", x)
+        .attr("y1", 40)
+        .attr("y2", h)
+        .attr("class", "tick-line");
+      svg.append("text")
+        .attr("x", x)
+        .attr("y", 30)
+        .attr("class", "tick-text")
+        .text(y);
+    });
+
+    jobs.forEach((j, i) => {
+      const x = 100 + years.indexOf(j.ai_plus_full_year ?? j.ai_only_full_year) * 160;
+      const y = 80 + (i % 10) * 30;
+
+      svg.append("rect")
+        .attr("x", x)
+        .attr("y", y)
+        .attr("width", 140)
+        .attr("height", 26)
+        .attr("class", "job-rect")
+        .on("click", () => showModalTabs(j));
+
+      svg.append("text")
+        .attr("x", x + 8)
+        .attr("y", y + 17)
+        .text(j.job_title)
+        .attr("class", "job-text");
+    });
+  }
+
+  function getRisk(j) {
+    const pct = j.ai_plus_pct_now ?? j.ai_pct_now ?? 0;
+    if (pct >= 70) return 'High';
+    if (pct >= 30) return 'Medium';
+    return 'Low';
+  }
+
+  function getConsensusScore(j) {
+    return (j.sources?.length || 0) >= 3 ? 'High' :
+           (j.sources?.length || 0) === 2 ? 'Medium' : 'Low';
+  }
+
+  function getImpactScore(j) {
+    let score = 0;
+    if ((j.ai_plus_pct_now ?? 0) >= 70) score += 1;
+    if ((j.ai_only_full_year ?? j.ai_plus_full_year ?? 2100) < 2040) score += 1;
+    if ((j.reasoning || '').match(/empathy|social|judgment|courtroom|human interaction/i)) {
+      score -= 1;
+    }
+    return Math.max(0, score);
+  }
+
+  function populateIndustryDropdown() {
     const select = document.getElementById('filterIndustry');
     const allIndustries = [...new Set(jobs.map(j => j.industry).filter(Boolean))].sort();
     allIndustries.forEach(i => {
@@ -469,39 +556,12 @@
     });
   }
 
-  function getRisk(j){
-    const pct = j.ai_plus_pct_now ?? j.ai_pct_now ?? 0;
-    if (pct >= 70) return 'High';
-    if (pct >= 30) return 'Medium';
-    return 'Low';
+  function renderSources(src) {
+    if (!src || src.length === 0) return '—';
+    return src.map(s => s.trim()).join('<br>');
   }
 
-  function getConsensusScore(j){
-    return (j.sources?.length || 0) >= 3 ? 'High' :
-           (j.sources?.length || 0) === 2 ? 'Medium' : 'Low';
-  }
-
-  function getImpactScore(j){
-    let score = 0;
-    if ((j.ai_plus_pct_now ?? 0) >= 70) score += 1;
-    if ((j.ai_only_full_year ?? j.ai_plus_full_year ?? 2100) < 2040) score += 1;
-    if ((j.reasoning || '').match(/empathy|social|judgment|courtroom|human interaction/i)) {
-      score -= 1;
-    }
-    return Math.max(0, score);
-  }
-
-  function updateTimeline(filteredJobs){
-    jobs = filteredJobs;
-    buildTimeline();
-  }
-
-  function updateDashboard(filteredJobs){
-    jobs = filteredJobs;
-    buildDash();
-  }
-
-  function showModalTabs(j){
+  function showModalTabs(j) {
     document.querySelectorAll('.modal-tab-content').forEach(e => e.classList.remove('active'));
     document.querySelectorAll('.modal-tabs button').forEach(e => e.classList.remove('active'));
     document.querySelector('[data-tab="overview"]').classList.add('active');
@@ -529,25 +589,20 @@
     document.getElementById('modalOv').classList.add('show');
   }
 
-  function renderSources(src){
-    if (!src || src.length === 0) return '—';
-    return src.map(s => s.trim()).join('<br>');
-  }
-
   document.addEventListener('click', e => {
     if (e.target.dataset.tab) {
-      document.querySelectorAll('.modal-tab-content').forEach(e => e.classList.remove('active'));
-      document.querySelectorAll('.modal-tabs button').forEach(e => e.classList.remove('active'));
+      document.querySelectorAll('.modal-tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.modal-tabs button').forEach(el => el.classList.remove('active'));
       e.target.classList.add('active');
       document.getElementById(`tab-${e.target.dataset.tab}`).classList.add('active');
     }
   });
 
-  function hideModal(){
+  function hideModal() {
     document.getElementById('modalOv').classList.remove('show');
   }
 
-  function navInit(){
+  function navInit() {
     const t = document.getElementById('btnTime');
     const d = document.getElementById('btnDash');
     t.onclick = () => {
@@ -565,13 +620,13 @@
     document.getElementById('btnAbout').onclick = about;
   }
 
-  function modalInit(){
+  function modalInit() {
     document.getElementById('modalOv').onclick = e => {
       if (e.target.id === 'modalOv') hideModal();
     };
   }
 
-  function about(){
+  function about() {
     showModalTabs({
       job_title: "About AITimeline.net",
       industry: "N/A",
@@ -584,7 +639,7 @@
     });
   }
 
-  function debounce(fn, ms){
+  function debounce(fn, ms) {
     let timer;
     return (...args) => {
       clearTimeout(timer);
@@ -592,6 +647,7 @@
     };
   }
 </script>
+
 
 </body>
 </html>
