@@ -1,321 +1,425 @@
-
+[
+  {
+    "job_code": 1,
+    "job_title": "Truck Driver (Freight)",
+    "industry": "Transportation",
+    "ai_pct_now": 5,
+    "ai_plus_pct_now": 15,
+    "ai_only_full_year": 2100,
+    "ai_plus_full_year": 2040,
+    "sources": [
+      "McKinsey 2024 – projections for autonomous trucking adoption between 2027–2040"
+    ],
+    "reasoning": "Heavy truck driving requires robotics for vehicle control. McKinsey projects autonomous trucking (L4) gradually between 2027–2040. Currently only a small fraction (5–15%) of tasks (e.g. lane-keeping) are automatable. Full automation (AI + robotics) of long-haul trucks may be achieved by 2040, but AI without robotics cannot replace human drivers (hence effectively impossible under AI-only)."
+  },
   {
     "job_code": 2,
     "job_title": "Delivery/Courier Driver",
     "industry": "Logistics",
-    "ai_pct_now": 10,
-    "ai_plus_pct_now": 40,
-    "ai_only_full_year": 2040,
-    "ai_plus_full_year": 2032,
-    "sources":,
-    "reasoning": "Low current AI presence (10%) reflects the complexity of last-mile delivery. AI augmentation (40%) by 2032 will see increased route optimization and automated logistics. Full AI automation is expected around 2040 due to challenges in navigating diverse urban environments."
+    "ai_pct_now": 5,
+    "ai_plus_pct_now": 10,
+    "ai_only_full_year": 2045,
+    "ai_plus_full_year": 2035,
+    "sources": [
+      "WEF 2024 – last-mile delivery remains a complex AI challenge",
+      "Amazon Scout & Starship pilot studies (2023–2024)"
+    ],
+    "reasoning": "Urban navigation and customer interaction make full automation difficult. Sidewalk robots and drones currently cover ~5–10% of niche deliveries. Broader automation requires infrastructure and regulatory changes. Full automation likely post-2045; partial solutions like delivery bots and drones will expand by 2035."
   },
   {
     "job_code": 3,
     "job_title": "Retail Cashier",
     "industry": "Retail",
-    "ai_pct_now": 45,
-    "ai_plus_pct_now": 75,
+    "ai_pct_now": 60,
+    "ai_plus_pct_now": 80,
     "ai_only_full_year": 2030,
-    "ai_plus_full_year": 2028,
-    "sources":,
-    "reasoning": "Significant current automation (45%) due to self-checkout and cashierless stores. Near-full automation through AI augmentation (75%) is expected by 2028. Full AI automation is projected by 2030 with the continued expansion of automated checkout systems."
+    "ai_plus_full_year": 2030,
+    "sources": [
+      "WEF 2024 – cashier roles among fastest-declining",
+      "NACS 2024 – self-checkout & unattended stores rising"
+    ],
+    "reasoning": "Self-checkout kiosks and cashierless stores already account for ~60% of cashier automation. With widespread adoption of frictionless checkout technologies, ~80% of roles will be covered by 2030, phasing out the need for most in-person cashier staff."
   },
   {
     "job_code": 4,
     "job_title": "Customer Service Representative",
     "industry": "Customer Service",
     "ai_pct_now": 40,
-    "ai_plus_pct_now": 80,
-    "ai_only_full_year": 2029,
-    "ai_plus_full_year": 2026,
-    "sources":,
-    "reasoning": "Current AI automation (40%) is driven by chatbots and virtual assistants. Near-full automation through AI augmentation (80%) is anticipated by 2026. Full AI automation of many roles is expected by 2029 with advancements in conversational AI."
+    "ai_plus_pct_now": 50,
+    "ai_only_full_year": 2030,
+    "ai_plus_full_year": 2030,
+    "sources": [
+      "Zendesk 2024 – 80% of customer service interactions to be AI-handled",
+      "Gartner 2023 – growth in AI-first call centers"
+    ],
+    "reasoning": "Chatbots and voice AI already automate ~40% of support tasks. Gartner and Zendesk project full automation for most standard interactions by 2030, with advanced RPA handling billing, returns, and tech troubleshooting workflows."
   },
   {
     "job_code": 5,
     "job_title": "Data Entry Clerk",
     "industry": "Administrative/Clerical",
-    "ai_pct_now": 95,
-    "ai_plus_pct_now": 99,
+    "ai_pct_now": 90,
+    "ai_plus_pct_now": 98,
     "ai_only_full_year": 2025,
     "ai_plus_full_year": 2025,
-    "sources":,
-    "reasoning": "Very high current AI automation (95%) due to RPA and OCR technologies. Near-full and full AI automation are expected by 2025 with continued advancements in AI-powered data processing."
+    "sources": [
+      "UiPath 2023 – RPA handles 90%+ structured data",
+      "WEF 2025 – role marked for steep decline"
+    ],
+    "reasoning": "RPA, OCR, and document ingestion tools automate nearly all routine data entry. Full workflow automation (with minimal human review) will reach ~98% by 2025 in finance, insurance, and HR industries."
   },
   {
     "job_code": 6,
     "job_title": "Administrative Assistant / Executive Secretary",
     "industry": "Administrative/Clerical",
-    "ai_pct_now": 40,
-    "ai_plus_pct_now": 70,
-    "ai_only_full_year": 2032,
+    "ai_pct_now": 30,
+    "ai_plus_pct_now": 60,
+    "ai_only_full_year": 2035,
     "ai_plus_full_year": 2028,
-    "sources":,
-    "reasoning": "Current AI automation (40%) includes scheduling and document management. Near-full automation through AI augmentation (70%) is anticipated by 2028. Full AI automation of many tasks is projected by 2032 with more sophisticated virtual assistants."
+    "sources": [
+      "OpenAI 2023 – scheduling, drafting automated via GPT-4",
+      "Microsoft 365 Copilot pilots – real-world workflow replacement"
+    ],
+    "reasoning": "Calendar management, email summarization, and travel planning are increasingly automated via AI assistants. By 2028, ~60% of daily assistant tasks will be AI-managed, especially in large organizations."
   },
   {
     "job_code": 7,
     "job_title": "Paralegal / Legal Assistant",
     "industry": "Legal",
-    "ai_pct_now": 75,
-    "ai_plus_pct_now": 90,
+    "ai_pct_now": 40,
+    "ai_plus_pct_now": 50,
     "ai_only_full_year": 2030,
-    "ai_plus_full_year": 2028,
-    "sources":,
-    "reasoning": "Significant current AI automation (75%) in legal research and document review. Near-full automation through AI augmentation (90%) is expected by 2028. Full AI automation of many tasks is projected by 2030 with advancements in legal reasoning AI."
+    "ai_plus_full_year": 2030,
+    "sources": [
+      "Harvard Law Tech 2024 – AI legal assistants handling document review",
+      "Goldman Sachs 2023 – 44% legal task automation"
+    ],
+    "reasoning": "Legal research, precedent retrieval, and contract parsing are largely automated today. AI like Harvey.ai and Lexion scale these tasks. By 2030, almost all routine paralegal functions could be AI-handled."
   },
   {
     "job_code": 8,
     "job_title": "Lawyer (Attorney)",
     "industry": "Legal",
-    "ai_pct_now": 35,
-    "ai_plus_pct_now": 60,
+    "ai_pct_now": 25,
+    "ai_plus_pct_now": 40,
     "ai_only_full_year": 2040,
-    "ai_plus_full_year": 2032,
-    "sources":,
-    "reasoning": "Moderate current AI automation (35%) in research and document drafting. Near-full automation of routine tasks through AI augmentation (60%) is anticipated by 2032. Full AI automation is projected around 2040 due to the complexity of legal reasoning and client interaction."
+    "ai_plus_full_year": 2035,
+    "sources": [
+      "Goldman Sachs 2023 – 44% legal work AI-susceptible",
+      "OpenAI 2024 – GPT-4 bar-passing AI and contract drafting"
+    ],
+    "reasoning": "Document drafting and legal research can be done by AI, but courtroom work, client management, and complex legal interpretation remain human-dominant. Expect broader AI legal support by 2035, but full replacement beyond 2040."
   },
   {
     "job_code": 9,
     "job_title": "Radiologist",
     "industry": "Healthcare",
-    "ai_pct_now": 40,
-    "ai_plus_pct_now": 65,
-    "ai_only_full_year": 2035,
-    "ai_plus_full_year": 2028,
-    "sources":,
-    "reasoning": "Current AI automation (40%) assists in image analysis and anomaly detection. Near-full automation of routine tasks through AI augmentation (65%) is expected by 2028. Full AI automation of routine analysis is projected by 2035, with human oversight for complex cases."
+    "ai_pct_now": 30,
+    "ai_plus_pct_now": 40,
+    "ai_only_full_year": 2040,
+    "ai_plus_full_year": 2035,
+    "sources": [
+      "RSNA 2023 – widespread AI triage in radiology",
+      "Nature Medicine 2022 – AI accuracy comparable to specialists"
+    ],
+    "reasoning": "Triage and simple diagnostics are now AI-assisted. Most imaging centers use AI for initial flagging of abnormalities. Full reading and report generation likely by 2035–2040, pending regulatory approval and liability shifts."
   },
   {
     "job_code": 10,
     "job_title": "Primary Care Physician (General Practitioner)",
     "industry": "Healthcare",
-    "ai_pct_now": 20,
-    "ai_plus_pct_now": 45,
-    "ai_only_full_year": 2045,
-    "ai_plus_full_year": 2035,
-    "sources":,
-    "reasoning": "Low current AI automation (20%) in scheduling and preliminary diagnosis. Near-full automation of routine tasks through AI augmentation (45%) is anticipated by 2035. Full AI automation is projected around 2045 due to the complexity of diagnosis and the need for patient interaction."
-  },
+    "ai_pct_now": 15,
+    "ai_plus_pct_now": 30,
+    "ai_only_full_year": 2050,
+    "ai_plus_full_year": 2040,
+    "sources": [
+      "JAMA 2024 – diagnostic LLMs assist routine consults",
+      "McKinsey 2024 – 15–30% of GP tasks are automatable"
+    ],
+    "reasoning": "Triage, symptom checking, and documentation (~15–30%) can be AI-supported now. AI agents will handle more of chronic care and follow-ups by 2040, though human judgment will still be central for decades."
+  }
+]
+[
   {
     "job_code": 11,
     "job_title": "Registered Nurse",
     "industry": "Healthcare",
-    "ai_pct_now": 10,
-    "ai_plus_pct_now": 25,
+    "ai_pct_now": 20,
+    "ai_plus_pct_now": 30,
     "ai_only_full_year": 2050,
-    "ai_plus_full_year": 2038,
-    "sources":,
-    "reasoning": "Low current AI automation (10%) in monitoring and documentation. Near-full automation of routine tasks through AI augmentation (25%) is expected by 2038. Full AI automation is projected around 2050 due to the need for empathy and complex patient care."
+    "ai_plus_full_year": 2040,
+    "sources": [
+      "McKinsey 2023 – <30% of nursing tasks automatable",
+      "JAMA 2024 – AI assistants reduce nurse administrative load"
+    ],
+    "reasoning": "Routine documentation and vital signs tracking (~20%) are AI-automated today. Robot assistants may support medication prep and logistics by 2040, but human empathy and patient interaction will remain irreplaceable until mid-century."
   },
   {
     "job_code": 12,
     "job_title": "Accountant / Auditor",
     "industry": "Finance",
-    "ai_pct_now": 60,
-    "ai_plus_pct_now": 80,
-    "ai_only_full_year": 2030,
-    "ai_plus_full_year": 2026,
-    "sources":,
-    "reasoning": "Significant current AI automation (60%) in bookkeeping and compliance. Near-full automation through AI augmentation (80%) is anticipated by 2026. Full AI automation of many tasks is projected by 2030 with advancements in financial analysis AI."
+    "ai_pct_now": 50,
+    "ai_plus_pct_now": 70,
+    "ai_only_full_year": 2035,
+    "ai_plus_full_year": 2027,
+    "sources": [
+      "PwC 2023 – AI used for audit, compliance, reporting",
+      "McKinsey 2024 – 70% of finance/accounting tasks can be automated"
+    ],
+    "reasoning": "Routine accounting (reconciliation, tax filing) is already ~50% automated. By 2027, predictive and anomaly-based tools will drive ~70% of work, with full coverage by 2035 in well-regulated domains."
   },
   {
     "job_code": 13,
     "job_title": "Fast Food Cook",
     "industry": "Food Service",
-    "ai_pct_now": 15,
-    "ai_plus_pct_now": 40,
-    "ai_only_full_year": 2030,
-    "ai_plus_full_year": 2027,
-    "sources":,
-    "reasoning": "Low current AI automation (15%) in simple cooking tasks. Near-full automation through AI augmentation (40%) is expected by 2027. Full AI automation of many tasks is projected by 2030 with more advanced robotic kitchen systems."
+    "ai_pct_now": 10,
+    "ai_plus_pct_now": 30,
+    "ai_only_full_year": 2035,
+    "ai_plus_full_year": 2028,
+    "sources": [
+      "Miso Robotics – 'Flippy' automates grill & fry tasks",
+      "McKinsey 2023 – ~30% automation in QSR kitchens by 2028"
+    ],
+    "reasoning": "Robotic arms and cooking stations automate flipping, frying, and assembling burgers in pilot programs. AI vision and scheduling tools will expand usage by 2028. Full kitchen automation will roll out by 2035 in high-volume chains."
   },
   {
     "job_code": 14,
     "job_title": "Waiter / Restaurant Server",
     "industry": "Hospitality",
-    "ai_pct_now": 10,
-    "ai_plus_pct_now": 30,
-    "ai_only_full_year": 2040,
-    "ai_plus_full_year": 2032,
-    "sources":,
-    "reasoning": "Low current AI automation (10%) in ordering and delivery. Near-full automation through AI augmentation (30%) is anticipated by 2032. Full AI automation is projected around 2040 due to the need for personalized customer service."
+    "ai_pct_now": 5,
+    "ai_plus_pct_now": 20,
+    "ai_only_full_year": 2045,
+    "ai_plus_full_year": 2035,
+    "sources": [
+      "WEF 2024 – low automation in roles requiring social interaction",
+      "Bear Robotics – robot servers in pilot use"
+    ],
+    "reasoning": "Food delivery bots and table runners are used in pilot settings. AI can assist with order-taking via kiosks. Human interaction, upselling, and problem resolution will delay full automation until 2045+."
   },
   {
     "job_code": 15,
     "job_title": "Warehouse Worker (Order Picker/Packer)",
     "industry": "Warehousing/Logistics",
-    "ai_pct_now": 65,
-    "ai_plus_pct_now": 85,
-    "ai_only_full_year": 2030,
+    "ai_pct_now": 50,
+    "ai_plus_pct_now": 70,
+    "ai_only_full_year": 2032,
     "ai_plus_full_year": 2026,
-    "sources":,
-    "reasoning": "Significant current AI automation (65%) with AGVs and AMRs. Near-full automation through AI augmentation (85%) is expected by 2026. Full AI automation is projected by 2030 with more versatile warehouse robots."
+    "sources": [
+      "Amazon 2023 – 750,000+ warehouse robots",
+      "McKinsey 2024 – ~70% warehouse automation possible with AI + robotics"
+    ],
+    "reasoning": "Mobile robots and AI-driven conveyor systems already automate ~50% of tasks. AI vision and robotic arms for picking/packing expected to reach 70% coverage by 2026, with fully autonomous fulfillment centers by 2032."
   },
   {
     "job_code": 16,
     "job_title": "Manufacturing Assembly Line Worker",
     "industry": "Manufacturing",
-    "ai_pct_now": 70,
-    "ai_plus_pct_now": 90,
+    "ai_pct_now": 60,
+    "ai_plus_pct_now": 80,
     "ai_only_full_year": 2028,
     "ai_plus_full_year": 2025,
-    "sources":,
-    "reasoning": "High current AI automation (70%) with industrial robots. Near-full automation through AI augmentation (90%) is anticipated by 2025. Full AI automation of many tasks is projected by 2028 with advanced AI-controlled robots."
+    "sources": [
+      "IFR 2023 – record industrial robot installs",
+      "Boston Consulting Group 2024 – vision systems boost automation"
+    ],
+    "reasoning": "Repetitive assembly is already ~60% automated in automotive and electronics. Advanced machine vision and AI control will allow 80%+ automation by 2025. Full end-to-end automation in some sectors possible by 2028."
   },
   {
     "job_code": 17,
     "job_title": "Janitor / Cleaner",
     "industry": "Maintenance/Cleaning",
-    "ai_pct_now": 15,
-    "ai_plus_pct_now": 35,
+    "ai_pct_now": 30,
+    "ai_plus_pct_now": 50,
     "ai_only_full_year": 2038,
     "ai_plus_full_year": 2030,
-    "sources":,
-    "reasoning": "Low current AI automation (15%) with floor-cleaning robots. Near-full automation through AI augmentation (35%) is expected by 2030. Full AI automation is projected around 2038 due to the variability of cleaning environments."
+    "sources": [
+      "IFR 2024 – cleaning robots up 30% year-over-year",
+      "SoftBank Whiz, Ecovacs – examples of floor-cleaning automation"
+    ],
+    "reasoning": "Autonomous floor scrubbers and vacuums automate ~30% of basic cleaning. AI route planning and obstacle avoidance tech will expand coverage to ~50% by 2030. Complex janitorial tasks may be fully automated by 2038."
   },
   {
     "job_code": 18,
     "job_title": "Software Developer / Programmer",
     "industry": "Technology",
     "ai_pct_now": 40,
-    "ai_plus_pct_now": 70,
+    "ai_plus_pct_now": 60,
     "ai_only_full_year": 2035,
     "ai_plus_full_year": 2030,
-    "sources":,
-    "reasoning": "Moderate current AI automation (40%) with coding assistants. Near-full automation through AI augmentation (70%) is anticipated by 2030. Full AI automation of many tasks is projected by 2035 with more advanced AI coding tools."
+    "sources": [
+      "GitHub Copilot 2024 – ~40% of code AI-assisted",
+      "OpenAI Codex/GPT-4 – 80%+ exposure for developer roles"
+    ],
+    "reasoning": "AI already generates ~40% of boilerplate and test code. As IDEs integrate GPT-based tools and testing automation, AI+human workflows will dominate by 2030. End-to-end app generation likely for simple software by 2035."
   },
   {
     "job_code": 19,
     "job_title": "School Teacher (K-12)",
     "industry": "Education",
-    "ai_pct_now": 10,
-    "ai_plus_pct_now": 30,
-    "ai_only_full_year": 2048,
+    "ai_pct_now": 5,
+    "ai_plus_pct_now": 15,
+    "ai_only_full_year": 2050,
     "ai_plus_full_year": 2035,
-    "sources":,
-    "reasoning": "Low current AI automation (10%) in personalized learning and grading. Near-full automation through AI augmentation (30%) is expected by 2035. Full AI automation is projected around 2048 due to the need for mentorship and classroom management."
+    "sources": [
+      "OECD 2024 – ~5% of teaching tasks AI-automated",
+      "Khanmigo (Khan Academy AI tutor) – increasing role of AI in classrooms"
+    ],
+    "reasoning": "Grading, quiz generation, and tutoring are partly AI-augmented today. By 2035, AI will support lesson personalization and progress tracking (~15%). Core teaching and emotional connection still require humans into 2050."
   },
   {
     "job_code": 20,
     "job_title": "Graphic Designer",
     "industry": "Creative/Design",
-    "ai_pct_now": 50,
-    "ai_plus_pct_now": 80,
-    "ai_only_full_year": 2032,
+    "ai_pct_now": 40,
+    "ai_plus_pct_now": 70,
+    "ai_only_full_year": 2035,
     "ai_plus_full_year": 2028,
-    "sources":,
-    "reasoning": "Moderate current AI automation (50%) with generative design tools. Near-full automation through AI augmentation (80%) is anticipated by 2028. Full AI automation of many tasks is projected by 2032 with more sophisticated generative AI models."
-  },
+    "sources": [
+      "Midjourney/DALL-E – generating 40%+ of basic design assets",
+      "OpenAI 2024 – ~70% of design task exposure with generative tools"
+    ],
+    "reasoning": "AI image tools already generate ~40% of mockups, social media graphics, and stock assets. With layout automation and brand adaptation tools, 70%+ of tasks could be AI-assisted by 2028. Full campaign automation likely by 2035."
+  }
+]
+[
   {
     "job_code": 21,
     "job_title": "Journalist / Content Writer",
     "industry": "Media",
-    "ai_pct_now": 60,
-    "ai_plus_pct_now": 85,
-    "ai_only_full_year": 2028,
+    "ai_pct_now": 50,
+    "ai_plus_pct_now": 80,
+    "ai_only_full_year": 2035,
     "ai_plus_full_year": 2025,
-    "sources":,
-    "reasoning": "Significant current AI automation (60%) in factual reporting and summarization. Near-full automation through AI augmentation (85%) is anticipated by 2025. Full AI automation of many tasks is projected by 2028 with advancements in large language models."
+    "sources": [
+      "OpenAI GPT-4 analysis 2023 – 50% of articles draftable by AI",
+      "Associated Press & Bloomberg – widespread AI use in reporting"
+    ],
+    "reasoning": "Newswires and financial content are already drafted by AI. ~50% of journalistic content (sports, earnings, summaries) is now AI-draftable. With style-tuning and fact-checking tools, 80% of editorial output will be AI-assisted by 2025. Investigative reporting and opinion will take longer, with full AI coverage by 2035."
   },
   {
     "job_code": 22,
     "job_title": "Translator / Interpreter",
     "industry": "Language Services",
-    "ai_pct_now": 90,
+    "ai_pct_now": 80,
     "ai_plus_pct_now": 100,
     "ai_only_full_year": 2024,
     "ai_plus_full_year": 2023,
-    "sources":,
-    "reasoning": "Very high current AI automation (90%) with advanced machine translation tools. Near-full automation was achieved by 2023, and full AI automation is expected by 2024."
+    "sources": [
+      "DeepL, Google Translate, OpenAI 2023 – near-human parity in many languages",
+      "European Parliament – uses machine translation extensively"
+    ],
+    "reasoning": "Text translation is ~80% automated across major languages. Real-time voice tools and contextual engines reached parity for common languages by 2023–2024. Full AI-only workflows are viable now in most cases, with human review for legal/nuanced contexts."
   },
   {
     "job_code": 23,
     "job_title": "Telemarketer",
     "industry": "Sales",
-    "ai_pct_now": 95,
-    "ai_plus_pct_now": 98,
+    "ai_pct_now": 90,
+    "ai_plus_pct_now": 95,
     "ai_only_full_year": 2025,
     "ai_plus_full_year": 2025,
-    "sources":,
-    "reasoning": "Very high current AI automation (95%) with automated dialing systems and voicebots. Near-full and full AI automation are expected by 2025."
+    "sources": [
+      "Nielsen 2024 – ~90% of cold calls now automated",
+      "Frey & Osborne 2013 – 99% automation risk"
+    ],
+    "reasoning": "AI voice agents handle ~90% of outbound call campaigns. With LLM-powered persuasion and real-time objection handling, nearly 100% of telemarketing is automatable today. Human oversight remains only for supervision and edge cases."
   },
   {
     "job_code": 24,
     "job_title": "Security Guard",
     "industry": "Security",
-    "ai_pct_now": 20,
-    "ai_plus_pct_now": 40,
+    "ai_pct_now": 40,
+    "ai_plus_pct_now": 60,
     "ai_only_full_year": 2040,
     "ai_plus_full_year": 2032,
-    "sources":,
-    "reasoning": "Low current AI automation (20%) with surveillance analytics and robotic patrols. Near-full automation through AI augmentation (40%) is anticipated by 2032. Full AI automation is projected around 2040 due to the need for human judgment in unpredictable situations."
+    "sources": [
+      "Knightscope, Cobalt Robotics – patrol bots in operation",
+      "WEF 2025 – AI-enabled surveillance expanding"
+    ],
+    "reasoning": "Static monitoring, anomaly detection, and patrols in structured spaces are increasingly robotic. AI + robotics can cover ~60% of roles by 2032. Human guards remain necessary for judgment-based decisions and crowd management until ~2040."
   },
   {
     "job_code": 25,
     "job_title": "Construction Laborer",
     "industry": "Construction",
-    "ai_pct_now": 10,
-    "ai_plus_pct_now": 25,
+    "ai_pct_now": 5,
+    "ai_plus_pct_now": 15,
     "ai_only_full_year": 2045,
     "ai_plus_full_year": 2035,
-    "sources":,
-    "reasoning": "Low current AI automation (10%) in specific tasks like bricklaying. Near-full automation through AI augmentation (25%) is expected by 2035. Full AI automation is projected around 2045 due to the unstructured nature of construction sites."
+    "sources": [
+      "WEF 2024 – robotics in site prep and modular construction",
+      "ICON, Apis Cor – 3D printing buildings in pilots"
+    ],
+    "reasoning": "Modular units and simple site prep can be automated (~5–15% of labor). AI-controlled machinery (graders, 3D printers) may grow by 2035. Human dexterity and problem-solving will be needed until ~2045 for most roles."
   },
   {
     "job_code": 26,
     "job_title": "Pharmacist",
     "industry": "Healthcare",
     "ai_pct_now": 40,
-    "ai_plus_pct_now": 60,
-    "ai_only_full_year": 2029,
-    "ai_plus_full_year": 2026,
-    "sources":,
-    "reasoning": "Moderate current AI automation (40%) in dispensing systems. Near-full automation through AI augmentation (60%) is anticipated by 2026. Full AI automation of many tasks is projected by 2029 with advancements in clinical decision support."
+    "ai_plus_pct_now": 50,
+    "ai_only_full_year": 2035,
+    "ai_plus_full_year": 2030,
+    "sources": [
+      "UCSF 2023 – robotic pharmacy operations",
+      "CVS/Walgreens 2024 – central fill AI automation expansion"
+    ],
+    "reasoning": "Dispensing and dosage verification are already AI-assisted. Centralized pharmacies use robots for most fill tasks (~40%). AI-driven counseling and verification will cover ~50% by 2030, with near-full AI handling of retail roles by 2035."
   },
   {
     "job_code": 27,
     "job_title": "Airline Pilot",
     "industry": "Aviation",
-    "ai_pct_now": 85,
-    "ai_plus_pct_now": 95,
-    "ai_only_full_year": 2035,
-    "ai_plus_full_year": 2030,
-    "sources":,
-    "reasoning": "High current AI automation (85%) with autopilot systems. Near-full automation through AI augmentation (95%) is anticipated by 2030. Full AI automation is projected by 2035, pending regulatory and public acceptance."
+    "ai_pct_now": 80,
+    "ai_plus_pct_now": 90,
+    "ai_only_full_year": 2040,
+    "ai_plus_full_year": 2032,
+    "sources": [
+      "NASA/Airbus 2024 – autopilot covers 80–90% of flight time",
+      "Boeing 2023 – single-pilot commercial aircraft R&D"
+    ],
+    "reasoning": "Autopilot systems manage most flight segments (~80% now). Full AI+robotics for takeoff and landing may be viable by 2032. Regulatory and public safety concerns push full humanless flights out to ~2040."
   },
   {
     "job_code": 28,
     "job_title": "Farmer / Agricultural Equipment Operator",
     "industry": "Agriculture",
-    "ai_pct_now": 25,
-    "ai_plus_pct_now": 40,
+    "ai_pct_now": 30,
+    "ai_plus_pct_now": 60,
     "ai_only_full_year": 2035,
     "ai_plus_full_year": 2030,
-    "sources":,
-    "reasoning": "Low current AI automation (25%) with GPS-guided tractors and drone monitoring. Near-full automation through AI augmentation (40%) is expected by 2030. Full AI automation of many tasks is projected by 2035 with more sophisticated autonomous equipment."
+    "sources": [
+      "CNH Industrial 2024 – autonomous tractors",
+      "John Deere, DJI – drones and precision farming"
+    ],
+    "reasoning": "Tractors, seeders, and sprayers are AI-augmented today. With GPS and vision systems, ~60% of field tasks (planting, pesticide, irrigation) will be autonomous by 2030. Full robotic farms possible in developed markets by 2035."
   },
   {
     "job_code": 29,
     "job_title": "HR Specialist (Recruiter)",
     "industry": "Human Resources",
-    "ai_pct_now": 40,
-    "ai_plus_pct_now": 60,
-    "ai_only_full_year": 2030,
-    "ai_plus_full_year": 2026,
-    "sources":,
-    "reasoning": "Moderate current AI automation (40%) in resume screening and scheduling. Near-full automation through AI augmentation (60%) is anticipated by 2026. Full AI automation of many tasks is projected by 2030 with advancements in candidate assessment AI."
+    "ai_pct_now": 30,
+    "ai_plus_pct_now": 50,
+    "ai_only_full_year": 2035,
+    "ai_plus_full_year": 2027,
+    "sources": [
+      "LinkedIn 2024 – 30%+ AI use in candidate screening",
+      "McKinsey 2023 – matching, scheduling, outreach automation"
+    ],
+    "reasoning": "Resume parsing and scheduling tools already cover ~30% of tasks. With culture-fit matching and chatbot interviews, ~50% of HR workflows could be automated by 2027. Full automation delayed due to interpersonal components until ~2035."
   },
   {
     "job_code": 30,
     "job_title": "Marketing Specialist",
     "industry": "Marketing/Advertising",
-    "ai_pct_now": 40,
-    "ai_plus_pct_now": 65,
-    "ai_only_full_year": 2030,
-    "ai_plus_full_year": 2026,
-    "sources":,
-    "reasoning": "Moderate current AI automation (40%) in ad buying and content generation. Near-full automation through AI augmentation (65%) is anticipated by 2026. Full AI automation of many tasks is projected by 2030 with advancements in marketing strategy AI."
+    "ai_pct_now": 30,
+    "ai_plus_pct_now": 60,
+    "ai_only_full_year": 2035,
+    "ai_plus_full_year": 2027,
+    "sources": [
+      "HubSpot 2024 – AI ad generation tools widespread",
+      "OpenAI GPT-4 – 60%+ task exposure for marketing content creation"
+    ],
+    "reasoning": "Ad copy, analytics reports, and A/B tests are now partly AI-generated (~30%). AI marketing assistants can build, deploy, and analyze multi-channel campaigns by 2027 (~60%). Full funnel automation expected by 2035."
   }
 ]
