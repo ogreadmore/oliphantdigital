@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
   <meta charset="UTF-8">
   <title>AI Job Replacement Timeline | AITimeline.net</title>
-<meta name="description" content="See when AI is projected to replace your job — and by how much. Explore a visual timeline with expert predictions across industries. Updated 2025.">
-<meta property="og:title" content="AI Job Replacement Timeline" />
-<meta property="og:description" content="When will AI take over your job? This interactive timeline visualizes AI's impact on 30+ job roles, based on expert forecasts." />
-<meta property="og:url" content="https://aitimeline.net/" />
-<meta property="og:type" content="website" />
-<meta property="og:image" content="https://aitimeline.net/preview.jpg" />
-
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="AI Job Replacement Timeline" />
-<meta name="twitter:description" content="Explore expert predictions for when AI will automate your job. Browse an interactive timeline by industry." />
-<meta name="twitter:image" content="https://aitimeline.net/preview.jpg" />
+  <meta name="description" content="See when AI is projected to replace your job — and by how much. Explore a visual timeline with expert predictions across industries. Updated 2025.">
+  <meta property="og:title" content="AI Job Replacement Timeline" />
+  <meta property="og:description" content="When will AI take over your job? This interactive timeline visualizes AI's impact on 30+ job roles, based on expert forecasts." />
+  <meta property="og:url" content="https://aitimeline.net/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://aitimeline.net/preview.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AI Job Replacement Timeline" />
+  <meta name="twitter:description" content="Explore expert predictions for when AI will automate your job. Browse an interactive timeline by industry." />
+  <meta name="twitter:image" content="https://aitimeline.net/preview.jpg" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <style>
@@ -43,9 +41,6 @@
       color: var(--accent-light);
       text-decoration: none;
     }
-    /* --------------------
-       HEADER STYLES
-       -------------------- */
     header {
       display: flex;
       justify-content: space-between;
@@ -76,10 +71,6 @@
     button:hover {
       background: var(--accent);
     }
-
-    /* --------------------
-       MAIN WRAPPERS
-       -------------------- */
     main {
       flex: 1;
       position: relative;
@@ -101,10 +92,6 @@
       overflow: auto;
       padding: 1rem;
     }
-
-    /* --------------------
-       SCROLLBAR
-       -------------------- */
     #timelineWrap::-webkit-scrollbar {
       height: 13px;
       width: 13px;
@@ -118,10 +105,6 @@
     #timelineWrap:hover::-webkit-scrollbar-thumb {
       background: var(--accent);
     }
-
-    /* --------------------
-       SVG ELEMENTS
-       -------------------- */
     .tick-line {
       stroke: #2d2d32;
       stroke-width: 1;
@@ -143,10 +126,6 @@
       font-weight: 600;
       pointer-events: none;
     }
-
-    /* --------------------
-       DASHBOARD TABLE
-       -------------------- */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -171,10 +150,6 @@
     tbody tr:hover {
       background: #222225;
     }
-
-    /* --------------------
-       TOOLTIP & MODAL
-       -------------------- */
     #tooltip {
       position: fixed;
       pointer-events: none;
@@ -233,10 +208,6 @@
       border-radius: 6px;
       font-size: .75rem;
     }
-
-    /* --------------------
-       RESPONSIVE TWEAKS
-       -------------------- */
     @media(max-width:850px) {
       header h1 { font-size:.92rem; }
       button { font-size:.76rem; padding:.4rem .8rem; }
@@ -258,7 +229,6 @@
       <button id="btnAbout">About</button>
     </nav>
   </header>
-
   <main>
     <div id="timelineWrap" class="view">
       <svg id="timelineSVG"></svg>
@@ -269,7 +239,6 @@
           <tr>
             <th>Job</th>
             <th>AI % Now</th>
-            <th>AI + Auto % Now</th>
             <th>Industry</th>
             <th>Full-Auto Year</th>
             <th>Sources</th>
@@ -287,9 +256,6 @@
   </div>
 
   <script>
-    /* ---------------------------------------
-       CONSTANTS
-       --------------------------------------- */
     const CARD_W = 140, CARD_H = 26;
     const GAP_V = 14, GAP_H = 14;
     const LEFT_PAD = 90, TOP_PAD = 60;
@@ -299,9 +265,6 @@
     const ROWS_PER_COL_M = 4;
     let jobs = [], isMob = false;
 
-    /* ---------------------------------------
-       LOAD DATA
-       --------------------------------------- */
     fetch('jobs.json')
       .then(r => r.json())
       .then(data => {
@@ -310,9 +273,6 @@
       })
       .catch(e => console.error('jobs.json missing', e));
 
-    /* ---------------------------------------
-       INITIALIZATION
-       --------------------------------------- */
     function init(){
       isMob = window.innerWidth < MOBILE_BREAK;
       buildTimeline();
@@ -322,9 +282,6 @@
       window.addEventListener('resize', debounce(() => location.reload(), 300));
     }
 
-    /* ---------------------------------------
-       HELPERS
-       --------------------------------------- */
     function trunc(s, l){
       return s && s.length > l ? s.slice(0, l-1) + '…' : s;
     }
@@ -335,16 +292,12 @@
       if(!src || src.length === 0) return '—';
       return src.map(s => s.trim()).join('; ');
     }
-
-    /* ---------------------------------------
-       BUILD TIMELINE
-       --------------------------------------- */
     function buildTimeline(){
       const svg = d3.select('#timelineSVG');
       svg.selectAll('*').remove();
 
       const years = jobs
-        .map(j => j.ai_plus_full_year ?? j.ai_only_full_year)
+        .map(j => j.full_auto_year)
         .filter(Boolean);
       const yMin = Math.min(...years),
             yMax = Math.max(...years);
@@ -366,7 +319,7 @@
 
       const buckets = {};
       jobs.forEach(j => {
-        const yr = j.ai_plus_full_year ?? j.ai_only_full_year;
+        const yr = j.full_auto_year;
         (buckets[yr] = buckets[yr] || []).push(j);
       });
 
@@ -375,7 +328,6 @@
       const W = x(yMax) + CARD_W + LEFT_PAD;
       svg.attr('width', W).attr('height', H);
 
-      // Year grid
       svg.append('g').selectAll('g').data(d3.range(yMin, yMax + 1)).enter()
         .append('g')
         .attr('transform', d => `translate(${x(d)},0)`)
@@ -389,7 +341,6 @@
             .text(d => d);
         });
 
-      // Job cards
       Object.entries(buckets).forEach(([yr, list]) => {
         list.forEach((j, i) => {
           const gx = x(+yr) - CARD_W / 2;
@@ -418,7 +369,7 @@
 
       const buckets = {};
       jobs.forEach(j => {
-        const yr = j.ai_plus_full_year ?? j.ai_only_full_year;
+        const yr = j.full_auto_year;
         (buckets[yr] = buckets[yr] || []).push(j);
       });
 
@@ -429,7 +380,6 @@
 
       svg.attr('width', W).attr('height', H);
 
-      // Vertical grid
       svg.append('g').selectAll('g').data(d3.range(yMin, yMax + 1)).enter()
         .append('g')
         .attr('transform', d => `translate(0,${yScale(d)})`)
@@ -445,7 +395,6 @@
             .text(d => d);
         });
 
-      // Job cards with wrapping
       Object.entries(buckets).forEach(([yr, list]) => {
         list.forEach((j, idx) => {
           const col = Math.floor(idx / ROWS_PER_COL_M);
@@ -469,9 +418,6 @@
       });
     }
 
-    /* ---------------------------------------
-       INTERACTIONS
-       --------------------------------------- */
     function attachCardEvents(){
       const tip = document.getElementById('tooltip');
       d3.selectAll('g[data-j]')
@@ -480,9 +426,8 @@
           const j = find(this.dataset.j);
           tip.innerHTML = `
             <h4>${j.job_title}</h4>
-            <p>AI % Now: ${j.ai_pct_now ?? '—'}%</p>
-            <p>AI + Auto % Now: ${j.ai_plus_pct_now ?? '—'}%</p>
-            <p>Full-Auto Year: ${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</p>
+            <p>AI % Now: ${j.current_automation_pct ?? '—'}%</p>
+            <p>Full-Auto Year: ${j.full_auto_year ?? '—'}</p>
           `;
           tip.style.left = `${e.clientX + 16}px`;
           tip.style.top = `${e.clientY + 16}px`;
@@ -496,18 +441,14 @@
           showModal(`
             <h3>${j.job_title}</h3>
             <p><b>Industry:</b> ${j.industry}</p>
-            <p><b>AI % Now:</b> ${j.ai_pct_now ?? '—'}%</p>
-            <p><b>AI + Auto % Now:</b> ${j.ai_plus_pct_now ?? '—'}%</p>
-            <p><b>Full-Auto Year:</b> ${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</p>
+            <p><b>AI % Now:</b> ${j.current_automation_pct ?? '—'}%</p>
+            <p><b>Full-Auto Year:</b> ${j.full_auto_year ?? '—'}</p>
             <p><b>Sources:</b> ${renderSources(j.sources)}</p>
             <p><b>Reasoning:</b> ${j.reasoning}</p>
           `);
         });
     }
 
-    /* ---------------------------------------
-       BUILD DASHBOARD
-       --------------------------------------- */
     function buildDash(){
       const tbody = d3.select('#dashTbl tbody');
       tbody.selectAll('tr').remove();
@@ -515,19 +456,15 @@
       jobs.forEach(j => {
         tbody.append('tr').html(`
           <td>${j.job_title}</td>
-          <td>${j.ai_pct_now ?? '—'}%</td>
-          <td>${j.ai_plus_pct_now ?? '—'}%</td>
+          <td>${j.current_automation_pct ?? '—'}%</td>
           <td>${j.industry}</td>
-          <td>${j.ai_plus_full_year ?? j.ai_only_full_year ?? '—'}</td>
+          <td>${j.full_auto_year ?? '—'}</td>
           <td>${renderSources(j.sources)}</td>
           <td>${trunc(j.reasoning || '', 120)}</td>
         `);
       });
     }
 
-    /* ---------------------------------------
-       DRAG & ZOOM
-       --------------------------------------- */
     function enableDrag(){
       const wrap = document.getElementById('timelineWrap');
       let down = false, sx, sy, sl, st;
@@ -557,9 +494,6 @@
       }, { passive: false });
     }
 
-    /* ---------------------------------------
-       NAVIGATION & MODAL
-       --------------------------------------- */
     function navInit(){
       const t = document.getElementById('btnTime');
       const d = document.getElementById('btnDash');
@@ -600,9 +534,6 @@
       document.getElementById('modalOv').classList.remove('show');
     }
 
-    /* ---------------------------------------
-       ABOUT DIALOG
-       --------------------------------------- */
     function about(){
       showModal(`
 <h3>About the AI Job Replacement Timeline</h3>
@@ -613,9 +544,6 @@
       `);
     }
 
-    /* ---------------------------------------
-       DEBOUNCE UTILITY
-       --------------------------------------- */
     function debounce(fn, ms) {
       let t;
       return (...args) => {
