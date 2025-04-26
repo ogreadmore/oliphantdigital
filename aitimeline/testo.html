@@ -597,7 +597,7 @@ function updateSortArrows(){
       wrap.onmousemove = e => {
         if (down) {
           wrap.scrollLeft = sl - (e.pageX - sx);
-          wrap.scrollTop = st - (e.pageY - sy);
+          // do nothing to scrollTop — lock vertical scroll
         }
       };
       document.onmouseup = () => down = false;
