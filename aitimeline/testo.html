@@ -503,7 +503,6 @@ function updateSortArrows(){
   const headers = document.querySelectorAll('#dashTbl thead th');
   headers.forEach((th, idx) => {
     if (idx === 4 || idx === 5) return; // skip Sources, Reasoning
-    th.innerHTML = th.dataset.label; // reset to original label
     let key;
     switch(idx){
       case 0: key = 'job_title'; break;
@@ -511,12 +510,12 @@ function updateSortArrows(){
       case 2: key = 'industry'; break;
       case 3: key = 'full_auto_year'; break;
     }
-    if (currentSort.key === key) {
-      th.innerHTML += `<span style="font-size:0.8em;margin-left:4px;">${currentSort.asc ? '▲' : '▼'}</span>`;
-    }
+    const isActive = currentSort.key === key;
+    const arrow = isActive ? (currentSort.asc ? '▲' : '▼') : '▲'; // arrow always present
+    const arrowStyle = isActive ? 'opacity:1;' : 'opacity:0;';
+    th.innerHTML = `${th.dataset.label}<span style="font-size:0.8em;margin-left:4px;${arrowStyle}">${arrow}</span>`;
   });
 }
-
 
     function sortJobs(){
       const key = currentSort.key;
