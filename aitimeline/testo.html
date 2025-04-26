@@ -454,23 +454,25 @@ function init(){
     }
     let currentSort = { key: 'current_automation_pct', asc: false };
 
-    function buildDash(){
-      const tbody = d3.select('#dashTbl tbody');
-      tbody.selectAll('tr').remove();
+function buildDash(){
+  const tbody = d3.select('#dashTbl tbody');
+  tbody.selectAll('tr').remove();
 
-      jobs.forEach(j => {
-        tbody.append('tr').html(`
-          <td>${j.job_title}</td>
-          <td>${j.current_automation_pct ?? '—'}%</td>
-          <td>${j.industry}</td>
-          <td>${j.full_auto_year ?? '—'}</td>
-          <td>${renderSources(j.sources)}</td>
-          <td>${trunc(j.reasoning || '', 120)}</td>
-        `);
-      });
+  jobs.forEach(j => {
+    tbody.append('tr').html(`
+      <td>${j.job_title}</td>
+      <td>${j.current_automation_pct ?? '—'}%</td>
+      <td>${j.industry}</td>
+      <td>${j.full_auto_year ?? '—'}</td>
+      <td>${renderSources(j.sources)}</td>
+      <td>${trunc(j.reasoning || '', 120)}</td>
+    `);
+  });
 
-      enableSorting();
-    }
+  enableSorting();
+  updateSortArrows();  // <-- ADD THIS LINE
+}
+
 
 function enableSorting(){
   const headers = document.querySelectorAll('#dashTbl thead th');
