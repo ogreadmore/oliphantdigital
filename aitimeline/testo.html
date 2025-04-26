@@ -345,8 +345,10 @@ function init(){
       });
 
       const maxStack = Math.max(...Object.values(buckets).map(b => b.length));
-      const availableHeight = window.innerHeight - document.querySelector('header').offsetHeight;
+const headerHeight = document.querySelector('header').offsetHeight;
+const availableHeight = window.innerHeight - headerHeight;
 const H = Math.max(availableHeight, TOP_PAD + maxStack * (CARD_H + GAP_V) + 20);
+
       const W = x(yMax) + CARD_W + LEFT_PAD;
       svg.attr('width', W).attr('height', H);
 
@@ -397,7 +399,10 @@ const H = Math.max(availableHeight, TOP_PAD + maxStack * (CARD_H + GAP_V) + 20);
       const maxCols = Math.max(...Object.values(buckets)
         .map(b => Math.ceil(b.length / ROWS_PER_COL_M)));
       const W = LEFT_PAD_M + maxCols * (CARD_W + GAP_H) + 40;
-      const H = Math.max(window.innerHeight, yScale(yMax) + ROWS_PER_COL_M * (CARD_H + GAP_V) + 120);
+const headerHeight = document.querySelector('header').offsetHeight;
+const availableHeight = window.innerHeight - headerHeight;
+const H = Math.max(availableHeight, yScale(yMax) + ROWS_PER_COL_M * (CARD_H + GAP_V) + 120);
+
 
       svg.attr('width', W).attr('height', H);
 
