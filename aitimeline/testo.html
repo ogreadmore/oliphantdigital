@@ -88,9 +88,15 @@ main {
   overflow: hidden;
 }
 #timelineWrap {
-  overflow-x: auto;   /* keep horizontal scroll */
-  overflow-y: hidden; /* kill vertical bar      */
+  overflow-x: auto;
+  overflow-y: hidden;
   cursor: grab;
+}
+
+@media(max-width: 650px) {
+  #timelineWrap {
+    overflow-y: auto;
+  }
 }
     #timelineWrap:active {
       cursor: grabbing;
