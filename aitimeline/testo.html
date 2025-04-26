@@ -271,7 +271,7 @@ g[data-j]:active .job-rect {
     const GAP_V = 14, GAP_H = 14;
     const LEFT_PAD = 90, TOP_PAD = 60;
     const LEFT_PAD_M = 110;
-    const YEAR_PX = 160;
+    const YEAR_PX = 200;
     const MOBILE_BREAK = 650;
     const ROWS_PER_COL_M = 4;
     let jobs = [], isMob = false;
@@ -339,7 +339,7 @@ function init(){
       });
 
       const maxStack = Math.max(...Object.values(buckets).map(b => b.length));
-      const H = Math.max(window.innerHeight, TOP_PAD + maxStack * (CARD_H + GAP_V) + 120);
+      const H = Math.max(window.innerHeight, TOP_PAD + maxStack * (CARD_H + GAP_V) + 20);
       const W = x(yMax) + CARD_W + LEFT_PAD;
       svg.attr('width', W).attr('height', H);
 
