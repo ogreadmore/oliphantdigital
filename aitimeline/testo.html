@@ -278,12 +278,12 @@
 function init(){
   isMob = window.innerWidth < MOBILE_BREAK;
   buildTimeline();
-  sortJobs();        // <- move this line UP before buildDash
-  buildDash();
+  sortJobs();        // Sort jobs right after fetching them
+  buildDash();       // Build the sorted dashboard
+  enableSorting();   // Attach click handlers to the new headers
+  updateSortArrows(); // Show the arrow next to the current column
   navInit();
   modalInit();
-  enableSort();
-  updateSortArrows();
   window.addEventListener('resize', debounce(() => location.reload(), 300));
 }
 
