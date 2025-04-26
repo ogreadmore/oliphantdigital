@@ -282,6 +282,9 @@
       navInit();
       modalInit();
       enableSort();
+      sortJobs();
+buildDash();
+updateSortArrows();
       window.addEventListener('resize', debounce(() => location.reload(), 300));
     }
     function trunc(s, l){
@@ -449,7 +452,7 @@
           `);
         });
     }
-    let currentSort = { key: null, asc: true };
+    let currentSort = { key: 'current_automation_pct', asc: false };
 
     function buildDash(){
       const tbody = d3.select('#dashTbl tbody');
@@ -498,7 +501,7 @@ function updateSortArrows(){
   const headers = document.querySelectorAll('#dashTbl thead th');
   headers.forEach((th, idx) => {
     if (idx === 4 || idx === 5) return; // skip Sources, Reasoning
-    th.innerText = th.dataset.label; // reset to original label
+    th.innerHTML = th.dataset.label; // reset to original label
     let key;
     switch(idx){
       case 0: key = 'job_title'; break;
@@ -507,7 +510,7 @@ function updateSortArrows(){
       case 3: key = 'full_auto_year'; break;
     }
     if (currentSort.key === key) {
-      th.innerText += currentSort.asc ? ' ▲' : ' ▼';
+      th.innerHTML += `<span style="font-size:0.8em;margin-left:4px;">${currentSort.asc ? '▼' : '▲'}</span>`;
     }
   });
 }
