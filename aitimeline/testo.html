@@ -237,14 +237,14 @@
     <div id="dashWrap" class="view">
       <table id="dashTbl">
         <thead>
-          <tr>
-            <th data-sort="job_title">Job</th>
-            <th data-sort="current_automation_pct">Current State</th>
-            <th data-sort="industry">Industry</th>
-            <th data-sort="full_auto_year">Full-Auto Year</th>
-            <th>Sources</th>
-            <th>Reasoning</th>
-          </tr>
+<tr>
+  <th data-sort="job_title" data-label="Job">Job</th>
+  <th data-sort="current_automation_pct" data-label="Current State">Current State</th>
+  <th data-sort="industry" data-label="Industry">Industry</th>
+  <th data-sort="full_auto_year" data-label="Full-Auto Year">Full-Auto Year</th>
+  <th>Sources</th>
+  <th>Reasoning</th>
+</tr>
         </thead>
         <tbody></tbody>
       </table>
@@ -469,30 +469,49 @@
       enableSorting();
     }
 
-    function enableSorting(){
-      const headers = document.querySelectorAll('#dashTbl thead th');
-      headers.forEach((th, idx) => {
-        if (idx === 4 || idx === 5) return; // skip Sources, Reasoning
-        th.style.cursor = 'pointer';
-        th.onclick = () => {
-          let key;
-          switch(idx){
-            case 0: key = 'job_title'; break;
-            case 1: key = 'current_automation_pct'; break;
-            case 2: key = 'industry'; break;
-            case 3: key = 'full_auto_year'; break;
-          }
-          if (currentSort.key === key) {
-            currentSort.asc = !currentSort.asc;
-          } else {
-            currentSort.key = key;
-            currentSort.asc = true;
-          }
-          sortJobs();
-          buildDash();
-        };
-      });
+function enableSorting(){
+  const headers = document.querySelectorAll('#dashTbl thead th');
+  headers.forEach((th, idx) => {
+    if (idx === 4 || idx === 5) return; // skip Sources, Reasoning
+    th.style.cursor = 'pointer';
+    th.onclick = () => {
+      let key;
+      switch(idx){
+        case 0: key = 'job_title'; break;
+        case 1: key = 'current_automation_pct'; break;
+        case 2: key = 'industry'; break;
+        case 3: key = 'full_auto_year'; break;
+      }
+      if (currentSort.key === key) {
+        currentSort.asc = !currentSort.asc;
+      } else {
+        currentSort.key = key;
+        currentSort.asc = true;
+      }
+      sortJobs();
+      buildDash();
+      updateSortArrows();
+    };
+  });
+}
+function updateSortArrows(){
+  const headers = document.querySelectorAll('#dashTbl thead th');
+  headers.forEach((th, idx) => {
+    if (idx === 4 || idx === 5) return; // skip Sources, Reasoning
+    th.innerText = th.dataset.label; // reset to original label
+    let key;
+    switch(idx){
+      case 0: key = 'job_title'; break;
+      case 1: key = 'current_automation_pct'; break;
+      case 2: key = 'industry'; break;
+      case 3: key = 'full_auto_year'; break;
     }
+    if (currentSort.key === key) {
+      th.innerText += currentSort.asc ? ' ▲' : ' ▼';
+    }
+  });
+}
+
 
     function sortJobs(){
       const key = currentSort.key;
