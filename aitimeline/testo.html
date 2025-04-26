@@ -275,18 +275,18 @@
       })
       .catch(e => console.error('jobs.json missing', e));
 
-    function init(){
-      isMob = window.innerWidth < MOBILE_BREAK;
-      buildTimeline();
-      buildDash();
-      navInit();
-      modalInit();
-      enableSort();
-      sortJobs();
-buildDash();
-updateSortArrows();
-      window.addEventListener('resize', debounce(() => location.reload(), 300));
-    }
+function init(){
+  isMob = window.innerWidth < MOBILE_BREAK;
+  buildTimeline();
+  sortJobs();        // <- move this line UP before buildDash
+  buildDash();
+  navInit();
+  modalInit();
+  enableSort();
+  updateSortArrows();
+  window.addEventListener('resize', debounce(() => location.reload(), 300));
+}
+
     function trunc(s, l){
       return s && s.length > l ? s.slice(0, l-1) + '…' : s;
     }
@@ -510,7 +510,7 @@ function updateSortArrows(){
       case 3: key = 'full_auto_year'; break;
     }
     if (currentSort.key === key) {
-      th.innerHTML += `<span style="font-size:0.8em;margin-left:4px;">${currentSort.asc ? '▼' : '▲'}</span>`;
+      th.innerHTML += `<span style="font-size:0.8em;margin-left:4px;">${currentSort.asc ? '▲' : '▼'}</span>`;
     }
   });
 }
