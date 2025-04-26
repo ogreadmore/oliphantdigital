@@ -456,16 +456,28 @@ function init(){
         .on('mouseleave', () => {
           if(!isMob) tip.style.visibility = 'hidden';
         })
-        .on('click', function(){
-          const j = find(this.dataset.j);
-          showModal(`
-            <h3>${j.job_title}</h3>
-            <p><b>Industry:</b> ${j.industry}</p>
-            <p><b>Current State:</b> ${j.current_automation_pct ?? '—'}%</p>
-            <p><b>Full-Auto Year:</b> ${j.full_auto_year ?? '—'}</p>
-            <p><b>Sources:</b> ${renderSources(j.sources)}</p>
-            <p><b>Reasoning:</b> ${j.reasoning}</p>
-          `);
+.on('click', function(){
+  const j = find(this.dataset.j);
+  
+  let percent = j.current_automation_pct ?? 0;
+  let radius = 20;
+  let circumference = 2 * Math.PI * radius;
+  let offset = circumference * (1 - percent / 100);
+
+  showModal(`
+    <h3>${j.job_title}</h3>
+    <svg width="50" height="50" style="display:block;margin:0 auto 12px;" viewBox="0 0 50 50">
+      <circle cx="25" cy="25" r="${radius}" stroke="#333" stroke-width="6" fill="none" />
+      <circle cx="25" cy="25" r="${radius}" stroke="${percent >= 100 ? '#4ade80' : '#c026d3'}" stroke-width="6" fill="none"
+        stroke-dasharray="${circumference}" stroke-dashoffset="${offset}" transform="rotate(-90 25 25)" />
+      <text x="25" y="30" text-anchor="middle" font-size="12" fill="#e4e4e7">${percent}%</text>
+    </svg>
+    <p><b>Industry:</b> ${j.industry}</p>
+    <p><b>Current State:</b> ${percent}%</p>
+    <p><b>Full-Auto Year:</b> ${j.full_auto_year ?? '—'}</p>
+    <p><b>Sources:</b> ${renderSources(j.sources)}</p>
+    <p><b>Reasoning:</b> ${j.reasoning}</p>
+  `);
         });
     }
     let currentSort = { key: 'current_automation_pct', asc: false };
