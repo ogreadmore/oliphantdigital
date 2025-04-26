@@ -115,11 +115,21 @@
       font-weight: 400;
       text-anchor: middle;
     }
-    .job-rect {
-      rx: 6;
-      ry: 6;
-      fill: var(--accent);
-    }
+.job-rect {
+  rx: 6;
+  ry: 6;
+  fill: #000; /* black background */
+  stroke: var(--accent); /* magenta outline */
+  stroke-width: 2;
+  transition: all 0.3s ease;
+}
+
+/* hover and active glow effect */
+g[data-j]:hover .job-rect,
+g[data-j]:active .job-rect {
+  fill: var(--accent);
+  filter: drop-shadow(0 0 8px var(--accent-light));
+}
     .job-text {
       fill: #fff;
       font-size: .64rem;
