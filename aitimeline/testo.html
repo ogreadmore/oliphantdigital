@@ -280,7 +280,6 @@ g[data-j]:active .job-rect {
     const LEFT_PAD = 90, TOP_PAD = 60;
     const LEFT_PAD_M = 110;
     const YEAR_PX = 200;
-    const YEAR_PX_MOBILE = 280; // extra vertical room per year for mobile
     const MOBILE_BREAK = 650;
     const ROWS_PER_COL_M = 4;
     let jobs = [], isMob = false;
@@ -389,7 +388,9 @@ const H = Math.max(availableHeight, TOP_PAD + maxStack * (CARD_H + GAP_V) + 20);
       });
     }
     function vertical(svg, yMin, yMax){
-      const yScale = d3.scaleLinear().domain([yMin, yMax]).range([TOP_PAD, (yMax - yMin) * YEAR_PX_MOBILE + TOP_PAD]);
+      const yScale = d3.scaleLinear()
+                       .domain([yMin, yMax])
+                       .range([TOP_PAD, (yMax - yMin) * YEAR_PX + TOP_PAD]);
 
       const buckets = {};
       jobs.forEach(j => {
