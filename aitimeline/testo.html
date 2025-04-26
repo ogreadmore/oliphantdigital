@@ -388,9 +388,12 @@ const H = Math.max(availableHeight, TOP_PAD + maxStack * (CARD_H + GAP_V) + 20);
       });
     }
     function vertical(svg, yMin, yMax){
-      const yScale = d3.scaleLinear()
-                       .domain([yMin, yMax])
-                       .range([TOP_PAD, (yMax - yMin) * YEAR_PX + TOP_PAD]);
+      const YEAR_SPACING = isMob ? 40 : 0;
+
+const yScale = d3.scaleLinear()
+  .domain([yMin, yMax])
+  .range([TOP_PAD, (yMax - yMin) * (YEAR_PX + YEAR_SPACING) + TOP_PAD]);
+
 
       const buckets = {};
       jobs.forEach(j => {
