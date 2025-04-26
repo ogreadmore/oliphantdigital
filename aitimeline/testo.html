@@ -77,15 +77,16 @@ html, body {
     button:hover {
       background: var(--accent);
     }
-    main {
-      flex: 1;
-      position: relative;
-    }
-    .view {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-    }
+main {
+  flex: 1;
+  position: relative;
+  height: calc(100% - 56px); /* or whatever your header height is */
+}
+.view {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
     #timelineWrap {
       overflow: auto;
       cursor: grab;
