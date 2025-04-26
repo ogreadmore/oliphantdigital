@@ -151,17 +151,17 @@
     tbody tr:hover {
       background: #222225;
     }
-    #tooltip {
-      position: fixed;
-      pointer-events: none;
-      visibility: hidden;
-      background: #000d;
-      padding: .6rem .8rem;
-      border-radius: 6px;
-      font-size: .77rem;
-      max-width: 300px;
-      line-height: 1.4;
-    }
+#tooltip {
+  position: fixed;
+  pointer-events: none;
+  visibility: hidden;
+  background: #000d;
+  padding: .8rem 1rem;
+  border-radius: 6px;
+  font-size: .77rem;
+  max-width: 320px; /* <- made a little wider */
+  line-height: 1.4;
+}
     #tooltip h4 {
       margin: 0 0 .25rem;
       font-size: .8rem;
@@ -426,17 +426,33 @@ function init(){
       const tip = document.getElementById('tooltip');
       d3.selectAll('g[data-j]')
         .on('mousemove', function(e){
-          if(isMob) return;
-          const j = find(this.dataset.j);
-          tip.innerHTML = `
-            <h4>${j.job_title}</h4>
-            <p>Current State: ${j.current_automation_pct ?? '—'}%</p>
-            <p>Full-Auto Year: ${j.full_auto_year ?? '—'}</p>
-          `;
-          tip.style.left = `${e.clientX + 16}px`;
-          tip.style.top = `${e.clientY + 16}px`;
-          tip.style.visibility = 'visible';
-        })
+  if(isMob) return;
+  const j = find(this.dataset.j);
+  
+  let percent = j.current_automation_pct ?? 0;
+  let radius = 20;
+  let circumference = 2 * Math.PI * radius;
+  let offset = circumference * (1 - percent / 100);
+
+  tip.innerHTML = `
+    <h4>${j.job_title}</h4>
+    <svg width="50" height="50" style="margin-bottom:8px;">
+      <circle cx="25" cy="25" r="${radius}" stroke="#333" stroke-width="6" fill="none" />
+      <circle cx="25" cy="25" r="${radius}" stroke="${percent >= 100 ? '#4ade80' : '#c026d3'}" stroke-width="6" fill="none"
+        stroke-dasharray="${circumference}" stroke-dashoffset="${offset}" transform="rotate(-90 25 25)" />
+      <text x="25" y="30" text-anchor="middle" font-size="12" fill="#e4e4e7">${percent}%</text>
+    </svg>
+    <p><b>Industry:</b> ${j.industry}</p>
+    <p><b>Current State:</b> ${percent}%</p>
+    <p><b>Full-Auto Year:</b> ${j.full_auto_year ?? '—'}</p>
+    <p><b>Sources:</b> ${renderSources(j.sources)}</p>
+    <p><b>Reasoning:</b> ${trunc(j.reasoning || '', 120)}</p>
+  `;
+
+  tip.style.left = `${e.clientX + 16}px`;
+  tip.style.top = `${e.clientY + 16}px`;
+  tip.style.visibility = 'visible';
+})
         .on('mouseleave', () => {
           if(!isMob) tip.style.visibility = 'hidden';
         })
