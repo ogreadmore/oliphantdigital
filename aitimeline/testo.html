@@ -87,10 +87,11 @@ main {
   inset: 0;
   overflow: hidden;
 }
-    #timelineWrap {
-      overflow: auto;
-      cursor: grab;
-    }
+#timelineWrap {
+  overflow-x: auto;   /* keep horizontal scroll */
+  overflow-y: hidden; /* kill vertical bar      */
+  cursor: grab;
+}
     #timelineWrap:active {
       cursor: grabbing;
     }
