@@ -267,7 +267,7 @@ g[data-j]:active .job-rect {
   </div>
 
   <script>
-    const CARD_W = 140, CARD_H = 26;
+    const CARD_W = 160, CARD_H = 40;
     const GAP_V = 14, GAP_H = 14;
     const LEFT_PAD = 90, TOP_PAD = 60;
     const LEFT_PAD_M = 110;
@@ -339,7 +339,7 @@ function init(){
       });
 
       const maxStack = Math.max(...Object.values(buckets).map(b => b.length));
-      const H = TOP_PAD + maxStack * (CARD_H + GAP_V) + 120;
+      const H = Math.max(window.innerHeight, TOP_PAD + maxStack * (CARD_H + GAP_V) + 120);
       const W = x(yMax) + CARD_W + LEFT_PAD;
       svg.attr('width', W).attr('height', H);
 
@@ -370,7 +370,7 @@ function init(){
           g.append('text')
             .attr('class','job-text')
             .attr('x', CARD_W / 2)
-            .attr('y', CARD_H / 2 + 4)
+            .attr('y', CARD_H / 2 + 5) // slightly larger offset for better centering
             .attr('text-anchor','middle')
             .text(trunc(j.job_title, 22));
         });
@@ -390,7 +390,7 @@ function init(){
       const maxCols = Math.max(...Object.values(buckets)
         .map(b => Math.ceil(b.length / ROWS_PER_COL_M)));
       const W = LEFT_PAD_M + maxCols * (CARD_W + GAP_H) + 40;
-      const H = yScale(yMax) + ROWS_PER_COL_M * (CARD_H + GAP_V) + 120;
+      const H = Math.max(window.innerHeight, yScale(yMax) + ROWS_PER_COL_M * (CARD_H + GAP_V) + 120);
 
       svg.attr('width', W).attr('height', H);
 
