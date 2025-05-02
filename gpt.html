@@ -864,9 +864,9 @@
     };
     saveApiKeyBtn.onclick = () => {
       const k = apiKeyInput.value.trim();
-      if(!/^sk-[a-zA-Z0-9]{20,}$/.test(k)) {
-        alert('Invalid OpenAI API key');
-        return;
+      if (!/^sk-[a-zA-Z0-9-_]+$/.test(k)) {
+  alert('Invalid OpenAI API key');
+  return;
       }
       apiKey = k;
       storage.setAPIKey(apiKey);
