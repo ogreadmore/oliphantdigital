@@ -625,451 +625,400 @@
       return md.trim();
     }
   </script>
-  <script>
-    // =============== Storage helpers ===============
-    const storage = {
-      getAPIKey() {
-        return localStorage.getItem('openai_api_key') || '';
-      },
-      setAPIKey(k) {
-        localStorage.setItem('openai_api_key', k || '');
-      },
-      getModel() {
-        return localStorage.getItem('openai_model') || '';
-      },
-      setModel(model) {
-        if(model) localStorage.setItem('openai_model', model);
-      },
-      saveConvos(convos) {
-        localStorage.setItem('openai_convos', JSON.stringify(convos));
-      },
-      loadConvos() {
-        try {
-          return JSON.parse(localStorage.getItem('openai_convos') || '[]');
-        } catch {
-          return [];
-        }
-      },
-      saveActiveConvoId(id) {
-        localStorage.setItem('openai_active_convo', id||'');
-      },
-      loadActiveConvoId() {
-        return localStorage.getItem('openai_active_convo') || '';
-      }
-    };
+<script>
+// ================== Storage helpers ==================
+const storage = {
+getAPIKey() { return localStorage.getItem('openaiapikey') || ''; },
+setAPIKey(k) { localStorage.setItem('openaiapikey', k || ''); },
+getModel() { return localStorage.getItem('openai_model') || ''; },
+setModel(model) { if(model) localStorage.setItem('openai_model', model); },
+saveConvos(c) { localStorage.setItem('openai_convos', JSON.stringify(c)); },
+loadConvos() { try { return JSON.parse(localStorage.getItem('openai_convos') || '[]'); } catch { return []; } },
+saveActiveConvoId(id) { localStorage.setItem('openaiactiveconvo', id||''); },
+loadActiveConvoId() { return localStorage.getItem('openaiactiveconvo') || ''; }
+};
+// ================== Application State ==================
+let apiKey = '', availableModels = [], currentModel = '', conversations = [], activeConvoId = '', abortController = null, sending = false;
 
-    // =============== Initial State ===============
-    let apiKey = '';
-    let availableModels = [];
-    let currentModel = '';
-    let conversations = []; // [{id,title,messages:[{role,content}], created}]
-    let activeConvoId = '';
-    let abortController = null;
+// ================== DOM Handles ==================
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+const convoList = $('#convoList');
+const chatArea = $('#chatArea');
+const modelSelect = $('#modelSelect');
+const statusBadge = $('#statusBadge');
+const promptInput = $('#promptInput');
+const sendBtn = $('#sendBtn');
+const stopBtn = $('#stopBtn');
+const currentConvoTitle = $('#currentConvoTitle');
+const inputArea = $('#inputArea');
+const apiKeyRow = $('#apiKeyRow');
+const apiKeyInput = $('#apiKeyInput');
+const showApiKeyBtn = $('#showApiKeyBtn');
+const toggleApiKeyVisibilityBtn = $('#toggleApiKeyVisibilityBtn');
+const saveApiKeyBtn = $('#saveApiKeyBtn');
+const newConvoBtn = $('#newConvoBtn');
 
-    // =============== DOM elements ===============
-    const $ = s => document.querySelector(s);
-    const $$ = s => document.querySelectorAll(s);
-    const convoList = $('#convoList');
-    const chatArea = $('#chatArea');
-    const modelSelect = $('#modelSelect');
-    const statusBadge = $('#statusBadge');
-    const promptInput = $('#promptInput');
-    const sendBtn = $('#sendBtn');
-    const stopBtn = $('#stopBtn');
-    const currentConvoTitle = $('#currentConvoTitle');
-    const inputArea = $('#inputArea');
-    const apiKeyRow = $('#apiKeyRow');
-    const apiKeyInput = $('#apiKeyInput');
-    const showApiKeyBtn = $('#showApiKeyBtn');
-    const toggleApiKeyVisibilityBtn = $('#toggleApiKeyVisibilityBtn');
-    const saveApiKeyBtn = $('#saveApiKeyBtn');
-    const newConvoBtn = $('#newConvoBtn');
+// ================== Helpers ==================
+function uuid() {
+return ([1e7]+-1e3+-4e3+-8e3+-1e11)
+.replace(/[018]/g, c =>
+(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+);
+}
 
-    // =============== UI functions ===============
-    function uuid() {
-      return ([1e7]+-1e3+-4e3+-8e3+-1e11)
-        .replace(/[018]/g, c =>
-          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        );
-    }
+// Render conversation list
+function renderConvoList() {
+let html = '';
+conversations.forEach((c, i) => {
+html += `<li class="${c.id===activeConvoId?'active':''}" data-id="${c.id}">
+<span class="convo-title" title="${c.title}">${c.title}</span>
+<span class="convo-actions">
+<button class="rename-btn" title="Rename"><i class="fa-solid fa-pen"></i></button>
+<button class="delete-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
+</span>
+</li>`;
+});
+convoList.innerHTML = html || <li style="opacity:0.7;font-style:italic;">No conversations</li>;
+Array.from(convoList.querySelectorAll('li')).forEach(li => {
+const id = li.getAttribute('data-id');
+li.onclick = e => {
+if(e.target.closest('.rename-btn')) { renameConvo(id); e.stopPropagation(); return; }
+if(e.target.closest('.delete-btn')) { deleteConvo(id); e.stopPropagation(); return; }
+switchConvo(id);
+};
+});
+}
 
-    function renderConvoList() {
-      let html = '';
-      conversations.forEach((c, i) => {
-        html += `<li class="${c.id===activeConvoId?'active':''}" data-id="${c.id}">
-          <span class="convo-title" title="${c.title}">${c.title}</span>
-          <span class="convo-actions">
-            <button class="rename-btn" title="Rename"><i class="fa-solid fa-pen"></i></button>
-            <button class="delete-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
-          </span>
-        </li>`;
-      });
-      convoList.innerHTML = html || `<li style="opacity:0.7;font-style:italic;">No conversations</li>`;
-      // Add event listeners
-      Array.from(convoList.querySelectorAll('li')).forEach(li => {
-        const id = li.getAttribute('data-id');
-        li.onclick = e => {
-          if(e.target.closest('.rename-btn')) {
-            renameConvo(id);
-            e.stopPropagation();
-            return;
-          }
-          if(e.target.closest('.delete-btn')) {
-            deleteConvo(id);
-            e.stopPropagation();
-            return;
-          }
-          switchConvo(id);
-        };
-      });
-    }
+// Render chat area, optionally smooth scrolling to bottom (default: true)
+function renderChatArea(scrollNow = true) {
+const convo = conversations.find(c=>c.id===activeConvoId);
+if(!convo) {
+chatArea.innerHTML = `<div style="text-align:center;opacity:0.65;margin-top:70px;font-size:1.1em;">
+<i class="fa-solid fa-robot" style="font-size:2em;color:var(--accent);"></i><br>
+Start a new conversation, or select one.<br>
+</div>`;
+return;
+}
+chatArea.innerHTML = '';
+let frag = document.createDocumentFragment();
+convo.messages.forEach((msg) => {
+const row = document.createElement('div');
+row.className = chat-message-row ${msg.role};
+row.innerHTML = `
+<div class="chat-message-avatar">
+${msg.role === 'user' ? '<i class="fa-solid fa-user"></i>' : '<i class="fa-solid fa-robot"></i>'}
+</div>
+<div class="chat-message-content">${renderMarkdown(msg.content)}</div>
+`;
+frag.appendChild(row);
+});
+chatArea.appendChild(frag);
+if(scrollNow) setTimeout(()=>chatArea.scrollTo({top:chatArea.scrollHeight,behavior:'smooth'}), 70);
+}
 
-    function renderChatArea() {
-      const convo = conversations.find(c=>c.id===activeConvoId);
-      if(!convo) {
-        chatArea.innerHTML = `<div style="text-align:center;opacity:0.65;margin-top:70px;font-size:1.1em;">
-          <i class="fa-solid fa-robot" style="font-size:2em;color:var(--accent);"></i><br>
-          Start a new conversation, or select one.<br>
-        </div>`;
-        return;
-      }
-      chatArea.innerHTML = '';
-      let frag = document.createDocumentFragment();
-      convo.messages.forEach((msg, idx) => {
-        const row = document.createElement('div');
-        row.className = `chat-message-row ${msg.role}`;
-        row.innerHTML = `
-          <div class="chat-message-avatar">
-            ${msg.role === 'user' ? '<i class="fa-solid fa-user"></i>' : '<i class="fa-solid fa-robot"></i>'}
-          </div>
-          <div class="chat-message-content">${renderMarkdown(msg.content)}</div>
-        `;
-        frag.appendChild(row);
-      });
-      chatArea.appendChild(frag);
-      // Scroll to bottom
-      setTimeout(()=>chatArea.scrollTo({top:chatArea.scrollHeight,behavior:'smooth'}), 70);
-    }
+function updateCurrentConvoTitle() {
+const c = conversations.find(c=>c.id===activeConvoId);
+currentConvoTitle.textContent = c ? c.title : 'Chat';
+}
 
-    function updateCurrentConvoTitle() {
-      const c = conversations.find(c=>c.id===activeConvoId);
-      currentConvoTitle.textContent = c ? c.title : 'Chat';
-    }
+function renderModelSelect() {
+modelSelect.innerHTML = '';
+if(!apiKey) {
+modelSelect.disabled = true;
+modelSelect.innerHTML = <option disabled>Enter API Key</option>;
+return;
+}
+if(!availableModels.length) {
+modelSelect.innerHTML = <option disabled>Loading...</option>;
+modelSelect.disabled = true;
+return;
+}
+availableModels.forEach(m => {
+const opt = document.createElement('option');
+opt.value = m.id;
+opt.textContent = m.id;
+modelSelect.appendChild(opt);
+});
+modelSelect.value = currentModel;
+modelSelect.disabled = false;
+}
 
-    function renderModelSelect() {
-      modelSelect.innerHTML = '';
-      if(!apiKey) {
-        modelSelect.disabled = true;
-        modelSelect.innerHTML = `<option disabled>Enter API Key</option>`;
-        return;
-      }
-      if(!availableModels.length) {
-        modelSelect.innerHTML = `<option disabled>Loading...</option>`;
-        modelSelect.disabled = true;
-        return;
-      }
-      availableModels.forEach(m => {
-        const opt = document.createElement('option');
-        opt.value = m.id;
-        opt.textContent = m.id;
-        modelSelect.appendChild(opt);
-      });
-      modelSelect.value = currentModel;
-      modelSelect.disabled = false;
-    }
+function setStatusBadge(txt, good) {
+statusBadge.textContent = txt;
+statusBadge.className = 'status-badge' + (good ? '' : ' error');
+}
 
-    function setStatusBadge(txt, good) {
-      statusBadge.textContent = txt;
-      statusBadge.className = 'status-badge' + (good ? '' : ' error');
-    }
-
-    // =============== Conversation management ===============
-    function createNewConvo(title='New Chat', firstMsg) {
-      const id = uuid();
-      const convo = {
-        id,
-        title,
-        created: Date.now(),
-        messages: firstMsg ? [firstMsg] : []
-      };
-      conversations.unshift(convo);
-      activeConvoId = id;
-      storage.saveActiveConvoId(id);
-      storage.saveConvos(conversations);
-      renderConvoList();
-      updateCurrentConvoTitle();
-      renderChatArea();
-    }
-    function switchConvo(id) {
-      if(activeConvoId === id) return;
-      activeConvoId = id;
-      storage.saveActiveConvoId(id);
-      renderConvoList();
-      updateCurrentConvoTitle();
-      renderChatArea();
-      promptInput.focus();
-    }
-    function renameConvo(id) {
-      const c = conversations.find(c=>c.id===id);
-      if(!c) return;
-      const newTitle = prompt('Rename conversation:', c.title);
-      if(newTitle && newTitle.trim()) {
-        c.title = newTitle.trim();
-        storage.saveConvos(conversations);
-        renderConvoList();
-        updateCurrentConvoTitle();
-      }
-    }
-    function deleteConvo(id) {
-      if(!confirm('Delete this conversation and all its messages?')) return;
-      conversations = conversations.filter(c=>c.id!==id);
-      if(activeConvoId===id) {
-        activeConvoId = conversations.length ? conversations[0].id : '';
-        storage.saveActiveConvoId(activeConvoId);
-      }
-      storage.saveConvos(conversations);
-      renderConvoList();
-      updateCurrentConvoTitle();
-      renderChatArea();
-    }
-    function addMessageToActiveConvo(role, content) {
-      const c = conversations.find(c=>c.id===activeConvoId);
-      if(!c) return;
-      c.messages.push({role, content});
-      storage.saveConvos(conversations);
-      renderChatArea();
-    }
-
-    // =============== API Key UI ===============
-    function showApiKeyInput(show=true) {
-      apiKeyRow.style.display = show ? 'flex' : 'none';
-      if(show) {
-        apiKeyInput.value = apiKey;
-        apiKeyInput.type = 'password';
-        apiKeyInput.focus();
-      }
-    }
-    showApiKeyBtn.onclick = () => {
-      apiKeyRow.style.display = apiKeyRow.style.display==='none'?'flex':'none';
-      if(apiKeyRow.style.display==='flex') {
-        apiKeyInput.value = apiKey;
-        apiKeyInput.type = 'password';
-        apiKeyInput.focus();
-      }
-    };
-    toggleApiKeyVisibilityBtn.onclick = () => {
-      apiKeyInput.type = apiKeyInput.type==='password'?'text':'password';
-      toggleApiKeyVisibilityBtn.innerHTML = apiKeyInput.type==='password'
-        ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
-    };
-    saveApiKeyBtn.onclick = () => {
-      const k = apiKeyInput.value.trim();
-      if (!/^sk-[a-zA-Z0-9-_]+$/.test(k)) {
-  alert('Invalid OpenAI API key');
-  return;
-      }
-      apiKey = k;
-      storage.setAPIKey(apiKey);
-      showApiKeyInput(false);
-      setStatusBadge('Connecting...', true);
-      fetchModels();
-    };
-
-    // =============== Load/Save State ===============
-    function loadState() {
-      apiKey = storage.getAPIKey();
-      conversations = storage.loadConvos();
-      // Sort by created desc
-      conversations.sort((a,b)=>b.created-a.created);
-      activeConvoId = storage.loadActiveConvoId();
-      if(!conversations.length) {
-        createNewConvo('New Chat');
-      }
-      if(!activeConvoId || !conversations.some(c=>c.id===activeConvoId)) {
-        activeConvoId = conversations[0].id;
-        storage.saveActiveConvoId(activeConvoId);
-      }
-      renderConvoList();
-      updateCurrentConvoTitle();
-      renderChatArea();
-      if(apiKey) {
-        setStatusBadge('Connecting...', true);
-        fetchModels();
-      } else {
-        setStatusBadge('No API Key', false);
-        renderModelSelect();
-      }
-    }
-
-    // =============== Model fetching ===============
-    async function fetchModels() {
-      if(!apiKey) return;
-      setStatusBadge('Connecting...', true);
-      modelSelect.disabled = true;
-      try {
-        const res = await fetch('https://api.openai.com/v1/models',{
-          headers: {'Authorization':'Bearer '+apiKey}
-        });
-        if(!res.ok) throw new Error('API Key error');
-        const data = await res.json();
-        // Only show chat models
-        availableModels = data.data
-          .filter(m=>/^gpt-/.test(m.id))
-          .sort((a,b)=>a.id<b.id?1:-1);
-        if(!availableModels.length) throw new Error('No models found');
-        // Try to restore last used
-        let savedModel = storage.getModel();
-        if(savedModel && availableModels.some(m=>m.id===savedModel)) {
-          currentModel = savedModel;
-        } else {
-          currentModel = availableModels[0].id;
-          storage.setModel(currentModel);
-        }
-        renderModelSelect();
-        setStatusBadge('Ready', true);
-      } catch(e) {
-        setStatusBadge('API Key Error', false);
-        availableModels = [];
-        renderModelSelect();
-      }
-    }
-    modelSelect.onchange = () => {
-      currentModel = modelSelect.value;
+function createNewConvo(title='New Chat', firstMsg) {
+const id = uuid();
+const convo = {
+id,
+title,
+created: Date.now(),
+messages: firstMsg ? [firstMsg] : []
+};
+conversations.unshift(convo);
+activeConvoId = id;
+storage.saveActiveConvoId(id);
+storage.saveConvos(conversations);
+renderConvoList();
+updateCurrentConvoTitle();
+renderChatArea();
+}
+function switchConvo(id) {
+if(activeConvoId === id) return;
+activeConvoId = id;
+storage.saveActiveConvoId(id);
+renderConvoList();
+updateCurrentConvoTitle();
+renderChatArea();
+promptInput.focus();
+}
+function renameConvo(id) {
+const c = conversations.find(c=>c.id===id);
+if(!c) return;
+const newTitle = prompt('Rename conversation:', c.title);
+if(newTitle && newTitle.trim()) {
+c.title = newTitle.trim();
+storage.saveConvos(conversations);
+renderConvoList();
+updateCurrentConvoTitle();
+}
+}
+function deleteConvo(id) {
+if(!confirm('Delete this conversation and all its messages?')) return;
+conversations = conversations.filter(c=>c.id!==id);
+if(activeConvoId===id) {
+  activeConvoId = conversations.length ? conversations[0].id : '';
+  storage.saveActiveConvoId(activeConvoId);
+}
+storage.saveConvos(conversations);
+renderConvoList();
+updateCurrentConvoTitle();
+renderChatArea();
+}</p><p>function addMessageToActiveConvo(role, content) {
+  const c = conversations.find(c=>c.id===activeConvoId);
+  if(!c) return;
+  c.messages.push({role, content});
+  storage.saveConvos(conversations);
+  renderChatArea(false); // avoid smooth scroll on AI appending token
+}</p><p>// =============== API Key UI ===============
+function showApiKeyInput(show=true) {
+  apiKeyRow.style.display = show ? 'flex' : 'none';
+  if(show) {
+    apiKeyInput.value = apiKey;
+    apiKeyInput.type = 'password';
+    apiKeyInput.focus();
+  }
+}
+showApiKeyBtn.onclick = () => {
+  apiKeyRow.style.display = apiKeyRow.style.display==='none'?'flex':'none';
+  if(apiKeyRow.style.display==='flex') {
+    apiKeyInput.value = apiKey;
+    apiKeyInput.type = 'password';
+    apiKeyInput.focus();
+  }
+};
+toggleApiKeyVisibilityBtn.onclick = () => {
+  apiKeyInput.type = apiKeyInput.type==='password'?'text':'password';
+  toggleApiKeyVisibilityBtn.innerHTML = apiKeyInput.type==='password'
+    ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
+};
+saveApiKeyBtn.onclick = () => {
+  const k = apiKeyInput.value.trim();
+  if (!/^sk-[a-zA-Z0-9-_]+$/.test(k)) {
+    alert('Invalid OpenAI API key');
+    return;
+  }
+  apiKey = k;
+  storage.setAPIKey(apiKey);
+  showApiKeyInput(false);
+  setStatusBadge('Connecting...', true);
+  fetchModels();
+};</p><p>// =============== Loading State ===============
+function loadState() {
+  apiKey = storage.getAPIKey();
+  conversations = storage.loadConvos();
+  conversations.sort((a,b)=>b.created-a.created);
+  activeConvoId = storage.loadActiveConvoId();
+  if(!conversations.length) {
+    createNewConvo('New Chat');
+  }
+  if(!activeConvoId || !conversations.some(c=>c.id===activeConvoId)) {
+    activeConvoId = conversations[0].id;
+    storage.saveActiveConvoId(activeConvoId);
+  }
+  renderConvoList();
+  updateCurrentConvoTitle();
+  renderChatArea();
+  if(apiKey) {
+    setStatusBadge('Connecting...', true);
+    fetchModels();
+  } else {
+    setStatusBadge('No API Key', false);
+    renderModelSelect();
+  }
+}</p><p>// =============== Model fetching ===============
+async function fetchModels() {
+  if(!apiKey) return;
+  setStatusBadge('Connecting...', true);
+  modelSelect.disabled = true;
+  try {
+    const res = await fetch('https://api.openai.com/v1/models',{
+      headers: {'Authorization':'Bearer '+apiKey}
+    });
+    if(!res.ok) throw new Error('API Key error');
+    const data = await res.json();
+    availableModels = data.data
+      .filter(m=>/^gpt-/.test(m.id))
+      .sort((a,b)=>a.id<b.id?1:-1);
+    if(!availableModels.length) throw new Error('No models found');
+    let savedModel = storage.getModel();
+    if(savedModel && availableModels.some(m=>m.id===savedModel)) {
+      currentModel = savedModel;
+    } else {
+      currentModel = availableModels[0].id;
       storage.setModel(currentModel);
-    };
-
-    // =============== Sending prompt ===============
-    let sending = false;
-    async function submitPrompt(e) {
-      e.preventDefault();
-      if(sending) return;
-      let prompt = promptInput.value.trim();
-      if(!prompt) return;
-      let convo = conversations.find(c=>c.id===activeConvoId);
-      if(!convo) {
-        createNewConvo('New Chat');
-        convo = conversations.find(c=>c.id===activeConvoId);
-      }
-      addMessageToActiveConvo('user', prompt);
-      promptInput.value = '';
-      promptInput.style.height = 'auto';
-      sending = true;
-      sendBtn.disabled = true;
-      stopBtn.style.display = '';
-      stopBtn.disabled = false;
-      setStatusBadge('Waiting...', true);
-      try {
-        // Build messages
-        let msgs = convo.messages.map(m=>({role:m.role, content:m.content}));
-        // Limit memory: last 32 messages
-        if(msgs.length > 32) msgs = msgs.slice(-32);
-        abortController = new AbortController();
-        // Stream!
-        const response = await fetch('https://api.openai.com/v1/chat/completions',{
-          method:'POST',
-          headers: {
-            'Content-Type':'application/json',
-            'Authorization':'Bearer '+apiKey
-          },
-          body: JSON.stringify({
-            model: currentModel,
-            messages: msgs,
-            stream: true
-          }),
-          signal: abortController.signal
-        });
-        if(!response.ok) {
-          let err = await response.text();
-          throw new Error(err);
+    }
+    renderModelSelect();
+    setStatusBadge('Ready', true);
+  } catch(e) {
+    setStatusBadge('API Key Error', false);
+    availableModels = [];
+    renderModelSelect();
+  }
+}
+modelSelect.onchange = () => {
+  currentModel = modelSelect.value;
+  storage.setModel(currentModel);
+};</p><p>// =============== Prompt/Chat Streaming ===============
+function isChatScrolledToBottom() {
+  return (chatArea.scrollHeight - chatArea.scrollTop - chatArea.clientHeight) < 60;
+}
+function scrollChatToBottom(force=false) {
+  if(force || isChatScrolledToBottom()) {
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }
+}</p><p>async function submitPrompt(e) {
+  e.preventDefault();
+  if(sending) return;
+  let prompt = promptInput.value.trim();
+  if(!prompt) return;
+  let convo = conversations.find(c=>c.id===activeConvoId);
+  if(!convo) {
+    createNewConvo('New Chat');
+    convo = conversations.find(c=>c.id===activeConvoId);
+  }
+  addMessageToActiveConvo('user', prompt);
+  promptInput.value = '';
+  promptInput.style.height = 'auto';
+  sending = true;
+  sendBtn.disabled = true;
+  stopBtn.style.display = '';
+  stopBtn.disabled = false;
+  setStatusBadge('Waiting...', true);
+  try {
+    // Build messages
+    let msgs = convo.messages.map(m=>({role:m.role, content:m.content}));
+    if(msgs.length > 32) msgs = msgs.slice(-32);
+    abortController = new AbortController();
+    const response = await fetch('https://api.openai.com/v1/chat/completions',{
+      method:'POST',
+      headers: {
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+apiKey
+      },
+      body: JSON.stringify({
+        model: currentModel,
+        messages: msgs,
+        stream: true
+      }),
+      signal: abortController.signal
+    });
+    if(!response.ok) {
+      let err = await response.text();
+      throw new Error(err);
+    }
+    // Place holding current message
+    addMessageToActiveConvo('assistant','');
+    let aiMsgIdx = convo.messages.length-1;
+    let content = '';
+    const decoder = new TextDecoder('utf-8');
+    const reader = response.body.getReader();</p><p>    // --- BOUNCING/FREEZE FIX: Debounce DOM and only snap scroll ---
+    let lastUpdate = 0, tokensSinceLastDraw = 0;
+    const updateDelay = 60; // ms</p><p>    function updateLastAIMsgDebounced(final=false) {
+      const now = Date.now();
+      if (final || now-lastUpdate > updateDelay || tokensSinceLastDraw>12) {
+        lastUpdate = now;
+        tokensSinceLastDraw = 0;
+        const lastRow = Array.from(chatArea.querySelectorAll('.chat-message-row.assistant')).pop();
+        if(lastRow) {
+          lastRow.querySelector('.chat-message-content').innerHTML = renderMarkdown(content);
+          scrollChatToBottom(); // snap (not smooth)
         }
-        // Add a placeholder message
-        addMessageToActiveConvo('assistant','');
-        let aiMsgIdx = convo.messages.length-1;
-        let content = '';
-        const decoder = new TextDecoder('utf-8');
-        const reader = response.body.getReader();
-        let done = false;
-        while(!done) {
-          const {value, done:doneR} = await reader.read();
-          if(value) {
-            let chunk = decoder.decode(value);
-            for (const line of chunk.split('\n')) {
-              const m = line.match(/^data:\s*(.*)$/);
-              if(!m || !m[1] || m[1]==='[DONE]') continue;
-              try {
-                let data = JSON.parse(m[1]);
-                let delta = data.choices?.[0]?.delta?.content || '';
-                if(delta) {
-                  content += delta;
-                  // Update message in store and UI
-                  convo.messages[aiMsgIdx].content = content;
-                  storage.saveConvos(conversations);
-                  // Only update the last message's content
-                  updateLastAIMsg(content);
-                }
-              } catch{}
+      }
+    }</p><p>    let done = false;
+    while(!done) {
+      const {value, done:doneR} = await reader.read();
+      if(value) {
+        let chunk = decoder.decode(value);
+        for (const line of chunk.split('\n')) {
+          const m = line.match(/^data:\s<em>(.</em>)$/);
+          if(!m || !m[1] || m[1]==='[DONE]') continue;
+          try {
+            let data = JSON.parse(m[1]);
+            let delta = data.choices?.[0]?.delta?.content || '';
+            if(delta) {
+              content += delta;
+              convo.messages[aiMsgIdx].content = content;
+              storage.saveConvos(conversations);
+              tokensSinceLastDraw++;
+              updateLastAIMsgDebounced();
             }
-          }
-          done = doneR;
-        }
-        setStatusBadge('Ready', true);
-      } catch(e) {
-        if (e.name === 'AbortError') {
-          setStatusBadge('Cancelled', false);
-        } else {
-          setStatusBadge('Error', false);
-          addMessageToActiveConvo('assistant', `*(Error: ${e.message})*`);
+          } catch{}
         }
       }
-      sending = false;
-      sendBtn.disabled = false;
-      stopBtn.style.display = 'none';
-      abortController = null;
+      done = doneR;
     }
-    function updateLastAIMsg(content) {
-      // Only update last assistant msg
-      const lastRow = Array.from(chatArea.querySelectorAll('.chat-message-row.assistant')).pop();
-      if(lastRow) {
-        lastRow.querySelector('.chat-message-content').innerHTML = renderMarkdown(content);
-        chatArea.scrollTo({top:chatArea.scrollHeight,behavior:'smooth'});
-      }
-    }
-    inputArea.addEventListener('submit', submitPrompt);
-    stopBtn.onclick = () => {
-      if(abortController) abortController.abort();
-      stopBtn.disabled = true;
+    updateLastAIMsgDebounced(true); // final flush
+    setStatusBadge('Ready', true);
+  } catch(e) {
+    if (e.name === 'AbortError') {
       setStatusBadge('Cancelled', false);
-    };
-
-    // =============== New conversation ===============
-    newConvoBtn.onclick = () => {
-      createNewConvo('New Chat');
-    };
-
-    // =============== Prompt input autosize ===============
-    promptInput.addEventListener('input', e => {
-      promptInput.style.height = 'auto';
-      promptInput.style.height = (promptInput.scrollHeight)+'px';
-      sendBtn.disabled = !promptInput.value.trim() || sending;
-    });
-
-    // =============== Keyboard Shortcuts ===============
-    promptInput.addEventListener('keydown', function(e){
-      if(e.key==='Enter' && !e.shiftKey) {
-        e.preventDefault();
-        if(promptInput.value.trim() && !sending)
-          inputArea.requestSubmit();
-      }
-    });
-
-    // =============== Start ===============
-    window.addEventListener('DOMContentLoaded', loadState);
-
-    // =============== Handle window resize for mobile ===============
-    window.addEventListener('resize', ()=>{
-      promptInput.style.height = 'auto';
-      promptInput.style.height = (promptInput.scrollHeight)+'px';
-    });
-  </script>
+    } else {
+      setStatusBadge('Error', false);
+      addMessageToActiveConvo('assistant', <code><em>(Error: ${e.message})</em></code>);
+    }
+  }
+  sending = false;
+  sendBtn.disabled = false;
+  stopBtn.style.display = 'none';
+  abortController = null;
+}
+inputArea.addEventListener('submit', submitPrompt);
+stopBtn.onclick = () => {
+  if(abortController) abortController.abort();
+  stopBtn.disabled = true;
+  setStatusBadge('Cancelled', false);
+};</p><p>// =============== New Conversation ===============
+newConvoBtn.onclick = () => { createNewConvo('New Chat'); };</p><p>// =============== Prompt Input Autosize ===============
+promptInput.addEventListener('input', e => {
+  promptInput.style.height = 'auto';
+  promptInput.style.height = (promptInput.scrollHeight)+'px';
+  sendBtn.disabled = !promptInput.value.trim() || sending;
+});</p><p>// =============== Keyboard Shortcuts ===============
+promptInput.addEventListener('keydown', function(e){
+  if(e.key==='Enter' && !e.shiftKey) {
+    e.preventDefault();
+    if(promptInput.value.trim() && !sending)
+      inputArea.requestSubmit();
+  }
+});</p><p>// =============== DOMContentLoaded ===============
+window.addEventListener('DOMContentLoaded', loadState);</p><p>// =============== Handle window resize for mobile ===============
+window.addEventListener('resize', ()=>{
+  promptInput.style.height = 'auto';
+  promptInput.style.height = (promptInput.scrollHeight)+'px';
+});
+</script>
 </body>
 </html>
