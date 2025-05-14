@@ -1,130 +1,127 @@
 <!DOCTYPE html>
+<!-- Change the value of lang="en" attribute if your website's language is not English. -->
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XYZ Demo Page</title>
-    <meta name="description" content="Demo page for showcasing template structure">
-    <!-- Favicon -->
-    <link rel="icon" href="images/favicon.png" type="image/png">
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <head>        
+        <title>XYZ Demo Page</title>
+        <meta name="description" content="Demo page template for client preview">
+
+        <meta charset="utf-8">
+        <meta name="author" content="Oliphant Digital">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                
+        <!-- Favicon -->
+        <link rel="icon" href="images/favicon.png" type="image/png">
+        <link rel="icon" href="images/favicon.svg" type="image/svg+xml">         
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/style-responsive.css">
+        <link rel="stylesheet" href="css/vertical-rhythm.min.css">
+        <link rel="stylesheet" href="css/magnific-popup.css">
+        <link rel="stylesheet" href="css/owl.carousel.css">
+        <link rel="stylesheet" href="css/splitting.css">
+        <link rel="stylesheet" href="css/YTPlayer.css">
+        <link rel="stylesheet" href="css/demo-gradient/demo-gradient.css">
+        
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6.5.0 CSS -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>  
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .hero { padding: 100px 0; text-align: center; }
-        .services { padding: 60px 0; }
-        .services .card { border: none; }
+      .fa-solid, .fas {
+        font-family: "Font Awesome 6 Free" !important;
+        font-weight: 900 !important;
+      }
+    .services-3-icon i.fa-solid {
+      font-size: 48px;
+      color: #999 !important;
+      opacity: 0.9;
+    }
     </style>
-</head>
-<body>
 
-    <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">XYZ Demo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#hero">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                </ul>
-            </div>
+    </head>
+    <body class="appear-animate">
+        
+        <!-- Page Loader -->   
+        <div class="page-loader gradient">
+            <div class="loader">Loading...</div>
         </div>
-    </nav>
-    <!-- End Header -->
+        <!-- End Page Loader -->
 
-    <main>
-        <!-- Hero Section -->
-        <section id="hero" class="hero bg-light">
-            <div class="container">
-                <h1 class="display-4">XYZ Demo Page</h1>
-                <p class="lead">This is a placeholder demo page to illustrate the structure of your template. Replace this content with business-specific details.</p>
-            </div>
-        </section>
-        <!-- End Hero -->
-
-        <!-- Services Section -->
-        <section id="services" class="services">
-            <div class="container">
-                <h2 class="text-center mb-5">Our Services</h2>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="card p-4 text-center">
-                            <i class="fa-solid fa-gear fa-2x mb-3"></i>
-                            <h5>Service One</h5>
-                            <p>Brief description of Service One, highlighting key benefits and features.</p>
+        <!-- Skip to Content -->
+        <a href="#main" class="btn skip-to-content">Skip to Content</a>
+        <!-- End Skip to Content -->
+        
+        <!-- Page Wrap -->
+        <div class="page" id="top">
+            
+            <!-- Navigation Panel -->
+            <nav class="main-nav transparent stick-fixed wow-menubar wch-unset">
+                <!-- ... same navigation markup ... -->
+            </nav>
+            <!-- End Navigation Panel -->
+            
+            <main id="main">
+                <!-- Dummy Content Section Below -->
+                <section class="page-section bg-white py-5" id="demo-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col text-center">
+                                <h1 class="mb-3">XYZ Demo Page</h1>
+                                <p class="lead">This is placeholder content to illustrate a business-specific services page template. Replace with your own copy and images.</p>
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-md-4 text-center">
+                                <i class="fa-solid fa-tools fa-3x mb-3 text-secondary"></i>
+                                <h3>Service A</h3>
+                                <p>Brief description of Service A, highlighting core features and benefits.</p>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <i class="fa-solid fa-chart-line fa-3x mb-3 text-secondary"></i>
+                                <h3>Service B</h3>
+                                <p>Brief description of Service B, showcasing value and outcomes for clients.</p>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <i class="fa-solid fa-headset fa-3x mb-3 text-secondary"></i>
+                                <h3>Service C</h3>
+                                <p>Brief description of Service C, emphasizing results and advantages.</p>
+                            </div>
+                        </div>
+                        <div class="row mt-5 justify-content-center">
+                            <div class="col-md-8">
+                                <h2 class="text-center mb-4">Ready to Get Started?</h2>
+                                <form class="row g-3 needs-validation" novalidate>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" placeholder="Your Name" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="email" class="form-control" placeholder="Your Email" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <textarea class="form-control" rows="4" placeholder="How can we help you?" required></textarea>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <button class="btn btn-grad btn-round" type="submit">Send Message</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card p-4 text-center">
-                            <i class="fa-solid fa-lightbulb fa-2x mb-3"></i>
-                            <h5>Service Two</h5>
-                            <p>Brief description of Service Two, showcasing what it offers to clients.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card p-4 text-center">
-                            <i class="fa-solid fa-chart-line fa-2x mb-3"></i>
-                            <h5>Service Three</h5>
-                            <p>Brief description of Service Three, emphasizing outcomes and value.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- End Services -->
+                </section>
+                <!-- End Dummy Content Section -->
 
-        <!-- Contact Form -->
-        <section id="contact" class="py-5 bg-light">
-            <div class="container">
-                <h2 class="text-center mb-4">Contact Us</h2>
-                <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        <form action="#" method="POST">
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Your Name" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="message" class="form-label">Message</label>
-                                <textarea class="form-control" id="message" rows="4" placeholder="Your message here" required></textarea>
-                            </div>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Send Message</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- End Contact Form -->
-    </main>
-
-    <!-- Footer -->
-    <footer class="py-4 bg-dark text-light">
-        <div class="container text-center">
-            <p>&copy; XYZ Demo Page 2025. All rights reserved.</p>
-            <ul class="list-inline">
-                <li class="list-inline-item"><a href="#" class="text-light">Privacy Policy</a></li>
-                <li class="list-inline-item"><a href="#" class="text-light">Terms of Use</a></li>
-            </ul>
+                <!-- ... original footer and scripts ... -->
+            </main>
         </div>
-    </footer>
-    <!-- End Footer -->
-
-    <!-- JS -->
-    <script src="js/bootstrap.bundle.min.js"></script>
-</body>
+        <!-- End Page Wrap -->
+    </body>
 </html>
