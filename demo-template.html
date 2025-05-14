@@ -65,39 +65,73 @@
             
             <!-- Navigation Panel -->
             <nav class="main-nav transparent stick-fixed wow-menubar wch-unset">
-                <!-- ... same navigation markup ... -->
+                <div class="main-nav-sub container">
+                    
+                    <!-- Logo  (* Add your text or image to the link tag. Use SVG or PNG image format. *) -->
+                    <div class="nav-logo-wrap position-static pe-lg-4 me-lg-5 local-scroll">
+                        <a href="index.html" class="logo">
+                            <img src="images/demo-gradient/logo-dark.png" alt="Oliphant Digital" width="95" height="40" />
+                        </a>
+                    </div>
+                    
+                    <!-- Mobile Menu Button -->
+                    <div class="mobile-nav" role="button" tabindex="0">
+                        <i class="mobile-nav-icon"></i>
+                        <span class="visually-hidden">Menu</span>
+                    </div>
+                    
+                    <!-- Main Menu -->
+                    <div class="inner-nav desktop-nav">
+                        <ul class="clearlist local-scroll justify-content-start">                            
+                            <li><a href="/#home" data-btn-animate="y">Home</a></li>
+                            <li><a href="/#about" data-btn-animate="y">About</a></li>
+                            <li><a href="/#services" class="active" data-btn-animate="y">Services</a></li>
+                            <li><a href="/#blog" data-btn-animate="y">Blog</a></li>
+                            <li><a href="/#contact" data-btn-animate="y">Contact</a></li>
+                        </ul>
+                        <ul class="items-end clearlist local-scroll">
+                            <li>
+                                <a href="#contact" class="opacity-1 no-hover">
+                                    <span class="btn btn-mod btn-border-grad btn-small btn-round"><span data-btn-animate="y">Get in touch</span></span>
+                                </a>
+                            </li>
+                        </ul>                     
+                    </div>
+                    <!-- End Main Menu -->
+                </div>
             </nav>
             <!-- End Navigation Panel -->
             
             <main id="main">
-                <!-- Dummy Content Section Below -->
-                <section class="page-section bg-white py-5" id="demo-content">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col text-center">
-                                <h1 class="mb-3">XYZ Demo Page</h1>
-                                <p class="lead">This is placeholder content to illustrate a business-specific services page template. Replace with your own copy and images.</p>
+                
+                <!-- Demo Content Section -->
+                <section class="page-section bg-white" id="demo-content">
+                    <div class="container py-5">
+                        <div class="row text-center mb-4">
+                            <div class="col">
+                                <h1 class="display-4">XYZ Demo Page</h1>
+                                <p class="lead">Placeholder content showcasing how a services page can look. Swap in your own text, icons, and images.</p>
                             </div>
                         </div>
-                        <div class="row mt-5">
+                        <div class="row g-4">
                             <div class="col-md-4 text-center">
                                 <i class="fa-solid fa-tools fa-3x mb-3 text-secondary"></i>
                                 <h3>Service A</h3>
-                                <p>Brief description of Service A, highlighting core features and benefits.</p>
+                                <p>Description for Service A. Highlight core benefit and outcome for your clients.</p>
                             </div>
                             <div class="col-md-4 text-center">
                                 <i class="fa-solid fa-chart-line fa-3x mb-3 text-secondary"></i>
                                 <h3>Service B</h3>
-                                <p>Brief description of Service B, showcasing value and outcomes for clients.</p>
+                                <p>Description for Service B. Explain how it solves customer pain points.</p>
                             </div>
                             <div class="col-md-4 text-center">
                                 <i class="fa-solid fa-headset fa-3x mb-3 text-secondary"></i>
                                 <h3>Service C</h3>
-                                <p>Brief description of Service C, emphasizing results and advantages.</p>
+                                <p>Description for Service C. Emphasize unique advantage or feature.</p>
                             </div>
                         </div>
                         <div class="row mt-5 justify-content-center">
-                            <div class="col-md-8">
+                            <div class="col-lg-8">
                                 <h2 class="text-center mb-4">Ready to Get Started?</h2>
                                 <form class="row g-3 needs-validation" novalidate>
                                     <div class="col-md-6">
@@ -110,18 +144,81 @@
                                         <textarea class="form-control" rows="4" placeholder="How can we help you?" required></textarea>
                                     </div>
                                     <div class="col-12 text-center">
-                                        <button class="btn btn-grad btn-round" type="submit">Send Message</button>
+                                        <button class="btn btn-mod btn-medium btn-grad btn-round" type="submit">Send Message</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </section>
-                <!-- End Dummy Content Section -->
+                <!-- End Demo Content Section -->
 
-                <!-- ... original footer and scripts ... -->
+                <!-- Original Footer -->
+                <footer class="page-section footer bg-dark-1 light-content overflow-hidden pb-30">
+                    <div class="bg-shape-4">
+                        <img src="images/demo-gradient/bg-shape-1.svg" alt="" />
+                    </div>
+                    <div class="container position-relative">
+                        <div class="row pb-120">
+                            <div class="col-lg-4 mb-md-50">
+                                <h2 class="section-title-small mt-n10 mb-30">One partner. <br>Every solution.</h2>
+                                <p class="text-gray mb-40">Smart strategy, clear execution, and no wasted motion — exactly how business should run.</p>
+                                <div class="local-scroll">
+                                    <a href="#contact" class="btn btn-mod btn-medium btn-grad btn-round">Contact us</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 offset-lg-1">
+                                <div class="row mt-n30">
+                                    <div class="col-sm-4 mt-30">
+                                        <h3 class="fw-title">Company</h3>
+                                        <ul class="fw-menu clearlist local-scroll">
+                                            <li><a href="/#about">About</a></li>
+                                            <li><a href="/#services">Services</a></li>
+                                            <li><a href="/#blog">Blog</a></li>
+                                            <li><a href="/#contact">Contact</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-4 mt-30">
+                                        <h3 class="fw-title">Social Media</h3>
+                                        <ul class="fw-menu clearlist">
+                                            <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                                            <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                                            <li><a href="#"><i class="fab fa-pinterest"></i> Pinterest</a></li>
+                                            <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-4 mt-30">
+                                        <h3 class="fw-title">Legal & Press</h3>
+                                        <ul class="fw-menu clearlist">
+                                            <li><a href="/privacy.html">Privacy Policy</a></li>
+                                            <li><a href="/terms.html">Terms & Conditions</a></li>
+                                            <li><a href="/disclaimer.html">Disclaimer</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-gray">
+                            <div class="col-md-4 col-lg-3"><b>© Oliphant Digital 2025</b></div>
+                            <div class="col-md-7 offset-md-1 offset-lg-2 clearfix">
+                                <b>Proudly based in Cleveland Ohio.</b>
+                                <div class="local-scroll float-end mt-n20">
+                                    <a href="#top" class="link-to-top gradient"><i class="mi-arrow-up size-24"></i><span class="visually-hidden">Scroll to top</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End Footer -->
             </main>
         </div>
         <!-- End Page Wrap -->
+        
+        <!-- JS -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/plugins.js"></script>
+        <script src="js/jquery.ajaxchimp.min.js"></script>
+        <script src="js/all.js"></script>
     </body>
 </html>
