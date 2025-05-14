@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XYZ Demo Page</title>
+    <meta name="description" content="Demo page for showcasing template structure">
+    <!-- Favicon -->
+    <link rel="icon" href="images/favicon.png" type="image/png">
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .hero { padding: 100px 0; text-align: center; }
+        .services { padding: 60px 0; }
+        .services .card { border: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">XYZ Demo</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#hero">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End Header -->
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero bg-light">
+            <div class="container">
+                <h1 class="display-4">XYZ Demo Page</h1>
+                <p class="lead">This is a placeholder demo page to illustrate the structure of your template. Replace this content with business-specific details.</p>
+            </div>
+        </section>
+        <!-- End Hero -->
+
+        <!-- Services Section -->
+        <section id="services" class="services">
+            <div class="container">
+                <h2 class="text-center mb-5">Our Services</h2>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card p-4 text-center">
+                            <i class="fa-solid fa-gear fa-2x mb-3"></i>
+                            <h5>Service One</h5>
+                            <p>Brief description of Service One, highlighting key benefits and features.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card p-4 text-center">
+                            <i class="fa-solid fa-lightbulb fa-2x mb-3"></i>
+                            <h5>Service Two</h5>
+                            <p>Brief description of Service Two, showcasing what it offers to clients.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card p-4 text-center">
+                            <i class="fa-solid fa-chart-line fa-2x mb-3"></i>
+                            <h5>Service Three</h5>
+                            <p>Brief description of Service Three, emphasizing outcomes and value.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Services -->
+
+        <!-- Contact Form -->
+        <section id="contact" class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center mb-4">Contact Us</h2>
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <form action="#" method="POST">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Your Name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" rows="4" placeholder="Your message here" required></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Contact Form -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-light">
+        <div class="container text-center">
+            <p>&copy; XYZ Demo Page 2025. All rights reserved.</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#" class="text-light">Privacy Policy</a></li>
+                <li class="list-inline-item"><a href="#" class="text-light">Terms of Use</a></li>
+            </ul>
+        </div>
+    </footer>
+    <!-- End Footer -->
+
+    <!-- JS -->
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
