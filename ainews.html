@@ -9,15 +9,13 @@
 body{
   font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   background:linear-gradient(135deg,#0c0c0c 0%,#1a1a2e 25%,#16213e 50%,#0f0f23 100%);
-  background-attachment:fixed;color:#e0e6ed;min-height:100vh;overflow-x:hidden;position:relative
-}
+  background-attachment:fixed;color:#e0e6ed;min-height:100vh;overflow-x:hidden;position:relative}
 body::before{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;
   background:
     radial-gradient(600px circle at 20% 30%,rgba(56,189,248,.15),transparent 50%),
     radial-gradient(800px circle at 80% 70%,rgba(168,85,247,.1),transparent 50%),
-    radial-gradient(400px circle at 40% 80%,rgba(34,197,94,.1),transparent 50%)
-}
+    radial-gradient(400px circle at 40% 80%,rgba(34,197,94,.1),transparent 50%)}
 .container{max-width:1400px;margin:0 auto;padding:20px}
 /* ---------- headings ---------- */
 h1{font-size:3.5rem;font-weight:800;margin-bottom:10px;
@@ -28,12 +26,10 @@ h1{font-size:3.5rem;font-weight:800;margin-bottom:10px;
                to{filter:drop-shadow(0 0 20px rgba(96,165,250,.6))}}
 .subtitle{font-size:1.1rem;color:#94a3b8;font-weight:300}
 /* ---------- buttons ---------- */
-.btn{position:relative;overflow:hidden;cursor:pointer;font-weight:600;
-  text-transform:uppercase;letter-spacing:.5px;border:none;border-radius:12px;
-  padding:14px 24px;font-size:.9rem;transition:.3s}
+.btn{position:relative;overflow:hidden;cursor:pointer;font-weight:600;text-transform:uppercase;
+  letter-spacing:.5px;border:none;border-radius:12px;padding:14px 24px;font-size:.9rem;transition:.3s}
 .btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
-  transition:left .5s}
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .5s}
 .btn:hover::before{left:100%}
 .btn-primary{background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;
   box-shadow:0 4px 15px rgba(59,130,246,.4)}
@@ -50,17 +46,14 @@ details#settings summary{
   background:rgba(15,23,42,.85);backdrop-filter:blur(16px);
   border:1px solid rgba(51,65,85,.3);border-radius:16px;padding:18px 24px;
   font-size:1.1rem;font-weight:600;cursor:pointer;list-style:none;
-  display:flex;align-items:center;gap:10px;user-select:none
-}
+  display:flex;align-items:center;gap:10px;user-select:none}
 details#settings summary::-webkit-details-marker{display:none}
 details#settings[open] summary{border-bottom-left-radius:0;border-bottom-right-radius:0}
 details#settings .panel{
   background:rgba(15,23,42,.8);backdrop-filter:blur(20px);
   border:1px solid rgba(51,65,85,.3);border-top:0;border-bottom-left-radius:16px;border-bottom-right-radius:16px;
-  padding:30px;animation:fadeIn .4s ease
-}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-/* ---------- control-panel internals (same styling as before) ---------- */
+  padding:30px;animation:fadeIn .4s ease}@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+/* ---------- control-panel internals ---------- */
 .control-section{margin-bottom:25px}
 .control-title{display:flex;align-items:center;gap:10px;margin-bottom:15px;
   font-size:1.2rem;font-weight:600;color:#f1f5f9}
@@ -73,17 +66,22 @@ input[type=text]{
 input[type=text]:focus{outline:none;border-color:#60a5fa;background:rgba(30,41,59,.95);
   box-shadow:0 0 0 3px rgba(96,165,250,.1),0 4px 12px rgba(96,165,250,.15);transform:translateY(-1px)}
 input::placeholder{color:#64748b}
-/* ---------- list & tag styling (unchanged) ---------- */
+/* ---------- list & tag styling ---------- */
 .list-container{background:rgba(15,23,42,.6);backdrop-filter:blur(10px);
   border:1px solid rgba(51,65,85,.3);border-radius:16px;padding:20px;margin-bottom:20px;
   max-height:400px;overflow-y:auto}
 .list-item{display:flex;justify-content:space-between;align-items:center;
   background:rgba(30,41,59,.6);border:1px solid rgba(71,85,105,.3);
-  border-radius:12px;padding:16px 20px;margin-bottom:12px;flex-wrap:wrap;gap:10px;
-  transition:.3s}
+  border-radius:12px;padding:16px 20px;margin-bottom:12px;flex-wrap:wrap;gap:10px;transition:.3s}
 .list-item:hover{background:rgba(30,41,59,.8);border-color:rgba(96,165,250,.5);
   transform:translateX(5px);box-shadow:0 4px 20px rgba(96,165,250,.1)}
-.item-content{flex:1;min-width:200px}.item-url{font-weight:500;word-break:break-all}
+.item-content{flex:1;min-width:200px;display:flex;align-items:center;gap:8px}
+.item-url{font-weight:500;word-break:break-all}
+.status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.status-loading{background:#f59e0b;animation:pulse 1s infinite}
+.status-ok{background:#34d399}
+.status-fail{background:#ef4444}
+@keyframes pulse{0%{opacity:.6}50%{opacity:1}100%{opacity:.6}}
 .item-tags{font-size:.85rem;color:#94a3b8;margin-top:4px}
 .item-actions{display:flex;gap:8px;flex-shrink:0}.btn-small{padding:8px 12px;font-size:.8rem}
 .tag-toggle{display:inline-block;padding:10px 16px;margin:5px;border-radius:20px;
@@ -91,29 +89,26 @@ input::placeholder{color:#64748b}
   color:#94a3b8;cursor:pointer;font-weight:500;font-size:.9rem;transition:.3s}
 .tag-toggle:hover{background:rgba(30,41,59,.95);border-color:rgba(96,165,250,.5);transform:translateY(-2px)}
 .tag-toggle.active{background:linear-gradient(135deg,#3b82f6,#6366f1);border-color:#3b82f6;color:#fff;box-shadow:0 4px 15px rgba(59,130,246,.4)}
-/* ---------- news cards (unchanged) ---------- */
+/* ---------- news cards ---------- */
 .news-container{margin-top:40px}
 .section{margin-bottom:50px;animation:slideUp .6s ease}@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 .section-header{background:linear-gradient(135deg,rgba(15,23,42,.9),rgba(30,41,59,.8));
-  backdrop-filter:blur(20px);border:1px solid rgba(51,65,85,.3);border-radius:16px;
-  padding:20px 25px;margin-bottom:20px;position:relative;overflow:hidden}
-.section-header::before{content:'';position:absolute;left:0;right:0;top:0;height:2px;
-  background:linear-gradient(90deg,#60a5fa,#a78bfa,#34d399)}
+  backdrop-filter:blur(20px);border:1px solid rgba(51,65,85,.3);border-radius:16px;padding:20px 25px;margin-bottom:20px;position:relative;overflow:hidden}
+.section-header::before{content:'';position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,#60a5fa,#a78bfa,#34d399)}
 .section-title{font-size:1.8rem;font-weight:700;color:#f1f5f9;margin:0;text-shadow:0 2px 10px rgba(96,165,250,.3)}
 .section-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:20px}
-.news-card{background:rgba(15,23,42,.8);backdrop-filter:blur(20px);border:1px solid rgba(51,65,85,.3);
-  border-radius:16px;padding:24px;cursor:pointer;position:relative;overflow:hidden;transition:.4s}
-.news-card::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(96,165,250,.5),transparent);transition:.3s}
-.news-card:hover{transform:translateY(-8px);border-color:rgba(96,165,250,.6);
-  box-shadow:0 20px 40px rgba(0,0,0,.3),0 0 50px rgba(96,165,250,.1)}
+.news-card{background:rgba(15,23,42,.8);backdrop-filter:blur(20px);border:1px solid rgba(51,65,85,.3);border-radius:16px;padding:24px;
+  cursor:pointer;position:relative;overflow:hidden;transition:.4s}
+.news-card::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(96,165,250,.5),transparent);transition:.3s}
+.news-card:hover{transform:translateY(-8px);border-color:rgba(96,165,250,.6);box-shadow:0 20px 40px rgba(0,0,0,.3),0 0 50px rgba(96,165,250,.1)}
 .news-card:hover::before{height:2px;background:linear-gradient(90deg,rgba(96,165,250,.3),rgba(168,85,247,.3),rgba(52,211,153,.3))}
 .news-title{display:block;margin-bottom:15px;font-size:1.1rem;font-weight:600;color:#f1f5f9;text-decoration:none;line-height:1.4;transition:color .3s}
 .news-title:hover{color:#60a5fa}
 .news-meta{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:#64748b;margin-top:15px;padding-top:15px;border-top:1px solid rgba(51,65,85,.3)}
 .news-source{font-weight:500;color:#94a3b8}.news-date{color:#64748b}
 .loading{text-align:center;padding:60px 20px;color:#64748b;font-size:1.1rem}
-.loading::after{content:'';display:inline-block;width:20px;height:20px;border-radius:50%;border:2px solid rgba(96,165,250,.3);border-top-color:#60a5fa;animation:spin 1s linear infinite;margin-left:10px}@keyframes spin{to{transform:rotate(360deg)}}
+.loading::after{content:'';display:inline-block;width:20px;height:20px;border-radius:50%;border:2px solid rgba(96,165,250,.3);
+  border-top-color:#60a5fa;animation:spin 1s linear infinite;margin-left:10px}@keyframes spin{to{transform:rotate(360deg)}}
 .error{color:#f87171;text-align:center;padding:40px 20px;font-size:1rem;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:12px;margin:20px 0}
 .empty-state{text-align:center;padding:80px 20px;color:#64748b}.empty-state h3{color:#94a3b8;font-size:1.3rem;margin-bottom:10px}
 /* ---------- responsive ---------- */
@@ -167,7 +162,7 @@ input::placeholder{color:#64748b}
 </div>
 
 <script>
-/* ---------- initial data ---------- */
+/* ---------- data ---------- */
 let feeds=[
   {url:'https://openai.com/blog/rss',                                   tags:['ChatGPT','OpenAI'],   added:Date.now()},
   {url:'https://ai.googleblog.com/feeds/posts/default?alt=rss',         tags:['Gemini','Google'],    added:Date.now()},
@@ -178,19 +173,21 @@ let feeds=[
   {url:'https://www.technologyreview.com/feed/?tag=ai',                 tags:['Tools','Research'],   added:Date.now()},
   {url:'https://ainowinstitute.org/feed.xml',                           tags:['Ethics','Policy'],    added:Date.now()}
 ];
+/* status map  {url: {state:'loading'|'ok'|'fail', error:''}} */
+const feedStatus={};
 const defaultSectionNames=['Most Recent','ChatGPT','Gemini','Claude','Automation','Agents','Coding','Tools','Ethics'];
 let sections=defaultSectionNames.map(n=>({name:n,active:true}));
 
 /* ---------- DOM refs ---------- */
-const feedListEl     =document.getElementById('feed-list');
-const sectionListEl  =document.getElementById('section-list');
-const newsContainer  =document.getElementById('news-container');
-const newFeedUrlInput=document.getElementById('new-feed-url');
-const newFeedTagsInput=document.getElementById('new-feed-tags');
-const newSectionInput=document.getElementById('new-section-name');
-const addFeedBtn     =document.getElementById('add-feed');
-const addSectionBtn  =document.getElementById('add-section');
-const resetSectionsBtn=document.getElementById('reset-sections');
+const feedListEl       =document.getElementById('feed-list');
+const sectionListEl    =document.getElementById('section-list');
+const newsContainer    =document.getElementById('news-container');
+const newFeedUrlInput  =document.getElementById('new-feed-url');
+const newFeedTagsInput =document.getElementById('new-feed-tags');
+const newSectionInput  =document.getElementById('new-section-name');
+const addFeedBtn       =document.getElementById('add-feed');
+const addSectionBtn    =document.getElementById('add-section');
+const resetSectionsBtn =document.getElementById('reset-sections');
 
 /* ---------- UI helpers ---------- */
 function renderFeedList(){
@@ -199,11 +196,20 @@ function renderFeedList(){
     feedListEl.innerHTML='<div class="empty-state"><h3>No feeds added</h3><p>Add feeds to get started.</p></div>';return;}
   feeds.forEach((feed,i)=>{
     const li=document.createElement('li');li.className='list-item';
-    li.innerHTML=`
-      <div class="item-content">
-        <div class="item-url">${feed.url}</div>
-        <div class="item-tags">Tags: ${feed.tags.join(', ')}</div>
-      </div>`;
+    const content=document.createElement('div');content.className='item-content';
+
+    const status=feedStatus[feed.url]?.state||'loading';
+    const dot=document.createElement('span');dot.className='status-dot status-'+status;
+    if(feedStatus[feed.url]?.error)dot.title=feedStatus[feed.url].error;
+
+    const urlDiv=document.createElement('div');urlDiv.className='item-url';urlDiv.textContent=feed.url;
+    content.append(dot,urlDiv);
+
+    const tagsDiv=document.createElement('div');tagsDiv.className='item-tags';tagsDiv.textContent='Tags: '+feed.tags.join(', ');
+
+    const wrap=document.createElement('div');
+    wrap.append(content,tagsDiv);
+
     const actions=document.createElement('div');actions.className='item-actions';
     const edit=document.createElement('button');edit.className='btn btn-secondary btn-small';edit.textContent='Edit';
     edit.onclick=()=>{
@@ -211,8 +217,10 @@ function renderFeedList(){
       if(t!==null){feed.tags=t.split(',').map(x=>x.trim()).filter(Boolean);renderFeedList();renderSectionList();loadNews();}
     };
     const remove=document.createElement('button');remove.className='btn btn-danger btn-small';remove.textContent='Remove';
-    remove.onclick=()=>{feeds.splice(i,1);renderFeedList();loadNews();};
-    actions.append(edit,remove);li.appendChild(actions);feedListEl.appendChild(li);
+    remove.onclick=()=>{feeds.splice(i,1);delete feedStatus[feed.url];renderFeedList();loadNews();};
+    actions.append(edit,remove);
+
+    li.append(wrap,actions);feedListEl.appendChild(li);
   });
 }
 function renderSectionList(){
@@ -235,17 +243,20 @@ addFeedBtn.onclick=()=>{
   if(!url){alert('Enter a feed URL');return;}
   if(feeds.some(f=>f.url===url)){alert('Feed already added');return;}
   feeds.push({url,tags,added:Date.now()});
-  newFeedUrlInput.value='';newFeedTagsInput.value='';renderFeedList();loadNews();
+  newFeedUrlInput.value='';newFeedTagsInput.value='';
+  feedStatus[url]={state:'loading'};renderFeedList();loadNews();
 };
 addSectionBtn.onclick=()=>{
   const name=newSectionInput.value.trim();
   if(!name){alert('Enter a section name');return;}
   if(sections.some(s=>s.name===name)){alert('Section exists');return;}
-  sections.push({name,active:true});newSectionInput.value='';renderSectionList();loadNews();
+  sections.push({name,active:true});newSectionInput.value='';
+  renderSectionList();loadNews();
 };
 resetSectionsBtn.onclick=()=>{
   if(confirm('Reset sections to default?')){
-    sections=defaultSectionNames.map(n=>({name:n,active:true}));renderSectionList();loadNews();
+    sections=defaultSectionNames.map(n=>({name:n,active:true}));
+    renderSectionList();loadNews();
   }
 };
 [newFeedUrlInput,newFeedTagsInput].forEach(i=>i.addEventListener('keypress',e=>{if(e.key==='Enter')addFeedBtn.click()}));
@@ -258,51 +269,45 @@ document.addEventListener('keydown',e=>{
   }
 });
 
-/* ---------- feed fetching with fallback ---------- */
-async function fetchViaAllOrigins(u){
-  const url=`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`;
-  const res=await fetch(url,{timeout:10000});
-  if(!res.ok)throw new Error('allorigins '+res.status);
-  return await res.text();
-}
-async function fetchViaRss2Json(u){
-  const url=`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(u)}`;
-  const res=await fetch(url,{timeout:10000});
-  if(!res.ok)throw new Error('rss2json '+res.status);
-  const data=await res.json();
-  if(!data.items)throw new Error('rss2json no items');
-  // convert to XML-like string so parser below can reuse logic
-  const xml=['<root>',...data.items.map(i=>`
-    <item>
-      <title>${i.title||''}</title>
-      <link>${i.link||''}</link>
-      <pubDate>${i.pubDate||i.publishedDate||''}</pubDate>
-      <description>${i.description||''}</description>
-    </item>`),'</root>'].join('');
-  return xml;
-}
+/* ---------- proxy helpers ---------- */
+const proxiers=[
+  u=>fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,{timeout:10000}).then(r=>{if(!r.ok)throw new Error('allorigins '+r.status);return r.text();}),
+  u=>fetch(`https://thingproxy.freeboard.io/fetch/${encodeURIComponent(u)}`,{timeout:10000}).then(r=>{if(!r.ok)throw new Error('thingproxy '+r.status);return r.text();}),
+  async u=>{
+    const r=await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(u)}`,{timeout:10000});
+    if(!r.ok)throw new Error('rss2json '+r.status);
+    const data=await r.json();if(!data.items)throw new Error('rss2json bad data');
+    return ['<root>',...data.items.map(i=>`
+      <item><title>${i.title||''}</title><link>${i.link||''}</link><pubDate>${i.pubDate||i.publishedDate||''}</pubDate><description>${i.description||''}</description></item>`),'</root>'].join('');
+  }
+];
+
+/* ---------- feed fetching with multiple fallbacks ---------- */
 async function fetchFeed(feed){
-  try{
-    let xml;
-    try{xml=await fetchViaAllOrigins(feed.url);}catch(err){
-      console.warn('AllOrigins failed, trying rss2json',feed.url);xml=await fetchViaRss2Json(feed.url);
-    }
-    const doc=new DOMParser().parseFromString(xml,'application/xml');
-    const parseErr=doc.querySelector('parsererror');if(parseErr)throw new Error('XML parse error');
-    const nodes=[...doc.querySelectorAll('item,entry')];
-    return nodes.map(n=>{
-      const title=n.querySelector('title')?.textContent?.trim()||'Untitled';
-      let link='#';const linkEl=n.querySelector('link[rel="alternate"]')||n.querySelector('link');
-      if(linkEl)link=linkEl.getAttribute('href')||linkEl.textContent||'#';
-      const dateText=n.querySelector('pubDate')?.textContent?.trim()||
-                     n.querySelector('updated')?.textContent?.trim()||
-                     n.querySelector('published')?.textContent?.trim();
-      let pubDate=new Date(dateText);if(isNaN(pubDate))pubDate=new Date();
-      const desc=n.querySelector('description')?.textContent?.trim()||
-                  n.querySelector('summary')?.textContent?.trim()||'';
-      return{title,link,pubDate,description:desc.slice(0,200),source:new URL(feed.url).hostname,tags:feed.tags,added:feed.added};
-    }).filter(a=>a.title&&a.link);
-  }catch(e){console.warn('Feed error',feed.url,e);return[];}
+  feedStatus[feed.url]={state:'loading'};renderFeedList();
+  let lastErr;
+  for(const proxy of proxiers){
+    try{
+      const xml=await proxy(feed.url);
+      const doc=new DOMParser().parseFromString(xml,'application/xml');
+      if(doc.querySelector('parsererror'))throw new Error('XML parse error');
+      const nodes=[...doc.querySelectorAll('item,entry')];
+      const items=nodes.map(n=>{
+        const title=n.querySelector('title')?.textContent?.trim()||'Untitled';
+        let link='#';const linkEl=n.querySelector('link[rel="alternate"]')||n.querySelector('link');
+        if(linkEl)link=linkEl.getAttribute('href')||linkEl.textContent||'#';
+        const dateText=n.querySelector('pubDate')?.textContent?.trim()||n.querySelector('updated')?.textContent?.trim()||n.querySelector('published')?.textContent?.trim();
+        let pubDate=new Date(dateText);if(isNaN(pubDate))pubDate=new Date();
+        const desc=n.querySelector('description')?.textContent?.trim()||n.querySelector('summary')?.textContent?.trim()||'';
+        return{title,link,pubDate,description:desc.slice(0,200),source:new URL(feed.url).hostname,tags:feed.tags,added:feed.added};
+      }).filter(i=>i.title&&i.link);
+
+      feedStatus[feed.url]={state:'ok'};renderFeedList();
+      return items;
+    }catch(err){lastErr=err}
+  }
+  feedStatus[feed.url]={state:'fail',error:lastErr?.message||'error'};renderFeedList();
+  return[];
 }
 
 /* ---------- news loading ---------- */
@@ -325,22 +330,16 @@ async function loadNews(){
         list=articles.filter(a=>{
           const tagMatch=a.tags.some(t=>t.toLowerCase().includes(kw));
           const titleMatch=a.title.toLowerCase().includes(kw);
-          return tagMatch||titleMatch;
-        }).sort((a,b)=>b.pubDate-a.pubDate);
+          return tagMatch||titleMatch;}).sort((a,b)=>b.pubDate-a.pubDate);
       }
       if(!list.length)return;
       const section=document.createElement('div');section.className='section';
-      section.innerHTML=`
-        <div class="section-header"><h2 class="section-title">${sec.name} (${list.length})</h2></div>`;
+      section.innerHTML=`<div class="section-header"><h2 class="section-title">${sec.name} (${list.length})</h2></div>`;
       const grid=document.createElement('div');grid.className='section-grid';
       list.slice(0,12).forEach(a=>{
         const card=document.createElement('div');card.className='news-card';
-        card.innerHTML=`
-          <a class="news-title" href="${a.link}" target="_blank" rel="noopener noreferrer">${a.title}</a>
-          <div class="news-meta">
-            <span class="news-source">${a.source}</span>
-            <span class="news-date">${formatDate(a.pubDate)}</span>
-          </div>`;
+        card.innerHTML=`<a class="news-title" href="${a.link}" target="_blank" rel="noopener noreferrer">${a.title}</a>
+                        <div class="news-meta"><span class="news-source">${a.source}</span><span class="news-date">${formatDate(a.pubDate)}</span></div>`;
         card.onclick=e=>{if(e.target===card)window.open(a.link,'_blank','noopener,noreferrer')};
         grid.appendChild(card);
       });
@@ -356,9 +355,9 @@ async function loadNews(){
 }
 /* ---------- util ---------- */
 function formatDate(d){
-  const now=new Date();const min=Math.floor((now-d)/60000);
-  if(min<1)return'Just now';if(min<60)return`${min}m ago`;
-  const hrs=Math.floor(min/60);if(hrs<24)return`${hrs}h ago`;
+  const now=new Date();const mins=Math.floor((now-d)/60000);
+  if(mins<1)return'Just now';if(mins<60)return`${mins}m ago`;
+  const hrs=Math.floor(mins/60);if(hrs<24)return`${hrs}h ago`;
   const days=Math.floor(hrs/24);if(days===1)return'Yesterday';
   if(days<7)return`${days}d ago`;
   return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:now.getFullYear()!==d.getFullYear()?'numeric':undefined});
@@ -369,9 +368,8 @@ function stopRefresh(){clearInterval(refreshId)}
 document.addEventListener('visibilitychange',()=>document.hidden?stopRefresh():(startRefresh(),loadNews()));
 window.addEventListener('online',()=>loadNews());
 window.addEventListener('offline',()=>newsContainer.innerHTML='<div class="error">Offline. Check your network.</div>');
-
 /* ---------- init ---------- */
-(function init(){renderFeedList();renderSectionList();loadNews();startRefresh();})();
+(function init(){feeds.forEach(f=>feedStatus[f.url]={state:'loading'});renderFeedList();renderSectionList();loadNews();startRefresh();})();
 </script>
 </body>
 </html>
