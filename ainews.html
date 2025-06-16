@@ -162,17 +162,53 @@ input::placeholder{color:#64748b}
 </div>
 
 <script>
-/* ---------- data ---------- */
-let feeds=[
-  {url:'https://openai.com/blog/rss',                                   tags:['ChatGPT','OpenAI'],   added:Date.now()},
-  {url:'https://ai.googleblog.com/feeds/posts/default?alt=rss',         tags:['Gemini','Google'],    added:Date.now()},
-  {url:'https://blog.anthropic.com/rss.xml',                            tags:['Claude','Anthropic'], added:Date.now()},
-  {url:'https://techcrunch.com/tag/automation/feed/',                   tags:['Automation','Industry'],added:Date.now()},
-  {url:'https://techcrunch.com/tag/chatbots/feed/',                     tags:['Agents','Chatbots'],  added:Date.now()},
-  {url:'https://dev.to/feed/tagged/ai',                                 tags:['Coding','Development'],added:Date.now()},
-  {url:'https://www.technologyreview.com/feed/?tag=ai',                 tags:['Tools','Research'],   added:Date.now()},
-  {url:'https://ainowinstitute.org/feed.xml',                           tags:['Ethics','Policy'],    added:Date.now()}
+/* --- curated AI feeds (30) --- */
+let feeds = [
+  /* core model-makers & labs */
+  { url: 'https://openai.com/blog/rss',                             tags: ['OpenAI','ChatGPT'] },
+  { url: 'http://googleaiblog.blogspot.com/atom.xml',               tags: ['Google','Gemini','Research'] },  // Atom
+  { url: 'https://blog.anthropic.com/rss.xml',                      tags: ['Anthropic','Claude'] },
+  { url: 'https://deepmind.com/blog/feed/basic/',                   tags: ['DeepMind','Research'] },
+
+  /* mainstream tech & business news */
+  { url: 'https://venturebeat.com/category/ai/feed/',               tags: ['VentureBeat','Industry'] },       // VB AI channel
+  { url: 'https://www.technologyreview.com/feed/?tag=ai',           tags: ['MITTR','Innovation'] },
+  { url: 'https://www.wired.com/feed/category/artificial-intelligence/rss', tags: ['Wired','AI'] },           // WIRED AI feed :contentReference[oaicite:0]{index=0}
+  { url: 'https://techcrunch.com/tag/automation/feed/',             tags: ['TechCrunch','Automation'] },
+  { url: 'https://techcrunch.com/tag/chatbots/feed/',               tags: ['TechCrunch','Chatbots'] },
+
+  /* dedicated AI-only outlets */
+  { url: 'https://www.artificialintelligence-news.com/feed/rss/',   tags: ['AI News','Industry'] },          // AI-News :contentReference[oaicite:1]{index=1}
+  { url: 'https://aibusiness.com/rss.xml',                          tags: ['AI Business','Enterprise'] },    // :contentReference[oaicite:2]{index=2}
+  { url: 'https://www.marktechpost.com/feed',                       tags: ['MarkTechPost','Research'] },     // :contentReference[oaicite:3]{index=3}
+  { url: 'https://insidebigdata.com/feed',                          tags: ['InsideBigData','Analytics'] },   // :contentReference[oaicite:4]{index=4}
+  { url: 'https://www.datanami.com/feed/',                          tags: ['Datanami','Analytics'] },        // :contentReference[oaicite:5]{index=5}
+  { url: 'https://gradientflow.com/feed/',                          tags: ['GradientFlow','Data'] },         // :contentReference[oaicite:6]{index=6}
+
+  /* newsletters & Substacks */
+  { url: 'https://lastweekin.ai/feed',                              tags: ['Newsletter','Weekly'] },         // :contentReference[oaicite:7]{index=7}
+  { url: 'https://aimodels.substack.com/feed',                      tags: ['Substack','Models'] },           // :contentReference[oaicite:8]{index=8}
+  { url: 'https://magazine.sebastianraschka.com/feed',              tags: ['Ahead-of-AI','Research'] },      // :contentReference[oaicite:9]{index=9}
+  { url: 'https://www.latent.space/feed',                           tags: ['Latent Space','Product'] },      // :contentReference[oaicite:10]{index=10}
+
+  /* tooling / dev-ops blogs */
+  { url: 'https://huggingface.co/blog/feed.xml',                    tags: ['Hugging Face','NLP'] },          // :contentReference[oaicite:11]{index=11}
+  { url: 'https://blog.langchain.dev/rss/',                         tags: ['LangChain','Agents'] },          // :contentReference[oaicite:12]{index=12}
+  { url: 'https://txt.cohere.ai/rss/',                              tags: ['Cohere','NLP'] },                // :contentReference[oaicite:13]{index=13}
+  { url: 'https://feed.infoq.com/ai-ml-data-eng/',                  tags: ['InfoQ','Engineering'] },         // :contentReference[oaicite:14]{index=14}
+  { url: 'https://hackernoon.com/tagged/ai/feed',                   tags: ['HackerNoon','Stories'] },        // :contentReference[oaicite:15]{index=15}
+
+  /* academic & research streams */
+  { url: 'https://www.jmlr.org/jmlr.xml',                           tags: ['JMLR','Research'] },             // :contentReference[oaicite:16]{index=16}
+  { url: 'https://arxiv.org/rss/cs.LG',                             tags: ['arXiv','Machine Learning'] },
+  { url: 'https://arxiv.org/rss/cs.CL',                             tags: ['arXiv','NLP'] },
+  { url: 'https://arxiv.org/rss/cs.CV',                             tags: ['arXiv','Vision'] },
+
+  /* community round-ups */
+  { url: 'https://kdnuggets.com/feed',                              tags: ['KDnuggets','Community'] },       // :contentReference[oaicite:17]{index=17}
+  { url: 'https://aibusiness.com/rss.xml',                          tags: ['DuplicateCheck','Ignore'] },     // placeholder to show deduping if desired
 ];
+
 /* status map  {url: {state:'loading'|'ok'|'fail', error:''}} */
 const feedStatus={};
 const defaultSectionNames=['Most Recent','ChatGPT','Gemini','Claude','Automation','Agents','Coding','Tools','Ethics'];
