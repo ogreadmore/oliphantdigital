@@ -3,116 +3,197 @@
 <head>
   <meta charset="UTF-8">
   <title>AI News Aggregator</title>
-  <!-- Hosted via GitHub Pages; uses rss2json.com to avoid CORS issues -->
+  <!-- Hosted via GitHub Pages; uses rss2json.com for CORS-friendly parsing -->
   <style>
     body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
-    h1 { text-align: center; }
-    #controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-    #feed-list { list-style: none; padding: 0; max-width: 800px; margin: 0 auto 20px; }
-    #feed-list li { display: flex; justify-content: space-between; background: #fff; padding: 8px 12px; margin-bottom: 5px; border-radius: 4px; }
-    #feed-list button { background: #e74c3c; border: none; color: #fff; padding: 4px 8px; border-radius: 4px; cursor: pointer; }
-    #feed-list button:hover { background: #c0392b; }
-    #news-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
+    h1 { text-align: center; margin-bottom: 20px; }
+    #feed-controls, #section-controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
+    input[type=text] { width: 250px; padding: 6px; border: 1px solid #ccc; border-radius: 4px; }
+    button { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; }
+    button#add-feed { background: #2ecc71; color: #fff; }
+    button#add-feed:hover { background: #27ae60; }
+    button#add-section { background: #3498db; color: #fff; }
+    button#add-section:hover { background: #2980b9; }
+    #feed-list, #section-list { list-style: none; padding: 0; max-width: 800px; margin: 0 auto 20px; }
+    #feed-list li, #section-list li { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 8px 12px; margin-bottom: 5px; border-radius: 4px; }
+    #feed-list li span.tags { font-size: 0.9em; color: #555; margin-left: 10px; }
+    #feed-list li button.remove, #feed-list li button.edit-tags, #section-list li button.remove { background: #e74c3c; color: #fff; margin-left: 5px; }
+    #feed-list li button.remove:hover, #feed-list li button.edit-tags:hover, #section-list li button.remove:hover { background: #c0392b; }
+    #news-container { max-width: 1000px; margin: 0 auto; }
+    .section { margin-bottom: 30px; }
+    .section h2 { background: #333; color: #fff; padding: 8px 12px; border-radius: 4px; }
+    .section-news { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-top: 10px; }
     .news-item { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     .news-item a { font-size: 1em; font-weight: bold; color: #333; text-decoration: none; }
     .news-item a:hover { text-decoration: underline; }
     .news-item .meta { margin-top: 8px; font-size: 0.8em; color: #666; }
     .error { color: red; text-align: center; }
-    input[type=text] { width: 300px; padding: 6px; border: 1px solid #ccc; border-radius: 4px; }
-    button#add-feed { background: #2ecc71; border: none; color: #fff; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
-    button#add-feed:hover { background: #27ae60; }
+    .tag-toggle { cursor: pointer; padding: 4px 8px; border-radius: 4px; border: 1px solid #ccc; }
+    .tag-toggle.active { background: #2c3e50; color: #fff; border-color: #2c3e50; }
   </style>
 </head>
 <body>
   <h1>AI News Aggregator</h1>
-  <div id="controls">
-    <input id="new-feed-url" type="text" placeholder="Enter RSS feed URL" />
+
+  <!-- Feed management -->
+  <div id="feed-controls">
+    <input id="new-feed-url" type="text" placeholder="RSS feed URL" />
+    <input id="new-feed-tags" type="text" placeholder="Tags (comma-separated)" />
     <button id="add-feed">Add Feed</button>
   </div>
   <ul id="feed-list"></ul>
+
+  <!-- Section (tag) management -->
+  <div id="section-controls">
+    <input id="new-section-name" type="text" placeholder="New section/tag name" />
+    <button id="add-section">Add Section</button>
+  </div>
+  <ul id="section-list"></ul>
+
+  <!-- News display -->
   <div id="news-container"><p>Loading news...</p></div>
+
   <script>
+    // Initial feeds with tags and added timestamp
     let feeds = [
-      'https://rss.nytimes.com/services/xml/rss/nyt/ArtificialIntelligence.xml',
-      'https://www.technologyreview.com/feed/?tag=ai',
-      'https://www.theverge.com/ai/rss/index.xml',
-      'https://techcrunch.com/tag/artificial-intelligence/feed/',
-      'http://feeds.arxiv.org/rss/cs.AI'
+      { url: 'https://rss.nytimes.com/services/xml/rss/nyt/ArtificialIntelligence.xml', tags: ['News'], added: Date.now() },
+      { url: 'https://www.technologyreview.com/feed/?tag=ai', tags: ['Tools'], added: Date.now() },
+      { url: 'https://www.theverge.com/ai/rss/index.xml', tags: ['News'], added: Date.now() },
+      { url: 'https://techcrunch.com/tag/artificial-intelligence/feed/', tags: ['Startups'], added: Date.now() },
+      { url: 'http://feeds.arxiv.org/rss/cs.AI', tags: ['Academic'], added: Date.now() }
     ];
+    // Default sections and order
+    const defaultSectionNames = ['Most recent', 'ChatGPT', 'Gemini', 'Claude', 'Automation', 'Agents', 'Coding', 'Tools'];
+    let sections = defaultSectionNames.map(name => ({ name, active: true }));
     const apiBase = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
-    const feedListEl = document.getElementById('feed-list');
-    const newsContainer = document.getElementById('news-container');
-    const newFeedInput = document.getElementById('new-feed-url');
+    const newFeedUrlInput = document.getElementById('new-feed-url');
+    const newFeedTagsInput = document.getElementById('new-feed-tags');
     const addFeedBtn = document.getElementById('add-feed');
+    const feedListEl = document.getElementById('feed-list');
+
+    const newSectionNameInput = document.getElementById('new-section-name');
+    const addSectionBtn = document.getElementById('add-section');
+    const sectionListEl = document.getElementById('section-list');
+
+    const newsContainer = document.getElementById('news-container');
 
     function renderFeedList() {
       feedListEl.innerHTML = '';
-      feeds.forEach((url, idx) => {
+      feeds.forEach((feed, i) => {
         const li = document.createElement('li');
-        li.textContent = url;
-        const btn = document.createElement('button');
-        btn.textContent = 'Remove';
-        btn.onclick = () => { feeds.splice(idx, 1); renderFeedList(); loadNews(); };
-        li.appendChild(btn);
+        const urlSpan = document.createElement('span'); urlSpan.textContent = feed.url;
+        const tagsSpan = document.createElement('span'); tagsSpan.className = 'tags'; tagsSpan.textContent = '[' + feed.tags.join(', ') + ']';
+        // Remove button
+        const removeBtn = document.createElement('button'); removeBtn.className = 'remove'; removeBtn.textContent = 'Remove';
+        removeBtn.onclick = () => { feeds.splice(i, 1); renderFeedList(); renderSectionList(); loadNews(); };
+        // Edit tags button
+        const editBtn = document.createElement('button'); editBtn.className = 'edit-tags'; editBtn.textContent = 'Edit Tags';
+        editBtn.onclick = () => {
+          const newTags = prompt('Enter comma-separated tags', feed.tags.join(', '));
+          if (newTags !== null) {
+            feed.tags = newTags.split(',').map(t => t.trim()).filter(t => t);
+            renderFeedList(); renderSectionList(); loadNews();
+          }
+        };
+        li.append(urlSpan, tagsSpan, editBtn, removeBtn);
         feedListEl.appendChild(li);
       });
     }
 
-    addFeedBtn.addEventListener('click', () => {
-      const url = newFeedInput.value.trim();
-      if (url && !feeds.includes(url)) {
-        feeds.push(url);
-        newFeedInput.value = '';
-        renderFeedList();
-        loadNews();
-      }
-    });
+    function renderSectionList() {
+      sectionListEl.innerHTML = '';
+      sections.forEach((section, i) => {
+        const li = document.createElement('li');
+        const tagBtn = document.createElement('span');
+        tagBtn.textContent = section.name;
+        tagBtn.className = 'tag-toggle' + (section.active ? ' active':'');
+        tagBtn.onclick = () => { section.active = !section.active; renderSectionList(); loadNews(); };
+        const removeBtn = document.createElement('button'); removeBtn.className = 'remove'; removeBtn.textContent = 'Remove';
+        removeBtn.onclick = () => { sections.splice(i,1); renderSectionList(); loadNews(); };
+        li.append(tagBtn, removeBtn);
+        sectionListEl.appendChild(li);
+      });
+    }
 
-    async function fetchFeed(url) {
+    addFeedBtn.onclick = () => {
+      const url = newFeedUrlInput.value.trim();
+      const tags = newFeedTagsInput.value.split(',').map(t => t.trim()).filter(t => t);
+      if (url && !feeds.some(f => f.url === url)) {
+        feeds.push({url, tags, added: Date.now()});
+        newFeedUrlInput.value = '';
+        newFeedTagsInput.value = '';
+        renderFeedList(); renderSectionList(); loadNews();
+      }
+    };
+
+    addSectionBtn.onclick = () => {
+      const name = newSectionNameInput.value.trim();
+      if (name && !sections.some(s => s.name === name)) {
+        sections.push({name, active: true});
+        newSectionNameInput.value = '';
+        renderSectionList(); loadNews();
+      }
+    };
+
+    async function fetchFeed(feed) {
       try {
-        const res = await fetch(apiBase + encodeURIComponent(url));
+        const res = await fetch(apiBase + encodeURIComponent(feed.url));
         const data = await res.json();
-        if (data.status !== 'ok') throw new Error(data.message || 'API error');
+        if (data.status !== 'ok') throw new Error(data.message);
         return data.items.map(item => ({
           title: item.title,
           link: item.link,
           pubDate: new Date(item.pubDate),
-          source: data.feed.title
+          source: feed.url,
+          tags: feed.tags,
+          added: feed.added
         }));
-      } catch (err) {
-        console.error('Error fetching feed:', url, err);
+      } catch (e) {
+        console.error('Fetch error:', feed.url, e);
         return [];
       }
     }
 
     async function loadNews() {
       newsContainer.innerHTML = '<p>Loading news...</p>';
-      try {
-        const results = await Promise.all(feeds.map(fetchFeed));
-        const articles = results.flat().sort((a, b) => b.pubDate - a.pubDate);
-        newsContainer.innerHTML = '';
-        if (!articles.length) {
-          newsContainer.innerHTML = '<p class="error">No articles found. Check feeds or rate limits.</p>';
-          return;
+      // Fetch all feeds
+      const allResults = await Promise.all(feeds.map(fetchFeed));
+      const allArticles = allResults.flat();
+      newsContainer.innerHTML = '';
+
+      const shownLinks = new Set();
+      sections.forEach(section => {
+        if (!section.active) return;
+        let sectionArticles;
+        if (section.name === 'Most recent') {
+          sectionArticles = allArticles.slice().sort((a,b)=> b.pubDate - a.pubDate);
+        } else {
+          sectionArticles = allArticles.filter(a=> a.tags.includes(section.name)).sort((a,b)=> b.pubDate - a.pubDate);
         }
-        articles.slice(0, 30).forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'news-item';
-          card.innerHTML = `
-            <a href="${item.link}" target="_blank" rel="noopener">${item.title}</a>
-            <div class="meta">${item.source} • ${item.pubDate.toLocaleString()}</div>
-          `;
-          newsContainer.appendChild(card);
+        if (!sectionArticles.length) return;
+        const secDiv = document.createElement('div'); secDiv.className = 'section';
+        const heading = document.createElement('h2'); heading.textContent = section.name;
+        const container = document.createElement('div'); container.className = 'section-news';
+        sectionArticles.forEach(item => {
+          if (shownLinks.has(item.link)) return;
+          shownLinks.add(item.link);
+          const card = document.createElement('div'); card.className = 'news-item';
+          card.innerHTML = `<a href="${item.link}" target="_blank" rel="noopener">${item.title}</a>` +
+                           `<div class="meta">${item.source} • ${item.pubDate.toLocaleString()}</div>`;
+          container.appendChild(card);
         });
-      } catch (err) {
-        console.error('Load error:', err);
-        newsContainer.innerHTML = `<p class="error">Failed to load news: ${err.message}</p>`;
+        secDiv.append(heading, container);
+        newsContainer.appendChild(secDiv);
+      });
+      if (!newsContainer.children.length) {
+        newsContainer.innerHTML = '<p class="error">No articles to display for active sections.</p>';
       }
     }
 
-    // Initialize
+    // Initial render
     renderFeedList();
+    renderSectionList();
     loadNews();
   </script>
 </body>
