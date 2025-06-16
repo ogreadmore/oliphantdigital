@@ -27,7 +27,7 @@
     .news-item a { font-size: 1em; font-weight: bold; color: #333; text-decoration: none; }
     .news-item a:hover { text-decoration: underline; }
     .news-item .meta { margin-top: 8px; font-size: 0.8em; color: #666; }
-    .error { color: red; text-align: center; }
+    .error { color: #888; text-align: center; margin: 10px; }
     .tag-toggle { cursor: pointer; padding: 4px 8px; border-radius: 4px; border: 1px solid #ccc; }
     .tag-toggle.active { background: #2c3e50; color: #fff; border-color: #2c3e50; }
   </style>
@@ -54,7 +54,7 @@
   <div id="news-container"><p>Loading news...</p></div>
 
   <script>
-    // Initial feeds with tags and added timestamp
+    // Feeds with tags and added timestamp
     let feeds = [
       { url: 'https://rss.nytimes.com/services/xml/rss/nyt/ArtificialIntelligence.xml', tags: ['News'], added: Date.now() },
       { url: 'https://www.technologyreview.com/feed/?tag=ai', tags: ['Tools'], added: Date.now() },
@@ -62,7 +62,7 @@
       { url: 'https://techcrunch.com/tag/artificial-intelligence/feed/', tags: ['Startups'], added: Date.now() },
       { url: 'http://feeds.arxiv.org/rss/cs.AI', tags: ['Academic'], added: Date.now() }
     ];
-    // Default sections and order
+    // Default sections
     const defaultSectionNames = ['Most recent', 'ChatGPT', 'Gemini', 'Claude', 'Automation', 'Agents', 'Coding', 'Tools'];
     let sections = defaultSectionNames.map(name => ({ name, active: true }));
     const apiBase = 'https://api.rss2json.com/v1/api.json?rss_url=';
@@ -148,7 +148,7 @@
           added: feed.added
         }));
       } catch (e) {
-        console.error('Fetch error:', feed.url, e);
+        // Fail silently for unavailable feeds
         return [];
       }
     }
@@ -167,24 +167,23 @@
         } else {
           sectionArticles = allArticles.filter(a=> a.tags.includes(section.name)).sort((a,b)=> b.pubDate - a.pubDate);
         }
-        if (!sectionArticles.length) return;
         const secDiv = document.createElement('div'); secDiv.className = 'section';
         const heading = document.createElement('h2'); heading.textContent = section.name;
         const container = document.createElement('div'); container.className = 'section-news';
-        // Show up to 10 articles per section
-        sectionArticles.slice(0,10).forEach(item => {
-          const card = document.createElement('div'); card.className = 'news-item';
-          card.innerHTML = `<a href="${item.link}" target="_blank" rel="noopener">${item.title}</a>` +
-                           `<div class="meta">${item.source} • ${item.pubDate.toLocaleString()}</div>`;
-          container.appendChild(card);
-        });
+        if (sectionArticles.length) {
+          sectionArticles.slice(0,10).forEach(item => {
+            const card = document.createElement('div'); card.className = 'news-item';
+            card.innerHTML = `<a href="${item.link}" target="_blank" rel="noopener">${item.title}</a>` +
+                             `<div class="meta">${item.source} • ${item.pubDate.toLocaleString()}</div>`;
+            container.appendChild(card);
+          });
+        } else {
+          const msg = document.createElement('p'); msg.className = 'error'; msg.textContent = 'No articles for this section.';
+          container.appendChild(msg);
+        }
         secDiv.append(heading, container);
         newsContainer.appendChild(secDiv);
       });
-
-      if (!newsContainer.children.length) {
-        newsContainer.innerHTML = '<p class="error">No articles to display for active sections.</p>';
-      }
     }
 
     // Initial render
