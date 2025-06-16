@@ -57,21 +57,24 @@
   <div id="news-container"><p>Loading news...</p></div>
 
   <script>
-    // Initial feeds
+    // Initial feeds, each tagged to match default sections
     let feeds = [
-      { url: 'https://rss.nytimes.com/services/xml/rss/nyt/ArtificialIntelligence.xml', tags: ['News'], added: Date.now() },
-      { url: 'https://www.technologyreview.com/feed/?tag=ai', tags: ['Tools'], added: Date.now() },
-      { url: 'https://www.theverge.com/ai/rss/index.xml', tags: ['News'], added: Date.now() },
-      { url: 'https://techcrunch.com/tag/artificial-intelligence/feed/', tags: ['Startups'], added: Date.now() },
-      { url: 'http://feeds.arxiv.org/rss/cs.AI', tags: ['Academic'], added: Date.now() }
+      { url: 'https://openai.com/blog/rss',                   tags: ['ChatGPT'],   added: Date.now() },
+      { url: 'https://ai.googleblog.com/feeds/posts/default?alt=rss', tags: ['Gemini'],     added: Date.now() },
+      { url: 'https://blog.anthropic.com/rss.xml',             tags: ['Claude'],    added: Date.now() },
+      { url: 'https://techcrunch.com/tag/automation/feed/',     tags: ['Automation'],added: Date.now() },
+      { url: 'https://techcrunch.com/tag/chatbots/feed/',       tags: ['Agents'],    added: Date.now() },
+      { url: 'https://dev.to/feed/tagged/ai',                  tags: ['Coding'],    added: Date.now() },
+      { url: 'https://www.technologyreview.com/feed/?tag=ai',   tags: ['Tools'],     added: Date.now() }
     ];
 
-    // Default sections
+    // Default section names & order
     const defaultSectionNames = [
       'Most recent','ChatGPT','Gemini','Claude','Automation','Agents','Coding','Tools'
     ];
     let sections = defaultSectionNames.map(name => ({ name, active: true }));
 
+    // DOM references
     const feedListEl       = document.getElementById('feed-list');
     const sectionListEl    = document.getElementById('section-list');
     const newsContainer    = document.getElementById('news-container');
@@ -150,8 +153,7 @@
       const tags = newFeedTagsInput.value.split(',').map(x=>x.trim()).filter(x=>x);
       if (url && !feeds.some(f=>f.url===url)) {
         feeds.push({url,tags,added:Date.now()});
-        newFeedUrlInput.value='';
-        newFeedTagsInput.value='';
+        newFeedUrlInput.value=''; newFeedTagsInput.value='';
         renderFeedList(); renderSectionList(); loadNews();
       }
     };
@@ -177,45 +179,41 @@
         const res = await fetch(proxied);
         if (!res.ok) return [];
         const xmlText = await res.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(xmlText, 'application/xml');
+        const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
         const items = Array.from(doc.querySelectorAll('item'));
         return items.map(item => ({
           title:   item.querySelector('title')?.textContent || '',
           link:    item.querySelector('link')?.textContent || '',
           pubDate: new Date(item.querySelector('pubDate')?.textContent || Date.now()),
-          source:  feed.url,
+          source:  new URL(feed.url).hostname,
           tags:    feed.tags,
           added:   feed.added
         }));
       } catch (e) {
-        console.error('Feed error:', feed.url, e);
+        console.warn('Feed error:', feed.url);
         return [];
       }
     }
 
-    // load and render
+    // load and render all sections
     async function loadNews() {
       newsContainer.innerHTML = '<p>Loading news...</p>';
       const batches = await Promise.all(feeds.map(fetchFeed));
       const all = batches.flat();
-
       newsContainer.innerHTML = '';
+
       sections.forEach(sec => {
         if (!sec.active) return;
-
         let list;
         if (sec.name === 'Most recent') {
           list = all.slice().sort((a,b)=>b.pubDate - a.pubDate);
         } else {
           const key = sec.name.toLowerCase();
-          list = all.filter(a =>
-            a.tags.includes(sec.name) ||
-            a.title.toLowerCase().includes(key)
-          ).sort((a,b)=>b.pubDate - a.pubDate);
+          list = all
+            .filter(a => a.tags.includes(sec.name) || a.title.toLowerCase().includes(key))
+            .sort((a,b)=>b.pubDate - a.pubDate);
         }
 
-        // create section
         const wrap = document.createElement('div');
         wrap.className = 'section';
         const h2 = document.createElement('h2');
@@ -231,7 +229,7 @@
             card.className = 'news-item';
             card.innerHTML =
               `<a href="${item.link}" target="_blank" rel="noopener">${item.title}</a>` +
-              `<div class="meta">${new URL(item.source).hostname} • ${item.pubDate.toLocaleString()}</div>`;
+              `<div class="meta">${item.source} • ${item.pubDate.toLocaleString()}</div>`;
             grid.appendChild(card);
           });
         } else {
@@ -250,7 +248,7 @@
       }
     }
 
-    // startup
+    // initial render
     renderFeedList();
     renderSectionList();
     loadNews();
