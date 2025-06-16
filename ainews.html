@@ -3,44 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <title>AI News Aggregator</title>
-  <!-- Serve via HTTP (e.g., `python3 -m http.server`) to enable feed fetching without CORS issues -->
+  <!-- Hosted via GitHub Pages; uses rss2json.com to avoid CORS issues -->
   <style>
     body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
     h1 { text-align: center; }
-    #news-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-top: 20px; }
+    #controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+    #feed-list { list-style: none; padding: 0; max-width: 800px; margin: 0 auto 20px; }
+    #feed-list li { display: flex; justify-content: space-between; background: #fff; padding: 8px 12px; margin-bottom: 5px; border-radius: 4px; }
+    #feed-list button { background: #e74c3c; border: none; color: #fff; padding: 4px 8px; border-radius: 4px; cursor: pointer; }
+    #feed-list button:hover { background: #c0392b; }
+    #news-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
     .news-item { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     .news-item a { font-size: 1em; font-weight: bold; color: #333; text-decoration: none; }
     .news-item a:hover { text-decoration: underline; }
     .news-item .meta { margin-top: 8px; font-size: 0.8em; color: #666; }
     .error { color: red; text-align: center; }
+    input[type=text] { width: 300px; padding: 6px; border: 1px solid #ccc; border-radius: 4px; }
+    button#add-feed { background: #2ecc71; border: none; color: #fff; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+    button#add-feed:hover { background: #27ae60; }
   </style>
 </head>
 <body>
   <h1>AI News Aggregator</h1>
+  <div id="controls">
+    <input id="new-feed-url" type="text" placeholder="Enter RSS feed URL" />
+    <button id="add-feed">Add Feed</button>
+  </div>
+  <ul id="feed-list"></ul>
   <div id="news-container"><p>Loading news...</p></div>
   <script>
-    // AI news RSS feeds – update as needed
-    const feeds = [
-      'http://feeds.arxiv.org/rss/cs.AI',
-      'https://www.technologyreview.com/feed/?tag=ai',
+    let feeds = [
       'https://rss.nytimes.com/services/xml/rss/nyt/ArtificialIntelligence.xml',
+      'https://www.technologyreview.com/feed/?tag=ai',
       'https://www.theverge.com/ai/rss/index.xml',
-      'https://techcrunch.com/tag/artificial-intelligence/feed/'
+      'https://techcrunch.com/tag/artificial-intelligence/feed/',
+      'http://feeds.arxiv.org/rss/cs.AI'
     ];
-    // Use AllOrigins JSON proxy
-    const proxy = 'https://api.allorigins.win/get?url=';
+    const apiBase = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
+    const feedListEl = document.getElementById('feed-list');
+    const newsContainer = document.getElementById('news-container');
+    const newFeedInput = document.getElementById('new-feed-url');
+    const addFeedBtn = document.getElementById('add-feed');
+
+    function renderFeedList() {
+      feedListEl.innerHTML = '';
+      feeds.forEach((url, idx) => {
+        const li = document.createElement('li');
+        li.textContent = url;
+        const btn = document.createElement('button');
+        btn.textContent = 'Remove';
+        btn.onclick = () => { feeds.splice(idx, 1); renderFeedList(); loadNews(); };
+        li.appendChild(btn);
+        feedListEl.appendChild(li);
+      });
+    }
+
+    addFeedBtn.addEventListener('click', () => {
+      const url = newFeedInput.value.trim();
+      if (url && !feeds.includes(url)) {
+        feeds.push(url);
+        newFeedInput.value = '';
+        renderFeedList();
+        loadNews();
+      }
+    });
 
     async function fetchFeed(url) {
       try {
-        const response = await fetch(proxy + encodeURIComponent(url));
-        const payload = await response.json();
-        const xml = new DOMParser().parseFromString(payload.contents, 'application/xml');
-        const sourceTitle = xml.querySelector('channel > title')?.textContent || url;
-        return Array.from(xml.querySelectorAll('item')).map(item => ({
-          title: item.querySelector('title')?.textContent || '',
-          link: item.querySelector('link')?.textContent || '',
-          pubDate: new Date(item.querySelector('pubDate')?.textContent || ''),
-          source: sourceTitle
+        const res = await fetch(apiBase + encodeURIComponent(url));
+        const data = await res.json();
+        if (data.status !== 'ok') throw new Error(data.message || 'API error');
+        return data.items.map(item => ({
+          title: item.title,
+          link: item.link,
+          pubDate: new Date(item.pubDate),
+          source: data.feed.title
         }));
       } catch (err) {
         console.error('Error fetching feed:', url, err);
@@ -49,30 +87,33 @@
     }
 
     async function loadNews() {
-      const container = document.getElementById('news-container');
+      newsContainer.innerHTML = '<p>Loading news...</p>';
       try {
-        const allItems = await Promise.all(feeds.map(fetchFeed));
-        const flattened = allItems.flat().sort((a, b) => b.pubDate - a.pubDate);
-        container.innerHTML = '';
-        flattened.slice(0, 30).forEach(item => {
+        const results = await Promise.all(feeds.map(fetchFeed));
+        const articles = results.flat().sort((a, b) => b.pubDate - a.pubDate);
+        newsContainer.innerHTML = '';
+        if (!articles.length) {
+          newsContainer.innerHTML = '<p class="error">No articles found. Check feeds or rate limits.</p>';
+          return;
+        }
+        articles.slice(0, 30).forEach(item => {
           const card = document.createElement('div');
           card.className = 'news-item';
           card.innerHTML = `
-            <a href="${item.link}" target="_blank">${item.title}</a>
+            <a href="${item.link}" target="_blank" rel="noopener">${item.title}</a>
             <div class="meta">${item.source} • ${item.pubDate.toLocaleString()}</div>
           `;
-          container.appendChild(card);
+          newsContainer.appendChild(card);
         });
-        if (!flattened.length) {
-          container.innerHTML = '<p class="error">No articles found. Check your feeds or proxy.</p>';
-        }
       } catch (err) {
-        console.error('Failed to load news:', err);
-        container.innerHTML = `<p class="error">Failed to load news: ${err.message}</p>`;
+        console.error('Load error:', err);
+        newsContainer.innerHTML = `<p class="error">Failed to load news: ${err.message}</p>`;
       }
     }
 
-    document.addEventListener('DOMContentLoaded', loadNews);
+    // Initialize
+    renderFeedList();
+    loadNews();
   </script>
 </body>
 </html>
