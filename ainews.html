@@ -84,10 +84,8 @@
         const li = document.createElement('li');
         const urlSpan = document.createElement('span'); urlSpan.textContent = feed.url;
         const tagsSpan = document.createElement('span'); tagsSpan.className = 'tags'; tagsSpan.textContent = '[' + feed.tags.join(', ') + ']';
-        // Remove button
         const removeBtn = document.createElement('button'); removeBtn.className = 'remove'; removeBtn.textContent = 'Remove';
         removeBtn.onclick = () => { feeds.splice(i, 1); renderFeedList(); renderSectionList(); loadNews(); };
-        // Edit tags button
         const editBtn = document.createElement('button'); editBtn.className = 'edit-tags'; editBtn.textContent = 'Edit Tags';
         editBtn.onclick = () => {
           const newTags = prompt('Enter comma-separated tags', feed.tags.join(', '));
@@ -157,12 +155,10 @@
 
     async function loadNews() {
       newsContainer.innerHTML = '<p>Loading news...</p>';
-      // Fetch all feeds
       const allResults = await Promise.all(feeds.map(fetchFeed));
       const allArticles = allResults.flat();
       newsContainer.innerHTML = '';
 
-      const shownLinks = new Set();
       sections.forEach(section => {
         if (!section.active) return;
         let sectionArticles;
@@ -175,9 +171,8 @@
         const secDiv = document.createElement('div'); secDiv.className = 'section';
         const heading = document.createElement('h2'); heading.textContent = section.name;
         const container = document.createElement('div'); container.className = 'section-news';
-        sectionArticles.forEach(item => {
-          if (shownLinks.has(item.link)) return;
-          shownLinks.add(item.link);
+        // Show up to 10 articles per section
+        sectionArticles.slice(0,10).forEach(item => {
           const card = document.createElement('div'); card.className = 'news-item';
           card.innerHTML = `<a href="${item.link}" target="_blank" rel="noopener">${item.title}</a>` +
                            `<div class="meta">${item.source} • ${item.pubDate.toLocaleString()}</div>`;
@@ -186,6 +181,7 @@
         secDiv.append(heading, container);
         newsContainer.appendChild(secDiv);
       });
+
       if (!newsContainer.children.length) {
         newsContainer.innerHTML = '<p class="error">No articles to display for active sections.</p>';
       }
