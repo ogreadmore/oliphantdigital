@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI News Aggregator</title>
+  <!-- Serve via HTTP (e.g., `python3 -m http.server`) to enable feed fetching without CORS issues -->
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+    h1 { text-align: center; }
+    #news-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-top: 20px; }
+    .news-item { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .news-item a { font-size: 1em; font-weight: bold; color: #333; text-decoration: none; }
+    .news-item a:hover { text-decoration: underline; }
+    .news-item .meta { margin-top: 8px; font-size: 0.8em; color: #666; }
+    .error { color: red; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>AI News Aggregator</h1>
+  <div id="news-container"><p>Loading news...</p></div>
+  <script>
+    // AI news RSS feeds – update as needed
+    const feeds = [
+      'http://feeds.arxiv.org/rss/cs.AI',
+      'https://www.technologyreview.com/feed/?tag=ai',
+      'https://rss.nytimes.com/services/xml/rss/nyt/ArtificialIntelligence.xml',
+      'https://www.theverge.com/ai/rss/index.xml',
+      'https://techcrunch.com/tag/artificial-intelligence/feed/'
+    ];
+    // Use AllOrigins JSON proxy
+    const proxy = 'https://api.allorigins.win/get?url=';
+
+    async function fetchFeed(url) {
+      try {
+        const response = await fetch(proxy + encodeURIComponent(url));
+        const payload = await response.json();
+        const xml = new DOMParser().parseFromString(payload.contents, 'application/xml');
+        const sourceTitle = xml.querySelector('channel > title')?.textContent || url;
+        return Array.from(xml.querySelectorAll('item')).map(item => ({
+          title: item.querySelector('title')?.textContent || '',
+          link: item.querySelector('link')?.textContent || '',
+          pubDate: new Date(item.querySelector('pubDate')?.textContent || ''),
+          source: sourceTitle
+        }));
+      } catch (err) {
+        console.error('Error fetching feed:', url, err);
+        return [];
+      }
+    }
+
+    async function loadNews() {
+      const container = document.getElementById('news-container');
+      try {
+        const allItems = await Promise.all(feeds.map(fetchFeed));
+        const flattened = allItems.flat().sort((a, b) => b.pubDate - a.pubDate);
+        container.innerHTML = '';
+        flattened.slice(0, 30).forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'news-item';
+          card.innerHTML = `
+            <a href="${item.link}" target="_blank">${item.title}</a>
+            <div class="meta">${item.source} • ${item.pubDate.toLocaleString()}</div>
+          `;
+          container.appendChild(card);
+        });
+        if (!flattened.length) {
+          container.innerHTML = '<p class="error">No articles found. Check your feeds or proxy.</p>';
+        }
+      } catch (err) {
+        console.error('Failed to load news:', err);
+        container.innerHTML = `<p class="error">Failed to load news: ${err.message}</p>`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadNews);
+  </script>
+</body>
+</html>
