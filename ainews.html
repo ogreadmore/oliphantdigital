@@ -14,6 +14,8 @@
     button#add-feed:hover { background: #27ae60; }
     button#add-section { background: #3498db; color: #fff; }
     button#add-section:hover { background: #2980b9; }
+    button#reset-sections { background: #f39c12; color: #fff; }
+    button#reset-sections:hover { background: #d35400; }
     #feed-list, #section-list { list-style: none; padding: 0; max-width: 800px; margin: 0 auto 20px; }
     #feed-list li, #section-list li { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 8px 12px; margin-bottom: 5px; border-radius: 4px; }
     #feed-list li span.tags { font-size: 0.9em; color: #555; margin-left: 10px; }
@@ -27,7 +29,7 @@
     .news-item a { font-size: 1em; font-weight: bold; color: #333; text-decoration: none; }
     .news-item a:hover { text-decoration: underline; }
     .news-item .meta { margin-top: 8px; font-size: 0.8em; color: #666; }
-    .error { color: #888; text-align: center; margin: 10px; }
+    .error { color: red; text-align: center; }
     .tag-toggle { cursor: pointer; padding: 4px 8px; border-radius: 4px; border: 1px solid #ccc; }
     .tag-toggle.active { background: #2c3e50; color: #fff; border-color: #2c3e50; }
   </style>
@@ -47,6 +49,7 @@
   <div id="section-controls">
     <input id="new-section-name" type="text" placeholder="New section/tag name" />
     <button id="add-section">Add Section</button>
+    <button id="reset-sections">Reset Sections</button>
   </div>
   <ul id="section-list"></ul>
 
@@ -54,7 +57,7 @@
   <div id="news-container"><p>Loading news...</p></div>
 
   <script>
-    // Feeds with tags and added timestamp
+    // Initial feeds with tags and added timestamp
     let feeds = [
       { url: 'https://rss.nytimes.com/services/xml/rss/nyt/ArtificialIntelligence.xml', tags: ['News'], added: Date.now() },
       { url: 'https://www.technologyreview.com/feed/?tag=ai', tags: ['Tools'], added: Date.now() },
@@ -62,8 +65,8 @@
       { url: 'https://techcrunch.com/tag/artificial-intelligence/feed/', tags: ['Startups'], added: Date.now() },
       { url: 'http://feeds.arxiv.org/rss/cs.AI', tags: ['Academic'], added: Date.now() }
     ];
-    // Default sections
-    const defaultSectionNames = ['Most recent', 'ChatGPT', 'Gemini', 'Claude', 'Automation', 'Agents', 'Coding', 'Tools'];
+    // Default sections and order
+    const defaultSectionNames = ['Most recent','ChatGPT','Gemini','Claude','Automation','Agents','Coding','Tools'];
     let sections = defaultSectionNames.map(name => ({ name, active: true }));
     const apiBase = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
@@ -74,6 +77,7 @@
 
     const newSectionNameInput = document.getElementById('new-section-name');
     const addSectionBtn = document.getElementById('add-section');
+    const resetSectionsBtn = document.getElementById('reset-sections');
     const sectionListEl = document.getElementById('section-list');
 
     const newsContainer = document.getElementById('news-container');
@@ -82,17 +86,31 @@
       feedListEl.innerHTML = '';
       feeds.forEach((feed, i) => {
         const li = document.createElement('li');
-        const urlSpan = document.createElement('span'); urlSpan.textContent = feed.url;
-        const tagsSpan = document.createElement('span'); tagsSpan.className = 'tags'; tagsSpan.textContent = '[' + feed.tags.join(', ') + ']';
-        const removeBtn = document.createElement('button'); removeBtn.className = 'remove'; removeBtn.textContent = 'Remove';
-        removeBtn.onclick = () => { feeds.splice(i, 1); renderFeedList(); renderSectionList(); loadNews(); };
-        const editBtn = document.createElement('button'); editBtn.className = 'edit-tags'; editBtn.textContent = 'Edit Tags';
+        const urlSpan = document.createElement('span');
+        urlSpan.textContent = feed.url;
+        const tagsSpan = document.createElement('span');
+        tagsSpan.className = 'tags';
+        tagsSpan.textContent = '[' + feed.tags.join(', ') + ']';
+        const editBtn = document.createElement('button');
+        editBtn.className = 'edit-tags';
+        editBtn.textContent = 'Edit Tags';
         editBtn.onclick = () => {
           const newTags = prompt('Enter comma-separated tags', feed.tags.join(', '));
           if (newTags !== null) {
             feed.tags = newTags.split(',').map(t => t.trim()).filter(t => t);
-            renderFeedList(); renderSectionList(); loadNews();
+            renderFeedList();
+            renderSectionList();
+            loadNews();
           }
+        };
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'remove';
+        removeBtn.textContent = 'Remove';
+        removeBtn.onclick = () => {
+          feeds.splice(i, 1);
+          renderFeedList();
+          renderSectionList();
+          loadNews();
         };
         li.append(urlSpan, tagsSpan, editBtn, removeBtn);
         feedListEl.appendChild(li);
@@ -105,11 +123,27 @@
         const li = document.createElement('li');
         const tagBtn = document.createElement('span');
         tagBtn.textContent = section.name;
-        tagBtn.className = 'tag-toggle' + (section.active ? ' active':'');
-        tagBtn.onclick = () => { section.active = !section.active; renderSectionList(); loadNews(); };
-        const removeBtn = document.createElement('button'); removeBtn.className = 'remove'; removeBtn.textContent = 'Remove';
-        removeBtn.onclick = () => { sections.splice(i,1); renderSectionList(); loadNews(); };
-        li.append(tagBtn, removeBtn);
+        tagBtn.className = 'tag-toggle' + (section.active ? ' active' : '');
+        tagBtn.onclick = () => {
+          section.active = !section.active;
+          renderSectionList();
+          loadNews();
+        };
+        li.append(tagBtn);
+
+        // only allow removal of non-default sections
+        if (!defaultSectionNames.includes(section.name)) {
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'remove';
+          removeBtn.textContent = 'Remove';
+          removeBtn.onclick = () => {
+            sections.splice(i, 1);
+            renderSectionList();
+            loadNews();
+          };
+          li.append(removeBtn);
+        }
+
         sectionListEl.appendChild(li);
       });
     }
@@ -118,27 +152,37 @@
       const url = newFeedUrlInput.value.trim();
       const tags = newFeedTagsInput.value.split(',').map(t => t.trim()).filter(t => t);
       if (url && !feeds.some(f => f.url === url)) {
-        feeds.push({url, tags, added: Date.now()});
+        feeds.push({ url, tags, added: Date.now() });
         newFeedUrlInput.value = '';
         newFeedTagsInput.value = '';
-        renderFeedList(); renderSectionList(); loadNews();
+        renderFeedList();
+        renderSectionList();
+        loadNews();
       }
     };
 
     addSectionBtn.onclick = () => {
       const name = newSectionNameInput.value.trim();
       if (name && !sections.some(s => s.name === name)) {
-        sections.push({name, active: true});
+        sections.push({ name, active: true });
         newSectionNameInput.value = '';
-        renderSectionList(); loadNews();
+        renderSectionList();
+        loadNews();
       }
+    };
+
+    resetSectionsBtn.onclick = () => {
+      sections = defaultSectionNames.map(name => ({ name, active: true }));
+      renderSectionList();
+      loadNews();
     };
 
     async function fetchFeed(feed) {
       try {
         const res = await fetch(apiBase + encodeURIComponent(feed.url));
+        if (!res.ok) return [];
         const data = await res.json();
-        if (data.status !== 'ok') throw new Error(data.message);
+        if (data.status !== 'ok') return [];
         return data.items.map(item => ({
           title: item.title,
           link: item.link,
@@ -148,7 +192,7 @@
           added: feed.added
         }));
       } catch (e) {
-        // Fail silently for unavailable feeds
+        console.error('Fetch error:', feed.url, e);
         return [];
       }
     }
@@ -163,27 +207,44 @@
         if (!section.active) return;
         let sectionArticles;
         if (section.name === 'Most recent') {
-          sectionArticles = allArticles.slice().sort((a,b)=> b.pubDate - a.pubDate);
+          sectionArticles = allArticles.slice().sort((a,b) => b.pubDate - a.pubDate);
         } else {
-          sectionArticles = allArticles.filter(a=> a.tags.includes(section.name)).sort((a,b)=> b.pubDate - a.pubDate);
+          sectionArticles = allArticles
+            .filter(a => a.tags.includes(section.name))
+            .sort((a,b) => b.pubDate - a.pubDate);
         }
-        const secDiv = document.createElement('div'); secDiv.className = 'section';
-        const heading = document.createElement('h2'); heading.textContent = section.name;
-        const container = document.createElement('div'); container.className = 'section-news';
+        const secDiv = document.createElement('div');
+        secDiv.className = 'section';
+        const heading = document.createElement('h2');
+        heading.textContent = section.name;
+        secDiv.appendChild(heading);
+
+        const container = document.createElement('div');
+        container.className = 'section-news';
+
         if (sectionArticles.length) {
           sectionArticles.slice(0,10).forEach(item => {
-            const card = document.createElement('div'); card.className = 'news-item';
-            card.innerHTML = `<a href="${item.link}" target="_blank" rel="noopener">${item.title}</a>` +
-                             `<div class="meta">${item.source} • ${item.pubDate.toLocaleString()}</div>`;
+            const card = document.createElement('div');
+            card.className = 'news-item';
+            card.innerHTML =
+              `<a href="${item.link}" target="_blank" rel="noopener">${item.title}</a>` +
+              `<div class="meta">${item.source} • ${item.pubDate.toLocaleString()}</div>`;
             container.appendChild(card);
           });
         } else {
-          const msg = document.createElement('p'); msg.className = 'error'; msg.textContent = 'No articles for this section.';
+          const msg = document.createElement('p');
+          msg.className = 'error';
+          msg.textContent = 'No articles for this section.';
           container.appendChild(msg);
         }
-        secDiv.append(heading, container);
+
+        secDiv.appendChild(container);
         newsContainer.appendChild(secDiv);
       });
+
+      if (!newsContainer.children.length) {
+        newsContainer.innerHTML = '<p class="error">No articles to display for active sections.</p>';
+      }
     }
 
     // Initial render
